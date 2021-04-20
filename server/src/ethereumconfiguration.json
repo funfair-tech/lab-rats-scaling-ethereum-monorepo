@@ -1,0 +1,26 @@
+﻿{
+  "Networks": {
+    "KOVAN": {
+      "Enabled": "true",
+      "Accounts": [
+        {
+          "Address": "0x7a847CdcE9B7b6488597548178485cB817546829",
+          "PrivateKey": "0x19edbccbb3dfab2ffb3eccb72c1e1cceb7226776c1f598ddec967a923c39652e",
+          "TokenFundingAccount": "0x0000000000000000000000000000000000000000",
+          "Comment": "kovan - Developer server"
+        }
+      ]
+    },
+    "OPTIMISMKOVAN": {
+      "Enabled": "true",
+      "Accounts": [
+        {
+          "Address": "0x7a847CdcE9B7b6488597548178485cB817546829",
+          "PrivateKey": "0x19edbccbb3dfab2ffb3eccb72c1e1cceb7226776c1f598ddec967a923c39652e",
+          "TokenFundingAccount": "0x0000000000000000000000000000000000000000",
+          "Comment": "kovan - Developer server"
+        }
+      ]
+    }
+  }
+}

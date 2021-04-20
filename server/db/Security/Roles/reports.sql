@@ -1,0 +1,4 @@
+CREATE ROLE [reports] AUTHORIZATION [dbo]
+GO
+
+
