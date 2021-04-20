@@ -6,9 +6,9 @@ namespace FunFair.Labs.ScalingEthereum.Server.Configuration
     {
         public static (int httpPort, int httpsPort, int h2Port) GetServerUrls(IConfigurationRoot config)
         {
-            const int defaultHttpPort = 7010;
-            const int defaultHttpsPort = 7011;
-            const int defaultH2Port = 7012;
+            const int defaultHttpPort = 7020;
+            const int defaultHttpsPort = 7021;
+            const int defaultH2Port = 7022;
 
             int httpPort = config.GetValue<int?>(key: @"port") ?? defaultHttpPort;
             int httpsPort = config.GetValue<int?>(key: @"https-port") ?? defaultHttpsPort;
