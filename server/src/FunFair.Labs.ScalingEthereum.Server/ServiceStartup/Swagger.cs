@@ -73,9 +73,10 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
                                                            MapVariableLengthHexStringType<TokenAmount>(options: c, maxLength: TokenAmount.MaximumStringLength);
 
                                                            c.MapType<EthereumNetwork>(
-                                                               schemaFactory: () => new OpenApiSchema {Type = "number", Format = "int32", MaxLength = EthereumAmount.MaximumStringLength});
+                                                               schemaFactory: () => new OpenApiSchema {Type = "string", MaxLength = EthereumAmount.MaximumStringLength});
                                                        });
 #else
+
             // Swagger not enabled
             return services;
 #endif
@@ -88,6 +89,7 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
             app.UseSwagger()
                .UseSwaggerUI(setupAction: c => { c.SwaggerEndpoint(url: "v1/swagger.json", $"FunFair-Labs-MultiPlayer-Server {version}"); });
 #else
+
             // Swagger not enabled
 #endif
         }
