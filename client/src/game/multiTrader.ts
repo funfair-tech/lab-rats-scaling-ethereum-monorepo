@@ -1,5 +1,8 @@
 const FFEngine = require('@funfair/engine').FFEngine;
 
+/**
+ * Main game scene for the multiplayer trader game
+ */
 export class MultiTrader extends FFEngine.Component {
 
     private sprite: any = null;
