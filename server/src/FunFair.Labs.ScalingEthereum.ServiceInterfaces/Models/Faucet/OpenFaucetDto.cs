@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using FunFair.Ethereum.DataTypes;
 using FunFair.Ethereum.DataTypes.Primitives;
 using FunFair.Swagger.Attributes;
@@ -16,14 +15,12 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterfaces.Models.Faucet
         ///     The id of the Ethereum network to open the Faucet on.
         /// </summary>
         [SwaggerRequired]
-        [SuppressMessage(category: "ReSharper", checkId: "RedundantDefaultMemberInitializer", Justification = "TODO: Review")]
-        public EthereumNetwork Network { get; set; } = default!;
+        public EthereumNetwork Network { get; init; } = default!;
 
         /// <summary>
         ///     The Ethereum account to open the Faucet for.
         /// </summary>
         [SwaggerRequired]
-        [SuppressMessage(category: "ReSharper", checkId: "RedundantDefaultMemberInitializer", Justification = "TODO: Review")]
-        public HexAddress Address { get; set; } = default!;
+        public HexAddress Address { get; init; } = default!;
     }
 }

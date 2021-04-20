@@ -17,8 +17,6 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
             static void SetXssOptions(IFluentXXssProtectionOptions options)
             {
                 options.EnabledWithBlockMode();
-
-                // TODO: Work out how to report these (https://github.com/NWebsec/NWebsec/issues/129)
             }
 
             static void SetRefererPolicy(IFluentReferrerPolicyOptions opts)

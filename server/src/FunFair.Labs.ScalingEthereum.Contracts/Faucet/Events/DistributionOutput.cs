@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Numerics;
 using FunFair.Ethereum.Contracts.Attributes;
 using FunFair.Ethereum.Contracts.Events;
 using FunFair.Ethereum.DataTypes.Primitives;
@@ -12,7 +11,7 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.Faucet.Events
     ///     details of a distribution.
     /// </summary>
     [DebuggerDisplay("From: {From} To: {To} Amount: {Amount}")]
-    [SuppressMessage(category: "ReSharper", checkId: "ClassNeverInstantiated.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "ClassNeverInstantiated.Global", Justification = "Instantiated by ethereum library")]
     public sealed class DistributionOutput : EventOutput
     {
         /// <summary>
@@ -26,13 +25,12 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.Faucet.Events
                                   [EventOutputParameter(ethereumDataType: @"address", order: 2, indexed: false)]
                                   AccountAddress to,
                                   [EventOutputParameter(ethereumDataType: @"uint256", order: 3, indexed: false)]
-                                  BigInteger amount)
+                                  DataTypes.Primitives.Token amount)
         {
             this.From = from ?? throw new ArgumentNullException(nameof(from));
             this.To = to ?? throw new ArgumentNullException(nameof(to));
 
-            // TODO: Can Amount be FUN/Eth?
-            this.Amount = amount;
+            this.Amount = amount ?? throw new ArgumentNullException(nameof(amount));
         }
 
         /// <summary>
@@ -48,6 +46,6 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.Faucet.Events
         /// <summary>
         ///     The amount that was sent.
         /// </summary>
-        public BigInteger Amount { get; }
+        public DataTypes.Primitives.Token Amount { get; }
     }
 }

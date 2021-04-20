@@ -27,8 +27,8 @@
     <RuntimeHostConfigurationOption Include="System.Globalization.Invariant" Value="true" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FunFair.Common.All" Version="5.7.1.2801" />
-    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.0.8611" />
+    <PackageReference Include="FunFair.Common.All" Version="5.8.0.2828" />
+    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.1.8620" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />

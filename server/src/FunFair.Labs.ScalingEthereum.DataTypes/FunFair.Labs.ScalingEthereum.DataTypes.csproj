@@ -23,12 +23,12 @@
     <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FunFair.Common.All" Version="5.7.1.2801" />
+    <PackageReference Include="FunFair.Common.All" Version="5.8.0.2828" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
     <PackageReference Include="FunFair.CodeAnalysis" Version="5.1.0.658" PrivateAssets="All" />
-    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.0.8611" />
+    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.1.8620" />
     <PackageReference Include="Microsoft.VisualStudio.Threading" Version="16.9.60" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.9.60" PrivateAssets="All" />
     <PackageReference Include="Roslynator.Analyzers" Version="3.1.0" PrivateAssets="All" />
