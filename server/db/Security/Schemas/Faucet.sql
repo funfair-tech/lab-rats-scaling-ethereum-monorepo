@@ -1,0 +1,4 @@
+CREATE SCHEMA [Faucet] AUTHORIZATION [dbo]
+GO
+
+

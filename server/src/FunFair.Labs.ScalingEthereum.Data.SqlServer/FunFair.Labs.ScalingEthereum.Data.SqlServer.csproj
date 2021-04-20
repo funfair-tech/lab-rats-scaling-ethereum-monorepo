@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+    <Features>strict;flow-analysis</Features>
+    <Nullable>enable</Nullable>
+    <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+    <IsPackable>false</IsPackable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatSpecificWarningsAsErrors />
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors />
+    <LangVersion>latest</LangVersion>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <RuntimeHostConfigurationOption Include="System.Globalization.Invariant" Value="true" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FunFair.Common.All" Version="5.7.1.2801" />
+    <PackageReference Include="FunFair.Content.Package.Management.All" Version="5.4.1.1427" />
+    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.0.8611" />
+    <PackageReference Include="FunFair.Server.Ethereum.Accounts" Version="1.2.0.136" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
+    <PackageReference Include="coverlet.collector" Version="3.0.3" PrivateAssets="All" />
+    <PackageReference Include="coverlet.msbuild" Version="3.0.3" PrivateAssets="All" />
+    <PackageReference Include="FunFair.CodeAnalysis" Version="5.1.0.658" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.9.60" PrivateAssets="All" />
+    <PackageReference Include="Roslynator.Analyzers" Version="3.1.0" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.21.0.30542" PrivateAssets="All" />
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
+    <PackageReference Include="ToStringWithoutOverrideAnalyzer" Version="0.6.0" PrivateAssets="All" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FunFair.Labs.ScalingEthereum.Contracts\FunFair.Labs.ScalingEthereum.Contracts.csproj" />
+    <ProjectReference Include="..\FunFair.Labs.ScalingEthereum.Data.Interfaces\FunFair.Labs.ScalingEthereum.Data.Interfaces.csproj" />
+    <ProjectReference Include="..\FunFair.Labs.ScalingEthereum.TypeConverters.Dapper\FunFair.Labs.ScalingEthereum.TypeConverters.Dapper.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Players\DataManagers" />
+  </ItemGroup>
+</Project>
