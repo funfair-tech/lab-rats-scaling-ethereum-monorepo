@@ -9,7 +9,7 @@ interface ITokenTransferReceiver {
 
 //************************************************************************************************
 
-contract StubERC667 {
+contract LabRats {
     mapping (address=>uint256) balances;
     uint256 balanceTotal;
 
