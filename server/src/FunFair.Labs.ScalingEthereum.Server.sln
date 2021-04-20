@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunFair.Labs.ScalingEthereu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunFair.Labs.ScalingEthereum.TypeConverters.Dapper", "FunFair.Labs.ScalingEthereum.TypeConverters.Dapper\FunFair.Labs.ScalingEthereum.TypeConverters.Dapper.csproj", "{252F1255-282F-4BC3-AAE4-7759F0D304F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunFair.Labs.ScalingEthereum.Logic.Tests", "FunFair.Labs.ScalingEthereum.Logic.Tests\FunFair.Labs.ScalingEthereum.Logic.Tests.csproj", "{1B653D4D-EDA1-4E0F-B349-8B13BADA701E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,10 @@ Global
 		{252F1255-282F-4BC3-AAE4-7759F0D304F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{252F1255-282F-4BC3-AAE4-7759F0D304F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{252F1255-282F-4BC3-AAE4-7759F0D304F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B653D4D-EDA1-4E0F-B349-8B13BADA701E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B653D4D-EDA1-4E0F-B349-8B13BADA701E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B653D4D-EDA1-4E0F-B349-8B13BADA701E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B653D4D-EDA1-4E0F-B349-8B13BADA701E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
