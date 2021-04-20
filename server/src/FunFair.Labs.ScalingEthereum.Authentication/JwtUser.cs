@@ -22,6 +22,6 @@ namespace FunFair.Labs.ScalingEthereum.Authentication
         /// <summary>
         ///     Account address
         /// </summary>
-        public AccountAddress AccountAddress { get; init; }
+        public AccountAddress AccountAddress { get; }
     }
 }
