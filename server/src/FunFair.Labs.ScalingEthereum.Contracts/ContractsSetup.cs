@@ -13,7 +13,7 @@ namespace FunFair.Labs.ScalingEthereum.Contracts
     ///     Configures the Ethereum Contracts
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public static class MultiPlayerContractsSetup
+    public static class ContractsSetup
     {
         /// <summary>
         ///     Configures the Ethereum Contracts

@@ -30,7 +30,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Exceptions
         /// </summary>
         /// <param name="message">The message to return.</param>
         /// <param name="innerException">The inner exception.</param>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Standard exception constructor")]
         public TooMuchTokenException(string message, Exception innerException)
             : base(message: message, innerException: innerException)
         {

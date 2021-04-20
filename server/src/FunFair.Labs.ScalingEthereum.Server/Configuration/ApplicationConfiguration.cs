@@ -1,7 +1,6 @@
 using System;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -116,7 +115,6 @@ namespace FunFair.Labs.ScalingEthereum.Server.Configuration
                    };
         }
 
-        [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0008: Don't disable warnings", Justification = "TODO: Review")]
         private static PackageVersion ServerVersion()
         {
             string location = GetApplication();

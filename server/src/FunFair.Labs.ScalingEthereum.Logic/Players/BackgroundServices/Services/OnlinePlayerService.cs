@@ -13,7 +13,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Players.BackgroundServices.Services
     /// <summary>
     ///     Background service for online players service
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "ClassNeverInstantiated.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "ClassNeverInstantiated.Global", Justification = "Instantiated by DI")]
     public sealed class OnlinePlayerService : TickingBackgroundService, IOnlinePlayerService
     {
         private readonly IEthereumNetworkConfigurationManager _ethereumNetworkConfigurationManager;

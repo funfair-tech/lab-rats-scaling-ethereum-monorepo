@@ -64,7 +64,7 @@ namespace FunFair.Labs.ScalingEthereum.Server
         /// </summary>
         /// <param name="services">the services to register.</param>
         /// <remarks>This method gets called by the runtime. Use this method to add services to the container.</remarks>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Called by runtime")]
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMemoryCache(x => x.SizeLimit = 1024 * 1024 * 8)
@@ -130,7 +130,7 @@ namespace FunFair.Labs.ScalingEthereum.Server
         /// <param name="applicationLifeTime">The lifetime of the application.</param>
         /// <param name="loggerFactory">Logger factory</param>
         /// <remarks>This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</remarks>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Called by runtime")]
         public void Configure(IApplicationBuilder app, IHostApplicationLifetime applicationLifeTime, ILoggerFactory loggerFactory)
         {
             RegisterEthereumNetworkConverter(app.ApplicationServices);

@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using FunFair.Ethereum.Contracts.Attributes;
 using FunFair.Ethereum.Contracts.Transactions;
 using FunFair.Ethereum.DataTypes.Primitives;
@@ -11,7 +10,6 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.Faucet.Transactions
     ///     Withdraws eth from the faucet.
     /// </summary>
     [DebuggerDisplay(value: "Owner: {OwnerAddress}")]
-    [SuppressMessage(category: "ReSharper", checkId: "ClassNeverInstantiated.Global", Justification = "TODO: Review")]
     public sealed class WithdrawEthInput : TransactionParameters
     {
         /// <summary>

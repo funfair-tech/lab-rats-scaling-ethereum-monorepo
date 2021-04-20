@@ -9,12 +9,12 @@ namespace FunFair.Labs.ScalingEthereum.DataTypes.Exceptions
     /// </summary>
     public sealed class NegativeTokenException : Exception
     {
-        private const string MESSAGE = "Invalid token amount.  Fun cannot be negative.";
+        private const string MESSAGE = "Invalid token amount.  Cannot be negative.";
 
         /// <summary>
         ///     Constructor.
         /// </summary>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Standard Exception constructor")]
         public NegativeTokenException()
             : this(MESSAGE)
         {
@@ -34,7 +34,7 @@ namespace FunFair.Labs.ScalingEthereum.DataTypes.Exceptions
         /// </summary>
         /// <param name="message">The message to return.</param>
         /// <param name="innerException">The inner exception.</param>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Standard Exception constructor")]
         public NegativeTokenException(string message, Exception innerException)
             : base(message: message, innerException: innerException)
         {

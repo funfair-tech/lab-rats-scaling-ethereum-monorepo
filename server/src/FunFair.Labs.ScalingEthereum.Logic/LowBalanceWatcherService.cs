@@ -12,7 +12,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic
     /// <summary>
     ///     Watcher of Casino accounts.
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "ClassNeverInstantiated.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "ClassNeverInstantiated.Global", Justification = "Instantiated by DI")]
     public sealed class LowBalanceWatcherService : TickingBackgroundService, ILowBalanceWatcherService
     {
         private readonly IDrainedFaucetAlerter _drainedFaucetAlerter;

@@ -15,19 +15,19 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Locking.Builders.ObjectBui
         /// <summary>
         ///     Fate Channel Id.
         /// </summary>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedAutoPropertyAccessor.Global", Justification = "TODO: Review")]
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global", Justification = "Initialised by Dapper")]
         public TDataType? ObjectId { get; init; }
 
         /// <summary>
         ///     Which machine locked the fate channel.
         /// </summary>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedAutoPropertyAccessor.Global", Justification = "TODO: Review")]
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global", Justification = "Initialised by Dapper")]
         public string? LockedBy { get; init; }
 
         /// <summary>
         ///     When the lock was taken.
         /// </summary>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedAutoPropertyAccessor.Global", Justification = "TODO: Review")]
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global", Justification = "Initialised by Dapper")]
         public DateTime LockedAt { get; init; }
     }
 }

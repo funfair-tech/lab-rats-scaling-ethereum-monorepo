@@ -63,7 +63,7 @@ namespace FunFair.Labs.ScalingEthereum.Server
             CommonMiddlewareServicesSetup.Configure(services: services);
             CommonServicesSetup.Configure(services);
 
-            MultiPlayerContractsSetup.Configure(services);
+            ContractsSetup.Configure(services);
 
             EthereumServices.ConfigureEthereumServices(services: services, configuration: applicationConfiguration);
 

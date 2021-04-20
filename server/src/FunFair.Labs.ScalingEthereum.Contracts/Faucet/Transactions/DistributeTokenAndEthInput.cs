@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using FunFair.Ethereum.Contracts.Attributes;
 using FunFair.Ethereum.Contracts.Transactions;
 using FunFair.Ethereum.DataTypes.Primitives;
@@ -11,7 +10,6 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.Faucet.Transactions
     ///     Distributes an amount of eth and token to a recipient.
     /// </summary>
     [DebuggerDisplay(value: "Send {EthAmount} WEI and {TokenAmount} FUN to {Recipient}")]
-    [SuppressMessage(category: "ReSharper", checkId: "ClassNeverInstantiated.Global", Justification = "TODO: Review")]
     public sealed class DistributeTokenAndEthInput : TransactionParameters
     {
         /// <summary>
