@@ -1,6 +1,5 @@
 SET QUOTED_IDENTIFIER ON
 GO
-
 SET ANSI_NULLS ON
 GO
 
@@ -12,7 +11,7 @@ BEGIN
     DECLARE @applyAccessControlChecks BIT = 0;
 
     IF @network = 'MAINNET'
-        OR @network = 'XDAI'
+        OR @network = 'OPTIMISMMAINNET'
     BEGIN
         SET @applyAccessControlChecks = 1;
     END
@@ -20,5 +19,3 @@ BEGIN
     RETURN @applyAccessControlChecks;
 END
 GO
-
-
