@@ -2,17 +2,7 @@ import './canvas.scss';
 
 export const Canvas = () => {
   return (
-    <div
-      id='canvasContainerOuter'
-      className='canvasContainer'
-      style={{
-        width: '100vw',
-        height: '20vh',
-        display: 'flex',
-        justifyContent: 'center',
-        margin: '20px',
-      }}
-    >
+    <div id='canvasContainerOuter' className='canvasContainer'>
       <div id='canvasContainerInner'>
         <div id='canvasContainer'></div>
 
