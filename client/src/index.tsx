@@ -1,11 +1,18 @@
+// @ts-ignore sort types
+import { WalletLeader } from '@funfair-tech/wallet-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
 import App from './App';
+import './index.scss';
 import reportWebVitals from './reportWebVitals';
+
+const registerEventListeners = () => {
+  //TODO
+};
 
 ReactDOM.render(
   <React.StrictMode>
+    <WalletLeader registerEventListeners={registerEventListeners} />
     <App />
   </React.StrictMode>,
   document.getElementById('root')
