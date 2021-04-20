@@ -2,8 +2,7 @@ import './canvas.scss';
 
 export const Canvas = () => {
   return (
-    <div id='canvasContainerOuter' className='canvasContainer'>
-      <div id='canvasContainerInner'>
+    <div id='canvas-wrapper' className='canvasContainer'>
         <div id='canvasContainer'></div>
 
         {/* DONT THINK THIS IS RELEVANT ? */}
@@ -13,6 +12,5 @@ export const Canvas = () => {
           <div id='constantMenu'></div>
         </div> */}
       </div>
-    </div>
   );
 };

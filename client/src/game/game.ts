@@ -1,10 +1,11 @@
-// import { FFEngine } from '@funfair/engine';
+import { MultiTrader } from './multiTrader';
 const FFEngine = require('@funfair/engine').FFEngine;
 
 export class Game {
 
   constructor() {
     console.log('Creating Labrats Game');
+    //this.loadGame(); //this does not work, DOM not ready
   }
 
   public report(): string {
@@ -18,6 +19,27 @@ export class Game {
 
   public initEngine(): void {
     console.log('Engine: ', FFEngine);
-    FFEngine.instance.Init();
+    //FFEngine.instance.Init();
+    this.loadGame();
+  }
+
+  private loadGame(): void {
+    // Define the game scene data
+    let sceneData = new FFEngine.SceneData();
+    sceneData.sceneClass = MultiTrader;
+    sceneData.isLocalGame = true;
+
+    //set config data keys
+    FFEngine.EngineConfig.SetDataKey('labrats-game');
+    
+    // Start the Engine
+    let options = new FFEngine.PlatformOptions();
+    options.allowPortrait = true;
+    options.aspectRatio = 0;
+    options.canvasType = FFEngine.CanvasType.STANDALONE;
+    FFEngine.instance.Init(options, true);
+
+    // Load the game scene
+    FFEngine.instance.LoadScene(sceneData);
   }
 }
