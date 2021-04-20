@@ -27,7 +27,7 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="$(IsProduction)=='True'">
+  <PropertyGroup Condition="$(IsProduction)!='True'">
     <DefineConstants>$(DefineConstants);SWAGGER_ENABLED</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="$(IsProduction)!='True'">
