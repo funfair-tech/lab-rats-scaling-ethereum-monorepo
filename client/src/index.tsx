@@ -2,9 +2,11 @@
 import { WalletLeader } from '@funfair-tech/wallet-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import App from './App';
 import './index.scss';
 import reportWebVitals from './reportWebVitals';
+import store from './store/store';
 
 const registerEventListeners = () => {
   //TODO
@@ -12,8 +14,10 @@ const registerEventListeners = () => {
 
 ReactDOM.render(
   <React.StrictMode>
-    <WalletLeader registerEventListeners={registerEventListeners} />
-    <App />
+    <Provider store={store}>
+      <WalletLeader registerEventListeners={registerEventListeners} />
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
