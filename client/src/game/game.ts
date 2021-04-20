@@ -6,8 +6,8 @@ export class Game {
     return 'Canvas ready for duty';
   }
 
-  public getEngineVersion(): void {
-    return Engine.FFEngine.instance.GetVersion();
+  public getEngineVersion(): string {
+    return !!Engine.FFEngine ? Engine.FFEngine.instance.GetVersion() : '';
   }
 
   public initEngine(): void {
