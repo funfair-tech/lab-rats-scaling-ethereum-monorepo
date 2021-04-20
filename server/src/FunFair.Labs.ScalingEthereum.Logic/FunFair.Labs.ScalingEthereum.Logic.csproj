@@ -23,8 +23,8 @@
     <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FunFair.Common.All" Version="5.7.1.2801" />
-    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.0.8611" />
+    <PackageReference Include="FunFair.Common.All" Version="5.8.0.2828" />
+    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.1.8620" />
     <PackageReference Include="FunFair.Random" Version="5.1.0.988" />
     <PackageReference Include="FunFair.Alerts.Dispatching" Version="5.1.0.838" />
   </ItemGroup>

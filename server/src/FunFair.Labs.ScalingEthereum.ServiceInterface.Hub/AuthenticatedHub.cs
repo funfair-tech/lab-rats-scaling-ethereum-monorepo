@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using FunFair.Common.Environment;
 using FunFair.Ethereum.DataTypes;
@@ -50,13 +51,13 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
         /// <summary>
         ///     Subscribe
         /// </summary>
-        /// <param name="networkId">The network id</param>
+        /// <param name="networkName">The network id</param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        [HubMethodName(name: HubMethodNames.Subscribe)]
-        public async Task SubscribeAsync(int networkId)
+        [SuppressMessage("ReSharper", "UnusedMember.Global", Justification = "Called by web socket client")]
+        public async Task SubscribeAsync(string networkName)
         {
-            EthereumNetwork network = this.VerifyNetwork(networkId);
+            EthereumNetwork network = this.VerifyNetwork(networkName);
 
             UserAccountId userAccountId = this.JwtUser()
                                               .Id;

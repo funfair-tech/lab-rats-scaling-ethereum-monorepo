@@ -12,7 +12,7 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
     /// <summary>
     ///     Public hub (no authentication)
     /// </summary>
-    [SuppressMessage(category: "ReSharper", checkId: "ClassNeverInstantiated.Global", Justification = "TODO: Review")]
+    [SuppressMessage(category: "ReSharper", checkId: "ClassNeverInstantiated.Global", Justification = "Instantiated by DI")]
     public sealed class PublicHub : HubBase
     {
         /// <summary>
@@ -35,13 +35,13 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
         /// <summary>
         ///     Subscribe
         /// </summary>
-        /// <param name="networkId">Network id</param>
+        /// <param name="networkName">Network id</param>
         /// <returns></returns>
         [HubMethodName(name: "Subscribe")]
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
-        public Task SubscribeAsync(int networkId)
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Called by web socket clients.")]
+        public Task SubscribeAsync(string networkName)
         {
-            EthereumNetwork network = this.VerifyNetwork(networkId);
+            EthereumNetwork network = this.VerifyNetwork(networkName);
 
             return this.SubscribeNetworkAsync(connectionId: this.Context.ConnectionId, network: network);
         }

@@ -48,7 +48,7 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
             return path;
         }
 
-        [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0008: Don't disable warnings", Justification = "TODO: Review")]
+        [SuppressMessage(category: "FunFair.CodeAnalysis", checkId: "FFS0008: Don't disable warnings", Justification = "Needed in this case")]
         private static string AppLocation()
         {
 #pragma warning disable IL3000

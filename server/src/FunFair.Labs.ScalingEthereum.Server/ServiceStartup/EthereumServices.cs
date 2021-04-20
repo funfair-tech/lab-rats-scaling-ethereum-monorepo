@@ -177,7 +177,7 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
         [SuppressMessage(category: "Microsoft.Usage", checkId: "CA1801:ReviewUnusedParameters", Justification = "Interface defined for when swagger is enabled.")]
         public static void ConfigureEventProcessing(IServiceProvider serviceProvider)
         {
-            // TODO: Implement
+            // TODO: Implement any event handlers we need
 #if FALSE
             IContractInfoRegistry registry = serviceProvider.GetRequiredService<IContractInfoRegistry>();
             IContractEventWatcherProcessor processor = serviceProvider.GetRequiredService<IContractEventWatcherProcessor>();
@@ -185,9 +185,6 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
             IContractInfo contractInfo = registry.FindContractInfo(WellKnownContracts.GameManager);
 
             processor.RegisterEventHandler<CreateProgressivePotEventHandler, CreateProgressivePotEvent, CreateProgressivePotEventOutput>(contractInfo);
-            processor.RegisterEventHandler<StartGameRoundEventHandler, StartGameRoundEvent, StartGameRoundEventOutput>(contractInfo);
-            processor.RegisterEventHandler<EndGameRoundEventHandler, EndGameRoundEvent, EndGameRoundEventOutput>(contractInfo);
-            processor.RegisterEventHandler<TimeoutGameRoundEventHandler, TimeoutGameRoundEvent, TimeoutGameRoundEventOutput>(contractInfo);
 #endif
         }
 

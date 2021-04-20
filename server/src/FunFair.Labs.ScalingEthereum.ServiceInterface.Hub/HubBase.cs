@@ -149,12 +149,11 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
             }
         }
 
-        protected EthereumNetwork VerifyNetwork(int networkId)
+        protected EthereumNetwork VerifyNetwork(string networkName)
         {
-            // TODO: Verify this makes sense?
-            if (!this.NetworkManager.TryGetByChainId(chainId: networkId, out EthereumNetwork? network))
+            if (!this.NetworkManager.TryGetByName(name: networkName, out EthereumNetwork? network))
             {
-                throw new ArgumentOutOfRangeException(nameof(networkId), message: "Network is not enabled");
+                throw new ArgumentOutOfRangeException(nameof(networkName), message: "Network is not enabled");
             }
 
             return network;
