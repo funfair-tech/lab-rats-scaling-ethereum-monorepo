@@ -16,14 +16,14 @@ async function main() {
 
   const key = process.env.YOUR_PRIVATE_KEY;
   const l1Wallet = new Wallet(key, l1RpcProvider);
-  const l2Wallet = new Wallet(key, l2RpcProvider);
+  // const l2Wallet = new Wallet(key, l2RpcProvider);
 
-  //   const contract = new Contract(KOVAN_CONTRACT_ADDRESS, ABI, l1Wallet);
-  //   const response = await contract.deposit({ value: '10000000000000' });
-  //   console.log(response);
-  //   await response.wait();
+  const contract = new Contract(KOVAN_CONTRACT_ADDRESS, ABI, l1Wallet);
+  const response = await contract.deposit({ value: '10000000000000' });
+  console.log(response);
+  await response.wait();
 
-  console.log(await l2Wallet.getBalance());
+  // console.log(await l2Wallet.getBalance());
 }
 
 main()
