@@ -5,7 +5,7 @@
   "dependencies": {
     "@funfair-tech/wallet-react": "^1.1.2",
     "@funfair-tech/wallet-sdk": "^3.3.0",
-    "@funfair/engine": "file:../internal/funfair-engine-2.0.15.tgz",
+    "@funfair/engine": "file:../internal/funfair-engine-2.0.17.tgz",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",

@@ -17,7 +17,6 @@ export class Game {
   }
 
   public getEngineVersion(): string {
-    console.log('Engine: ', FFEngine);
     return FFEngine.instance.GetVersion();
   }
 
