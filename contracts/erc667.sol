@@ -27,7 +27,7 @@ contract LabRats {
     }
 
     function symbol() public pure returns (string memory) {
-        return "LABRAT";
+        return "LABRATS";
     }
 
     function decimals() public pure returns (uint8) {
