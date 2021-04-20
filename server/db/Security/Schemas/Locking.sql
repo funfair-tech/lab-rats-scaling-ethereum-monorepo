@@ -1,0 +1,4 @@
+CREATE SCHEMA [Locking] AUTHORIZATION [dbo]
+GO
+
+
