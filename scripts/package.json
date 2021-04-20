@@ -1,0 +1,19 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eth-optimism/contracts": "^0.2.4",
+    "@eth-optimism/core-utils": "^0.2.1",
+    "ethers": "^5.0.24"
+  },
+  "dependencies": {
+    "@eth-optimism/watcher": "^0.0.1-alpha.9"
+  }
+}
