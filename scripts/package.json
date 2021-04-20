@@ -4,13 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "move-eth-l1-l2": "node ./move-eth-from-l1-to-l2.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@eth-optimism/contracts": "^0.2.4",
     "@eth-optimism/core-utils": "^0.2.1",
+    "@ethersproject/providers": "^5.1.2",
+    "dotenv": "^8.2.0",
     "ethers": "^5.0.24"
   },
   "dependencies": {
