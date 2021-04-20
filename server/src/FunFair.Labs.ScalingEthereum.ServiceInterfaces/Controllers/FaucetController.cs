@@ -13,6 +13,7 @@ using FunFair.Ethereum.DataTypes;
 using FunFair.Ethereum.DataTypes.Primitives;
 using FunFair.Ethereum.Networks.Interfaces;
 using FunFair.Ethereum.Wallet.Interfaces;
+using FunFair.Labs.ScalingEthereum.Authentication;
 using FunFair.Labs.ScalingEthereum.Contracts;
 using FunFair.Labs.ScalingEthereum.Logic.Exceptions;
 using FunFair.Labs.ScalingEthereum.Logic.Faucet;
@@ -26,7 +27,7 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterfaces.Controllers
     /// <summary>
     ///     Faucet controller.
     /// </summary>
-    public sealed class FaucetController : ApiBaseController
+    public sealed class FaucetController : AuthenticatedApiBaseController
     {
         private readonly IEthereumAccountManager _ethereumAccountManager;
         private readonly IEthereumBlockStatus _ethereumBlockStatus;
@@ -85,6 +86,13 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterfaces.Controllers
         {
             try
             {
+                JwtUser? jwtUser = this.JwtUser;
+
+                if (jwtUser == null)
+                {
+                    return this.BadRequest();
+                }
+
                 IPAddress ipAddress = this._remoteIpAddressRetriever.Get(this.HttpContext);
 
                 EthereumNetwork network = request.Network;
@@ -107,6 +115,11 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterfaces.Controllers
                 }
 
                 AccountAddress address = new(request.Address.ToSpan());
+
+                if (jwtUser.AccountAddress != address)
+                {
+                    return this.BadRequest();
+                }
 
                 INetworkAccount account = new NetworkAccount(network: network, address: address);
 
