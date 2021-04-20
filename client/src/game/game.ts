@@ -7,10 +7,12 @@ export class Game {
   }
 
   public getEngineVersion(): string {
-    return !!Engine.FFEngine ? Engine.FFEngine.instance.GetVersion() : '';
+    console.log('Engine: ', Engine);
+    return Engine.FFEngine.instance.GetVersion();
   }
 
   public initEngine(): void {
+    console.log('Engine: ', Engine);
     Engine.FFEngine.instance.Init();
   }
 }
