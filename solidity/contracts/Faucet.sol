@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.8.0;
 
 import "./ERC20Interface.sol";
 import "./Ownable.sol";
@@ -20,7 +20,10 @@ contract Faucet is Ownable{
 
     function withdrawEth(address to) public onlyOwner {
         uint256 totalEth = address(this).balance;
-        to.transfer(totalEth);
+        
+        address payable recipient = payable(to);
+        
+        recipient.transfer(totalEth);
         emit WithdrewEthFromContract(to, totalEth);
     }
 
@@ -31,14 +34,16 @@ contract Faucet is Ownable{
     }
 
     // this is called when Eth is transferred to the contract address
-    function () public payable {
+    receive() external payable  {
         require(msg.value > 0, "Must transfer an actual amount of ETH");
         emit SentFundsToContract(msg.sender, address(this), msg.value);
     }
 
     function distributeEth(address recipient, uint256 value) public onlyAdmin {
         require(value <= address(this).balance, "Can't withdraw more ETH than faucet has");
-        recipient.transfer(value);
+        
+        address payable payable_recipient = payable(recipient);
+        payable_recipient.transfer(value);
         emit DistributedEth(address(this), recipient, value);
     }
 
