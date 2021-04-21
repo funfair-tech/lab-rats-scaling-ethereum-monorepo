@@ -5,13 +5,11 @@ using System.Linq;
 using System.Text.Json;
 using FluentValidation.AspNetCore;
 using FunFair.Common.Middleware;
-using FunFair.Common.Middleware.Helpers;
 using FunFair.Ethereum.Crypto.Interfaces;
 using FunFair.Ethereum.Crypto.Services;
 using FunFair.Ethereum.Networks.Interfaces;
 using FunFair.Ethereum.TypeConverters.Json;
 using FunFair.Labs.ScalingEthereum.Authentication.Events;
-using FunFair.Labs.ScalingEthereum.DataTypes.Wallet;
 using FunFair.Labs.ScalingEthereum.Server.Configuration;
 using FunFair.Labs.ScalingEthereum.Server.Middleware;
 using FunFair.Labs.ScalingEthereum.Server.ServiceStartup;
@@ -137,24 +135,11 @@ namespace FunFair.Labs.ScalingEthereum.Server
             RegisterAdditionalMvcOptions(app.ApplicationServices);
             RegisterSignalRJsonSerializerOptions(app.ApplicationServices);
 
-            IOptions<WalletConfiguration> walletConfiguration = app.ApplicationServices.GetRequiredService<IOptions<WalletConfiguration>>();
-
             const string dataUrl = @"data:";
             const string googleFonts = @"https://fonts.googleapis.com";
             const string googleFontsStatic = @"https://fonts.gstatic.com";
 
-            string walletSdk = new Uri(walletConfiguration.Value.SdkUri.AbsoluteUri).BuildOriginUrl()
-                                                                                    .ToString();
-
-            string[] imageSources =
-            {
-                dataUrl,
-
-                // Wallet
-                walletSdk
-            };
-
-            string[] frameSources = {walletSdk};
+            string[] imageSources = {dataUrl};
 
             void CspOptions(IFluentCspOptions options)
             {
@@ -162,17 +147,16 @@ namespace FunFair.Labs.ScalingEthereum.Server
                        .ImageSources(x => x.CustomSources(imageSources))
                        .StyleSources(configurer: s => s.Self())
                        .StyleSources(configurer: s => s.UnsafeInline())
-                       .StyleSources(configurer: s => s.CustomSources(googleFonts, walletSdk))
+                       .StyleSources(configurer: s => s.CustomSources(googleFonts))
                        .FontSources(configurer: s => s.Self())
                        .FontSources(configurer: s => s.Self())
                        .FontSources(configurer: s => s.CustomSources(dataUrl, googleFontsStatic))
                        .MediaSources(configurer: s => s.Self())
-                       .FrameSources(configurer: s => s.CustomSources(frameSources))
                        .FrameSources(configurer: s => s.Self())
                        .ScriptSources(configurer: s => s.Self())
                        .ScriptSources(configurer: s => s.UnsafeInline())
                        .ScriptSources(configurer: s => s.UnsafeEval())
-                       .ScriptSources(configurer: s => s.CustomSources(dataUrl, walletSdk))
+                       .ScriptSources(configurer: s => s.CustomSources(dataUrl))
                        .ConnectSources(x => x.Self())
                        .ConnectSources(x => x.CustomSources(@"wss://host"));
             }

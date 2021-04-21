@@ -15,7 +15,6 @@ using FunFair.Ethereum.Networks.Interfaces;
 using FunFair.Ethereum.Proxy.Client;
 using FunFair.Labs.ScalingEthereum.Contracts;
 using FunFair.Labs.ScalingEthereum.Data.SqlServer;
-using FunFair.Labs.ScalingEthereum.DataTypes.Wallet;
 using FunFair.Labs.ScalingEthereum.Logic;
 using FunFair.Labs.ScalingEthereum.Server.Configuration;
 using FunFair.Labs.ScalingEthereum.Server.ServiceStartup;
@@ -71,8 +70,6 @@ namespace FunFair.Labs.ScalingEthereum.Server
 
             ServiceInterfacesSetup.Configure(services);
             ServiceInterfaceHubSetup.Configure(services);
-
-            services.Configure<WalletConfiguration>(config: applicationConfiguration.Configuration.GetSection(key: @"Wallet"));
 
             ObjectLockingSetup.Configure(serviceCollection: services, applicationConfiguration.Environment.IsLocalOrTest());
 

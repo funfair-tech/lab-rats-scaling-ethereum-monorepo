@@ -37,7 +37,7 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
         [SuppressMessage(category: "Microsoft.Reliability", checkId: "CA2000:DisposeObjectsBeforeLosingScope", Justification = "Lives for program lifetime")]
         public static void InitializeLogging(ExecutionEnvironment environment, ILoggerFactory loggerFactory, LoggingConfiguration configuration, string version, string tenant)
         {
-            ConfigureLoggly(configuration);
+            ConfigureLoggly(environment: environment, configuration: configuration);
 
             // set up Serilog logger
             Log.Logger = CreateLogger(environment: environment, version: version, tenant: tenant);
@@ -46,8 +46,13 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
             loggerFactory.AddSerilog();
         }
 
-        private static void ConfigureLoggly(LoggingConfiguration configuration)
+        private static void ConfigureLoggly(ExecutionEnvironment environment, LoggingConfiguration configuration)
         {
+            if (environment.IsLocalOrTest())
+            {
+                return;
+            }
+
             ILogglyConfig config = LogglyConfig.Instance;
             config.CustomerToken = configuration.LogglyToken;
             config.Transport.EndpointHostname = "logs-01.loggly.com";
