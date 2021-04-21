@@ -6,11 +6,6 @@ require('dotenv').config();
 
 module.exports = {
   networks: {
-    hardhat: {
-      accounts: {
-        mnemonic: 'test test test test test test test test test test test junk',
-      },
-    },
     optimism: {
       url: 'https://kovan.optimism.io',
       accounts: [process.env.YOUR_PRIVATE_KEY],
