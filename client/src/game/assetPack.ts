@@ -20,11 +20,18 @@ export class AssetPack {
 
     constructor() {
 
-        //Font assets
+        //Load Font assets
         FFEngine.instance.assetLoader.LoadFont('game/font_en.fnt', (data: any) => {
             this.fontAssets[FontAssetType.STANDARD] = data;
         });
         
+    }
+
+    /**
+     * Returns the corresponding loaded font asset
+     */
+     public GetFontAsset(type: FontAssetType): any {
+        return this.fontAssets[type];
     }
 }
 

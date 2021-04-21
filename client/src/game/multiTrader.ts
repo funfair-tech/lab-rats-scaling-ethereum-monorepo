@@ -1,5 +1,6 @@
 import { FFEngine } from '@funfair/engine';
 import { AssetPack } from './assetPack';
+import { GLUI, MultiTraderUI } from './multiTraderUI';
 import { EnvironmentManager, ENVIRONMENT_MANAGER } from './objectManagers/environmentManager';
 
 /**
@@ -17,6 +18,7 @@ export class MultiTrader extends FFEngine.Component {
 
         //Create Game Components
         FFEngine.instance.CreateChildObjectWithComponent(this.container, EnvironmentManager);
+        MultiTraderUI.SetupScene();
 
         //Asset loading callback
         FFEngine.instance.assetLoader.AddLoadingPhaseCompleteCallback(() => this.AssetLoadingFinished());
@@ -31,6 +33,14 @@ export class MultiTrader extends FFEngine.Component {
      */
     public AssetLoadingFinished(): void {
         ENVIRONMENT_MANAGER.AssetLoadingFinished();
+        GLUI.AssetLoadingFinished();
+
+        //update and resize initial canvas and display
+        let options = new FFEngine.PlatformOptions();
+        options.allowPortrait = true;
+        options.aspectRatio = 0;
+        options.canvasType = FFEngine.CanvasType.STANDALONE;
+        FFEngine.instance.SetPlatformOptions(options);
     }
 
     private UpdateLoadingPhase(): void {

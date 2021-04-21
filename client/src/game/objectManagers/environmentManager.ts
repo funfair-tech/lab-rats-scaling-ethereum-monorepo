@@ -36,6 +36,7 @@ export class EnvironmentManager extends FFEngine.Component {
         //test
         let sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
         sprite.SetSize(5, 5);
+        sprite.GetContainer().position.set(5, 0, 0);
     }
 }
 
