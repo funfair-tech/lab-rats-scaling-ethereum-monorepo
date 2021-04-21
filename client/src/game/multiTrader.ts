@@ -1,4 +1,6 @@
 import { FFEngine } from '@funfair/engine';
+import { AssetPack } from './assetPack';
+import { EnvironmentManager } from './objectManagers/environmentManager';
 
 /**
  * Main game scene for the multiplayer trader game
@@ -6,20 +8,19 @@ import { FFEngine } from '@funfair/engine';
 export class MultiTrader extends FFEngine.Component {
 
     private sprite!: FFEngine.Sprite;
-    private camera!: FFEngine.THREE.PerspectiveCamera;
-
+    
     public Create(params: any): void {
-        //create scene container
+
+        //create game scene container
         this.container = new FFEngine.THREE.Object3D();
 
-        //create world camera
-        let pos = new FFEngine.THREE.Vector3(0, 0, 7);
-        this.camera = FFEngine.instance.cameras['WORLD'] = FFEngine.instance.CreatePerspectiveCamera([pos.x, pos.y, pos.z]);
+        //create asset manager and begin asset load
+        AssetPack.create();
 
-        //set initial properties
-        this.camera.lookAt(new FFEngine.THREE.Vector3(0, 0, 0));
-        this.container.add(this.camera);
+        //Create Game Components
+        FFEngine.instance.CreateChildObjectWithComponent(this.container, EnvironmentManager);
 
+        //test
         this.sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
         this.sprite.SetSize(5, 5);
     }
