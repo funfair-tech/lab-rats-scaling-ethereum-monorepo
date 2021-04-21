@@ -24,7 +24,15 @@ module.exports = {
       gasPrice: 0,
     },
   },
-  solidity: '0.8.0',
+  solidity: {
+    version: "0.8.0",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 1000
+      }
+    }
+  },
   ovm: {
     solcVersion: '0.8.0',
   },

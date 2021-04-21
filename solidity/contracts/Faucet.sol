@@ -14,7 +14,7 @@ contract Faucet is Ownable{
     event WithdrewEthFromContract(address to, uint256 amount);
     event WithdrewTokenFromContract(address to, uint256 amount);
 
-    constructor(address token) public {
+    constructor(address token) {
         _token = ERC20Interface(token);
     }
 
