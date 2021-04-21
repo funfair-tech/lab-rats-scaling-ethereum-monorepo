@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "npx hardhat --network optimism compile",
-    "deploy": "npx hardhat --network optimism deploy"
+    "compile-optimism": "npx hardhat --network optimism compile",
+    "deploy-optimism": "npx hardhat --network optimism deploy",
+    "compile-kovan": "npx hardhat --network kovan compile",
+    "deploy-kovan": "npx hardhat --network kovan deploy"
   },
   "author": "",
   "license": "ISC",
