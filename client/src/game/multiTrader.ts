@@ -5,8 +5,8 @@ import { FFEngine } from '@funfair/engine';
  */
 export class MultiTrader extends FFEngine.Component {
 
-    private sprite: any;
-    private camera: any = null;
+    private sprite!: FFEngine.Sprite;
+    private camera!: FFEngine.THREE.PerspectiveCamera;
 
     public Create(params: any): void {
         //create scene container
