@@ -1,16 +1,19 @@
-pragma solidity >=0.8.0;
-
 // SPDX-License-Identifier: UNLICENSED
+pragma solidity >=0.7.6;
 
 //************************************************************************************************
 interface ITokenTransferReceiver {
-    function onTokenTransfer(address _from, uint256 _value, bytes memory _data) external returns (bool);
+    function onTokenTransfer(
+        address _from,
+        uint256 _value,
+        bytes memory _data
+    ) external returns (bool);
 }
 
 //************************************************************************************************
 
 contract LabRats {
-    mapping (address=>uint256) balances;
+    mapping(address => uint256) balances;
     uint256 balanceTotal;
 
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
@@ -42,23 +45,35 @@ contract LabRats {
         return balances[_owner];
     }
 
-    function transfer(address _to, uint256 _value) public returns (bool success) {
+    function transfer(address _to, uint256 _value)
+        public
+        returns (bool success)
+    {
         require(balances[msg.sender] >= _value, "Insufficient balance");
 
         balances[msg.sender] -= _value;
         balances[_to] += _value;
 
         emit Transfer(msg.sender, _to, _value);
-        
+
         return true;
     }
 
-    function transferAndCall(address _to, uint256 _value, bytes memory _data) external returns (bool success) {
+    function transferAndCall(
+        address _to,
+        uint256 _value,
+        bytes memory _data
+    ) external returns (bool success) {
         require(transfer(_to, _value), "Token transfer Failed");
-    
-        require(ITokenTransferReceiver(_to).onTokenTransfer(msg.sender, _value, _data));
-        
-        return true;    
-    }
 
+        require(
+            ITokenTransferReceiver(_to).onTokenTransfer(
+                msg.sender,
+                _value,
+                _data
+            )
+        );
+
+        return true;
+    }
 }

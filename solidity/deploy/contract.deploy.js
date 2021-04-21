@@ -36,19 +36,19 @@ const buildUpDeployOptions = (args, deployer, hre) => {
   return {
     from: deployer,
     args,
-    gasPrice: hre.ethers.BigNumber.from('1000000000'),
+    gasPrice: hre.ethers.BigNumber.from('0'),
     gasLimit: 8999999,
     log: true,
   };
 };
 
 const deployLabRatsErc667Contract = async (deploy, deployer, hre) => {
-  const chainId = await hre.getChainId();
+  const chainId = 69;
   const deployingNetworkContext = deployingNetworksContext.find(
     (d) => d.chainId === chainId
   );
 
-  if (deployingNetworkContext.labRatsContractAddress) {
+  if (deployingNetworkContext?.labRatsContractAddress) {
     console.log(
       `Lab rats token is already deployed`,
       deployingNetworkContext.labRatsContractAddress
@@ -72,11 +72,11 @@ const deployFaucetContract = async (
 ) => {
   const faucetResult = await deploy(
     'Faucet',
-    buildUpDeployOptions([labRatContractAddress], deployer, hre)
+    buildUpDeployOptions([ labRatContractAddress ], deployer, hre)
   );
 
   return faucetResult.address;
 };
 
-func.tags = ['deploy-all'];
+func.tags = [ 'deploy-all' ];
 module.exports = func;

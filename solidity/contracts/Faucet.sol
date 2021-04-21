@@ -1,9 +1,10 @@
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.7.6;
 
 import "./ERC20Interface.sol";
 import "./Ownable.sol";
 
-contract Faucet is Ownable{
+contract Faucet is Ownable {
     ERC20Interface _token;
 
     event DistributedEth(address from, address to, uint256 amount);
@@ -19,10 +20,12 @@ contract Faucet is Ownable{
     }
 
     function withdrawEth(address to) public onlyOwner {
-        uint256 totalEth = address(this).balance;
-        
+        uint256 totalEth =
+            ERC20Interface(0x4200000000000000000000000000000000000006)
+                .balanceOf(address(this));
+
         address payable recipient = payable(to);
-        
+
         recipient.transfer(totalEth);
         emit WithdrewEthFromContract(to, totalEth);
     }
@@ -34,27 +37,44 @@ contract Faucet is Ownable{
     }
 
     // this is called when Eth is transferred to the contract address
-    receive() external payable  {
+    receive() external payable {
         require(msg.value > 0, "Must transfer an actual amount of ETH");
         emit SentFundsToContract(msg.sender, address(this), msg.value);
     }
 
     function distributeEth(address recipient, uint256 value) public onlyAdmin {
-        require(value <= address(this).balance, "Can't withdraw more ETH than faucet has");
-        
+        require(
+            value <=
+                ERC20Interface(0x4200000000000000000000000000000000000006)
+                    .balanceOf(address(this)),
+            "Can't withdraw more ETH than faucet has"
+        );
+
         address payable payable_recipient = payable(recipient);
         payable_recipient.transfer(value);
         emit DistributedEth(address(this), recipient, value);
     }
 
-    function distributeToken(address recipient, uint256 value) public onlyAdmin {
-        require(value <= _token.balanceOf(address(this)), "Can't withdraw more tokens than faucet has");
-        require(_token.transfer(recipient, value), "Failed to distribute token");
+    function distributeToken(address recipient, uint256 value)
+        public
+        onlyAdmin
+    {
+        require(
+            value <= _token.balanceOf(address(this)),
+            "Can't withdraw more tokens than faucet has"
+        );
+        require(
+            _token.transfer(recipient, value),
+            "Failed to distribute token"
+        );
         emit DistributedToken(address(this), recipient, value);
     }
 
-    function distributeTokenAndEth(address recipient, uint256 ethValue, uint256 tokenValue) public onlyAdmin {
-
+    function distributeTokenAndEth(
+        address recipient,
+        uint256 ethValue,
+        uint256 tokenValue
+    ) public onlyAdmin {
         distributeEth(recipient, ethValue);
         distributeToken(recipient, tokenValue);
     }
