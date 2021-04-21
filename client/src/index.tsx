@@ -1,21 +1,18 @@
-// @ts-ignore sort types
-import { WalletLeader } from '@funfair-tech/wallet-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './App';
+import Wallet from './containers/wallet/wallet';
 import './index.scss';
 import reportWebVitals from './reportWebVitals';
 import store from './store/store';
 
-const registerEventListeners = () => {
-  //TODO
-};
+
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <WalletLeader registerEventListeners={registerEventListeners} />
+      <Wallet/>
       <App />
     </Provider>
   </React.StrictMode>,
