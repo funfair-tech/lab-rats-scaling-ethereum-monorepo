@@ -41,6 +41,8 @@ class EtherService {
   }
 }
 
-// TODO maybe this needs moving to a nicer place
-// aka on the `restoreAuthenticationEvent` once hooked in
-export const ethers = new EtherService();
+export let ethers: EtherService;
+
+export const setEtherContext = () => {
+  ethers = new EtherService();
+};
