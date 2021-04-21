@@ -4,14 +4,18 @@ const func = async (hre) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  await deploy('LabRats', {
+  const result = await deploy('LabRats', {
     from: deployer,
     args: [],
     gasPrice: hre.ethers.BigNumber.from('1000000000'),
     gasLimit: 8999999,
     log: true,
   });
+
+  console.log(result.address);
+
+  // ADD MORE DEPLOYMENTS HERE
 };
 
-func.tags = ['LabRats'];
+func.tags = ['Deploy'];
 module.exports = func;
