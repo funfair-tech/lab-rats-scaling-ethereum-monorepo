@@ -19,6 +19,7 @@ using FunFair.Labs.ScalingEthereum.ServiceInterface.Hub;
 using FunFair.Labs.ScalingEthereum.ServiceInterfaces.Binders;
 using FunFair.Labs.ScalingEthereum.ServiceInterfaces.ModelValidation.Faucet;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
@@ -118,6 +119,9 @@ namespace FunFair.Labs.ScalingEthereum.Server
 
                                                    JsonConverterSetup.Configure(serializerSettings.Converters);
                                                });
+
+            services.AddAuthorization(option => option.DefaultPolicy = new AuthorizationPolicyBuilder("api").RequireAuthenticatedUser()
+                                                                                                            .Build());
 
             services.ConfigureSwaggerServices(version: this._configuration.Version)
                     .AddRouting();
