@@ -4,7 +4,7 @@ const func = async (hre) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  const result = await deploy('LabRats', {
+  const labRatsResults = await deploy('LabRats', {
     from: deployer,
     args: [],
     gasPrice: hre.ethers.BigNumber.from('1000000000'),
@@ -12,7 +12,7 @@ const func = async (hre) => {
     log: true,
   });
 
-  console.log(result.address);
+  console.log(labRatsResults.address);
 
   // ADD MORE DEPLOYMENTS HERE
 };
