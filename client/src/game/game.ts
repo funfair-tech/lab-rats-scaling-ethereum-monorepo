@@ -6,11 +6,6 @@ import { MultiTrader } from './multiTrader';
  */
 export class Game {
 
-  constructor() {
-    console.log('Creating Labrats Game');
-    //this.loadGame(); //this does not work, DOM not ready
-  }
-
   public report(): string {
     return 'Canvas ready for duty';
   }
@@ -20,18 +15,17 @@ export class Game {
   }
 
   public initEngine(): void {
-    console.log('Engine: ', FFEngine);
-    //FFEngine.instance.Init();
     this.loadGame();
   }
 
   private loadGame(): void {
+
     // Define the game scene data
     let sceneData = new FFEngine.SceneData();
     sceneData.sceneClass = MultiTrader;
     sceneData.isLocalGame = true;
 
-    //set config data keys
+    //set save data keys
     FFEngine.EngineConfig.SetDataKey('labrats-game');
     
     // Start the Engine
