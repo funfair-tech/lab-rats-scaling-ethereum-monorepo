@@ -1,11 +1,11 @@
-const FFEngine = require('@funfair/engine').FFEngine;
+import { FFEngine } from '@funfair/engine';
 
 /**
  * Main game scene for the multiplayer trader game
  */
 export class MultiTrader extends FFEngine.Component {
 
-    private sprite: any = null;
+    private sprite: any;
     private camera: any = null;
 
     public Create(params: any): void {
@@ -24,8 +24,9 @@ export class MultiTrader extends FFEngine.Component {
         this.sprite.SetSize(5, 5);
     }
 
-    public OnRendererResize(params: any): void { //FFEngine.IRendererResizeParams): void {  //eek
+    public OnRendererResize(params: FFEngine.IRendererResizeParams): void {
         super.OnRendererResize(params);
+
         console.log('Game Resized to: ' + params.width + ',' + params.height);
     }
 

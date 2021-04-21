@@ -1,6 +1,5 @@
+import { FFEngine } from '@funfair/engine';
 import { MultiTrader } from './multiTrader';
-const FFEngine = require('@funfair/engine').FFEngine;
-
 
 /**
  * Main game entry point, for initing the game engine and loading the game
