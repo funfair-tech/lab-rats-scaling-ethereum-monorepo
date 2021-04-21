@@ -1,8 +1,13 @@
 pragma solidity >=0.8.0;
 
+// SPDX-License-Identifier: UNLICENSED
+
+//************************************************************************************************
 interface ITokenTransferReceiver {
     function onTokenTransfer(address _from, uint256 _value, bytes memory _data) external returns (bool);
 }
+
+//************************************************************************************************
 
 contract LabRats {
     mapping (address=>uint256) balances;

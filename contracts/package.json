@@ -1,0 +1,25 @@
+{
+  "name": "contracts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "npx hardhat --network optimism compile",
+    "deploy": "npx hardhat --network optimism deploy"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eth-optimism/hardhat-ovm": "0.0.2",
+    "@nomiclabs/hardhat-ethers": "^2.0.1",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "chai": "4.3.4",
+    "chai-as-promised": "^7.1.1",
+    "dotenv": "^8.2.0",
+    "ethereum-waffle": "^3.2.1",
+    "ethers": "^5.0.24",
+    "hardhat": "^2.0.7",
+    "hardhat-deploy": "^0.7.0-beta.49",
+    "mocha": "^8.2.1"
+  }
+}
