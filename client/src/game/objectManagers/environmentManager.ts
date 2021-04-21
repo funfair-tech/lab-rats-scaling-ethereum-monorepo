@@ -22,6 +22,21 @@ export class EnvironmentManager extends FFEngine.Component {
         this.camera.lookAt(new FFEngine.THREE.Vector3(0, 0, 0));
         this.container.add(this.camera);
     }
+
+    public OnRendererResize(params: FFEngine.IRendererResizeParams): void {
+        super.OnRendererResize(params);
+        console.log('Game Resized to: ' + params.width + ',' + params.height);
+    }
+
+    public AssetLoadingFinished(): void {
+        this.CreateScene();
+    }
+
+    private CreateScene(): void {
+        //test
+        let sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
+        sprite.SetSize(5, 5);
+    }
 }
 
 /**

@@ -14,7 +14,7 @@ export class AssetPack {
 
     private fontAssets: any[] = [];
 
-    static create(): void {
+    static Create(): void {
         ASSETPACK = new AssetPack();
     }
 
