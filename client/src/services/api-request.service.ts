@@ -42,7 +42,7 @@ class ApiRequest {
   }
 
   private buildBaseUrl(): string {
-    return 'THE_SERVER_BASE_URL/';
+    return 'https://dev.optimism.labs.funfair.io/';
   }
 }
 
