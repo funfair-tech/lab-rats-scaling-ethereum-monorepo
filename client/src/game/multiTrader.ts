@@ -8,6 +8,8 @@ import { EnvironmentManager, ENVIRONMENT_MANAGER } from './objectManagers/enviro
  */
 export class MultiTrader extends FFEngine.Component {
 
+    private startupFinished: boolean = false;
+
     public Create(params: any): void {
 
         //create game scene container
@@ -26,6 +28,18 @@ export class MultiTrader extends FFEngine.Component {
 
     public Update(): void {
         this.UpdateLoadingPhase();
+    }
+
+    public OnKeyUp(params: any): void {
+        super.OnKeyUp(params);
+
+        if (this.startupFinished === true) {
+            if (FFEngine.instance.debugBuild) {
+                if (params.keyCode === 68) { // 'D'
+                    FFEngine.instance.ToggleDebugDisplay();
+                }
+            }
+        }
     }
 
     /**
@@ -52,6 +66,7 @@ export class MultiTrader extends FFEngine.Component {
             //check for load phase finish
             if (assetLoadCoef >= 1) {
                 FFEngine.instance.assetLoader.EndLoadingPhase();
+                this.startupFinished = true;
             }
         }
     }
