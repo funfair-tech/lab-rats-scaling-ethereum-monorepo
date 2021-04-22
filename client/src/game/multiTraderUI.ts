@@ -73,7 +73,10 @@ export class MultiTraderUI extends FFEngine.Component {
     }
 
     private CreateUIElements(): void {
-        FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.BitmapString, { text: 'Multi Trader', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 40, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 0, 0]});
+        let anchor = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.UIAnchor);
+        anchor.SetCamera(this.camera);
+        anchor.SetAnchors(FFEngine.UIAnchorType.CENTER, FFEngine.UIAnchorType.MAX);
+        FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), FFEngine.BitmapString, { text: 'Multi Trader', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 40, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, -80, 0]});
     }
 
 }
