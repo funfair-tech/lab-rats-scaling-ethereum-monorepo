@@ -14,6 +14,9 @@ const deployingNetworksContext = [
     // ONCE DEPLOYED PUT IT IN HERE AND THE
     // DEPLOYMENT SCRIPT WILL HANDLE IT FOR YOU
     labRatsContractAddress: '0x2a810409872AfC346F9B5b26571Fd6eC42EA4849',
+    // THIS SHOULD ONLY BE REDEPLOYED IF CODE HAS CHANGED
+    // IF YOU WANT TO REDEPLOY IT PUT THIS AS UNDEFINED
+    faucetContractAddress: '0xC58D83c8a5EA4d1CC4ceb66d61Fa4Fd8Ea983B12',
   },
 ];
 
@@ -23,13 +26,25 @@ const func = async (hre) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
+  const chainId = await hre.getChainId();
+  const deployingNetworkContext = deployingNetworksContext.find(
+    (d) => d.chainId === chainId
+  );
+
   const labRatsContractAddress = await deployLabRatsErc667Contract(
+    deployingNetworkContext,
     deploy,
     deployer,
     hre
   );
 
-  await deployFaucetContract(labRatsContractAddress, deploy, deployer, hre);
+  await deployFaucetContract(
+    deployingNetworkContext,
+    labRatsContractAddress,
+    deploy,
+    deployer,
+    hre
+  );
 };
 
 const buildUpDeployOptions = (args, deployer, hre) => {
@@ -42,19 +57,18 @@ const buildUpDeployOptions = (args, deployer, hre) => {
   };
 };
 
-const deployLabRatsErc667Contract = async (deploy, deployer, hre) => {
-  const chainId = await hre.getChainId();
-  console.log('hey', chainId);
-  const deployingNetworkContext = deployingNetworksContext.find(
-    (d) => d.chainId === chainId
-  );
-
+const deployLabRatsErc667Contract = async (
+  deployingNetworkContext,
+  deploy,
+  deployer,
+  hre
+) => {
   if (
     deployingNetworkContext &&
     deployingNetworkContext.labRatsContractAddress
   ) {
     console.log(
-      `Lab rats token is already deployed`,
+      'Lab rats token is already deployed',
       deployingNetworkContext.labRatsContractAddress
     );
     return deployingNetworkContext.labRatsContractAddress;
@@ -69,11 +83,22 @@ const deployLabRatsErc667Contract = async (deploy, deployer, hre) => {
 };
 
 const deployFaucetContract = async (
+  deployingNetworkContext,
   labRatContractAddress,
   deploy,
   deployer,
   hre
 ) => {
+  if (
+    deployingNetworkContext &&
+    deployingNetworkContext.faucetContractAddress
+  ) {
+    console.log(
+      'Facade is already deployed',
+      deployingNetworkContext.faucetContractAddress
+    );
+    return deployingNetworkContext.faucetContractAddress;
+  }
   const faucetResult = await deploy(
     'Faucet',
     buildUpDeployOptions([labRatContractAddress], deployer, hre)
