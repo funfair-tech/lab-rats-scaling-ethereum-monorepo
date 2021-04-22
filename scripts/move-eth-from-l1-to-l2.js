@@ -19,7 +19,10 @@ async function main() {
   // const l2Wallet = new Wallet(key, l2RpcProvider);
 
   const contract = new Contract(KOVAN_CONTRACT_ADDRESS, ABI, l1Wallet);
-  const response = await contract.deposit({ value: '10000000000000' });
+  // we use this one so you can change address if you want
+  const response = await contract.depositTo(l1Wallet.address, {
+    value: '100000000000000',
+  });
   console.log(response);
   await response.wait();
 }
