@@ -13,6 +13,7 @@ import { Component } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { BlockHeader } from '../../model/blockHeader';
 import { setEtherContext } from '../../services/ether.service';
+import { gameService } from '../../services/game.service';
 import {
   clearNetworkState,
   setBlockHeader,
@@ -112,6 +113,7 @@ class Wallet extends Component<Props> {
           const networkId = this.props.network.id;
           if (!!networkId && networkId === result.data.networkId) {
             this.props.setBlockHeader(result.data);
+            gameService.testForRoundResult(result.data);
           }
         }
       }

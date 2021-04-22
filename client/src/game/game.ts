@@ -1,10 +1,22 @@
 import { FFEngine } from '@funfair/engine';
+import { RoundAction } from '../model/roundAction';
 import { MultiTrader } from './multiTrader';
+import { RoundResult } from '../model/roundResult';
 
 /**
  * Main game entry point, for initing the game engine and loading the game
  */
 export class Game {
+
+  constructor(private play: (action: RoundAction) => void) {};
+
+  public handleRoundResult(roundResult: RoundResult): void {
+    // TODO: ...
+  }
+
+  public handleRoundAction(roundAction: RoundAction): void {
+    // TODO: ...
+  }
 
   public report(): string {
     return 'Canvas ready for duty';
