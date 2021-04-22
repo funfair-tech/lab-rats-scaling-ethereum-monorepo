@@ -1,4 +1,5 @@
 import { FFEngine } from '@funfair/engine';
+import { ASSETPACK, TextureAssetType } from '../assetPack';
 
 /**
  * Manages the 3D game environment including world camera and gameplay objects
@@ -34,9 +35,24 @@ export class EnvironmentManager extends FFEngine.Component {
 
     private CreateScene(): void {
         //test
-        let sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
-        sprite.SetSize(5, 5);
-        sprite.GetContainer().position.set(5, 0, 0);
+        //let sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
+        //sprite.SetSize(5, 5);
+        //sprite.GetContainer().position.set(5, 0, 0);
+
+        let line = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Line, { map:  ASSETPACK.GetTextureAsset(TextureAssetType.LINE), numPoints: 1024});
+        line.GetContainer().position.set(5, 0, 0);
+        line.SetWidth(0.1);
+        line.SetFacingDirection(new FFEngine.THREE.Vector3(0, 0, 1));
+        line.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
+        line.SetColor(0xffffff);
+
+        let points: FFEngine.THREE.Vector3[] = [
+            new FFEngine.THREE.Vector3(0, 0, 0),
+            new FFEngine.THREE.Vector3(1, 1, 0),
+            new FFEngine.THREE.Vector3(2, -1, 0),
+            new FFEngine.THREE.Vector3(3, 0, 0),
+        ];
+        line.SetShape(points);
     }
 }
 
