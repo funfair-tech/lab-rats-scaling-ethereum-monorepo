@@ -36,7 +36,7 @@ const buildUpDeployOptions = (args, deployer, hre) => {
   return {
     from: deployer,
     args,
-    gasPrice: hre.ethers.BigNumber.from('1000000000'),
+    gasPrice: hre.ethers.BigNumber.from('0'),
     gasLimit: 8999999,
     log: true,
   };
@@ -44,11 +44,15 @@ const buildUpDeployOptions = (args, deployer, hre) => {
 
 const deployLabRatsErc667Contract = async (deploy, deployer, hre) => {
   const chainId = await hre.getChainId();
+  console.log('hey', chainId);
   const deployingNetworkContext = deployingNetworksContext.find(
     (d) => d.chainId === chainId
   );
 
-  if (deployingNetworkContext.labRatsContractAddress) {
+  if (
+    deployingNetworkContext &&
+    deployingNetworkContext.labRatsContractAddress
+  ) {
     console.log(
       `Lab rats token is already deployed`,
       deployingNetworkContext.labRatsContractAddress

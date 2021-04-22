@@ -1,4 +1,5 @@
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.7.6;
 
 /**
  * @title Ownable
@@ -10,7 +11,7 @@ abstract contract Ownable {
     mapping(address => bool) admins;
 
     address newOwner;
-    
+
     /**
      * @dev The Ownable constructor sets the original `owner` of the contract to the sender
      * account.
@@ -18,7 +19,6 @@ abstract contract Ownable {
     constructor() {
         owner = msg.sender;
     }
-
 
     /**
      * @dev Throws if called by any account other than the owner.
@@ -29,7 +29,10 @@ abstract contract Ownable {
     }
 
     modifier ownerAndAdmin() {
-        require(msg.sender == owner || admins[msg.sender], "Sender is not owner or admin");
+        require(
+            msg.sender == owner || admins[msg.sender],
+            "Sender is not owner or admin"
+        );
         _;
     }
 
@@ -45,18 +48,17 @@ abstract contract Ownable {
     function transferOwnership(address _newOwner) public onlyOwner {
         if (_newOwner != address(0)) {
             newOwner = _newOwner;
-      }
+        }
     }
 
     function acceptOwnership() public {
         if (msg.sender == newOwner) {
             owner = newOwner;
-      }
+        }
     }
 
     // assign admin (access to fund contract and airdrop)
     function setAdmin(address admin_address, bool isAdmin) public onlyOwner {
         admins[admin_address] = isAdmin;
     }
-
 }
