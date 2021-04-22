@@ -62,11 +62,6 @@ export class MultiTraderUI extends FFEngine.Component {
 
     private CreateCamera(): void {
         this.camera = FFEngine.instance.CreateOrthographicCamera(1);
-        this.camera.far = 100;
-        this.camera.left = -40;
-        this.camera.right = 40;
-        this.camera.bottom = -0.5625*40;
-        this.camera.top = 0.5625*40;
         this.camera.position.z = 10;
         this.camera.updateProjectionMatrix();
         this.container.add(this.camera);
