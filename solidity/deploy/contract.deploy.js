@@ -13,7 +13,7 @@ const deployingNetworksContext = [
     // WE NEED A FIXED ADDRESS FOR THE TOKENS
     // ONCE DEPLOYED PUT IT IN HERE AND THE
     // DEPLOYMENT SCRIPT WILL HANDLE IT FOR YOU
-    labRatsContractAddress: undefined,
+    labRatsContractAddress: '0x2a810409872AfC346F9B5b26571Fd6eC42EA4849',
   },
 ];
 
