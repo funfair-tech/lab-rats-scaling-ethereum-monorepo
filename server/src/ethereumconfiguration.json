@@ -1,16 +1,5 @@
 ﻿{
   "Networks": {
-    "KOVAN": {
-      "Enabled": "true",
-      "Accounts": [
-        {
-          "Address": "0x16485F14e561214E2DFfBffDD5757059E8c74CA3",
-          "PrivateKey": "0x7b62a070c1c0a1fcc9a69a050e137414e62d1d4a0258d94e8b933d34854b3398",
-          "TokenFundingAccount": "0x0000000000000000000000000000000000000000",
-          "Comment": "KOVAN - Developer server"
-        }
-      ]
-    },
     "OPTIMISMKOVAN": {
       "Enabled": "true",
       "Accounts": [
