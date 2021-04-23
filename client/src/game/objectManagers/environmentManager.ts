@@ -8,6 +8,7 @@ import { GridManager } from './gridManager';
 export class EnvironmentManager extends FFEngine.Component {
 
     private camera!: FFEngine.THREE.PerspectiveCamera;
+    private cameraInterpolator!: FFEngine.Interpolator;
 
     public Create(params: any): void {
         super.Create(params);
@@ -21,6 +22,9 @@ export class EnvironmentManager extends FFEngine.Component {
         this.camera = FFEngine.instance.cameras['WORLD'] = FFEngine.instance.CreatePerspectiveCamera([pos.x, pos.y, pos.z]);
         this.camera.lookAt(new FFEngine.THREE.Vector3(0, 0, 0));
         this.container.add(this.camera);
+
+        //camera interpolator
+        this.cameraInterpolator = FFEngine.instance.AddComponent(this.camera, FFEngine.Interpolator);
     }
 
     public OnRendererResize(params: FFEngine.IRendererResizeParams): void {
@@ -52,6 +56,23 @@ export class EnvironmentManager extends FFEngine.Component {
             new FFEngine.THREE.Vector3(2, 0, 0),
         ];
         line.SetShape(points);
+
+        //test camera
+        this.MoveCamera();
+    }
+
+    private MoveCamera(): void {
+        
+        let startPosition = new FFEngine.THREE.Vector3().copy(this.camera.position);
+        let targetPosition = new FFEngine.THREE.Vector3().set(1, 0, 6);
+
+        let controlPosition = new FFEngine.THREE.Vector3(
+            startPosition.x + ((targetPosition.x - startPosition.x) / 2 ),
+            startPosition.y + ((targetPosition.y - startPosition.y) / 2 ),
+            startPosition.z + ((targetPosition.z - startPosition.z) / 2 ) );
+
+        this.cameraInterpolator.CancelAll();
+        this.cameraInterpolator.QueueCurvePositionChange(targetPosition, controlPosition, 4, 0);
     }
 }
 
