@@ -1,5 +1,6 @@
 import { FFEngine } from '@funfair/engine';
 import { ASSETPACK, TextureAssetType } from '../assetPack';
+import { GridManager } from './gridManager';
 
 /**
  * Manages the 3D game environment including world camera and gameplay objects
@@ -16,10 +17,8 @@ export class EnvironmentManager extends FFEngine.Component {
         ENVIRONMENT_MANAGER = this;
 
         //create world camera
-        let pos = new FFEngine.THREE.Vector3(0, 0, 7);
+        let pos = new FFEngine.THREE.Vector3(2, 0, 7);
         this.camera = FFEngine.instance.cameras['WORLD'] = FFEngine.instance.CreatePerspectiveCamera([pos.x, pos.y, pos.z]);
-
-        //set initial properties
         this.camera.lookAt(new FFEngine.THREE.Vector3(0, 0, 0));
         this.container.add(this.camera);
     }
@@ -34,10 +33,13 @@ export class EnvironmentManager extends FFEngine.Component {
     }
 
     private CreateScene(): void {
+
+        //create components
+        FFEngine.instance.CreateChildObjectWithComponent(this.container, GridManager);
         
         //test line
         let line = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Line, { map:  ASSETPACK.GetTextureAsset(TextureAssetType.LINE), numPoints: 1024});
-        line.GetContainer().position.set(0, 0, 0);
+        line.GetContainer().position.set(0, 0, 0.5);
         line.SetWidth(0.1);
         line.SetFacingDirection(new FFEngine.THREE.Vector3(0, 0, 1));
         line.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
