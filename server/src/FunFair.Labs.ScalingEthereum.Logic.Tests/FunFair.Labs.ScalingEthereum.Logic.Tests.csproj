@@ -23,7 +23,7 @@
     <CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.1.8620"/>
+    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.2.8624"/>
     <PackageReference Include="FunFair.Server.Ethereum.Accounts" Version="1.2.0.136"/>
     <PackageReference Include="FunFair.Test.Common" Version="5.3.0.920"/>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4"/>

@@ -40,20 +40,20 @@
     <DefineConstants>$(DefineConstants);SINGLE_FILE_PUBLISH</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="10.0.4" />
-    <PackageReference Include="FunFair.Common.All" Version="5.8.0.2828" />
-    <PackageReference Include="FunFair.Ethereum.Proxy.Client" Version="1.8.0.4365"/>
-    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.1.8620" />
-    <PackageReference Include="FunFair.Server.Ethereum.Accounts" Version="1.2.0.136" />
-    <PackageReference Include="FunFair.Swagger.Extensions" Version="5.3.0.848" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="5.0.5" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.17.0" />
-    <PackageReference Include="Serilog" Version="2.10.0" />
-    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.0.4"/>
+    <PackageReference Include="FunFair.Common.All" Version="5.8.0.2828"/>
+    <PackageReference Include="FunFair.Ethereum.Proxy.Client" Version="1.8.0.4372"/>
+    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.2.8624"/>
+    <PackageReference Include="FunFair.Server.Ethereum.Accounts" Version="1.2.0.136"/>
+    <PackageReference Include="FunFair.Swagger.Extensions" Version="5.3.0.848"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5"/>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="5.0.5"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0"/>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.17.0"/>
+    <PackageReference Include="Serilog" Version="2.10.0"/>
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3"/>
     <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.1" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />

@@ -29,7 +29,7 @@
   <ItemGroup>
     <PackageReference Include="FunFair.Common.All" Version="5.8.0.2828" />
     <PackageReference Include="FunFair.Content.Package.Management.All" Version="5.4.1.1427" />
-    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.1.8620" />
+    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.2.8624"/>
     <PackageReference Include="FunFair.Server.Ethereum.Accounts" Version="1.2.0.136" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
   </ItemGroup>
