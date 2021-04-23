@@ -4,7 +4,7 @@ const { Contract, Wallet } = require('ethers');
 const { JsonRpcProvider } = require('@ethersproject/providers');
 const { parseEther } = require('ethers/lib/utils');
 
-const KOVAN_CONTRACT_ADDRESS = '0xC58D83c8a5EA4d1CC4ceb66d61Fa4Fd8Ea983B12';
+const KOVAN_CONTRACT_ADDRESS = '0x4697d0CB9E40699237d0f40F3EE211527a5619fF';
 const ABI = [
   {
     inputs: [{ internalType: 'address', name: 'token', type: 'address' }],
@@ -185,10 +185,12 @@ async function main() {
   const l2Wallet = new Wallet(key, l2RpcProvider);
 
   const contract = new Contract(KOVAN_CONTRACT_ADDRESS, ABI, l2Wallet);
-  //   await contract.setAdmin(l2Wallet.address, true);
-  const response = await contract.distributeEth(
-    '0xB1E6079212888f0bE0cf55874B2EB9d7a5e02cD9',
+  await contract.setAdmin(l2Wallet.address, true);
+
+  const response = await contract.distributeTokenAndEth(
+    '0xBeEB91a350c6721d815e85dBAcF8D41E81819Da3',
     parseEther('0.001').toHexString(),
+    '0x01',
     {
       gasLimit: 8000000,
       gasPrice: '0x00',
