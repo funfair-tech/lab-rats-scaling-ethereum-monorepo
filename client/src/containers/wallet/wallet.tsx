@@ -4,7 +4,6 @@ import { MessageListeners } from '@funfair-tech/wallet-sdk/dist/src/app/core/ser
 import {
   AuthenticationCompletedResponse,
   ERC20TokenBalanceChangedResponse,
-  ETHBalanceChangedResponse,
   NewBlockResponse,
 } from '@funfair-tech/wallet-sdk/dist/src/app/core/services/message/models';
 import window from '@funfair-tech/wallet-sdk/window';
@@ -84,24 +83,19 @@ class Wallet extends Component<Props> {
       }
     );
 
-    window.funwallet.sdk.on<ETHBalanceChangedResponse>(
-      MessageListeners.ethBalanceChanged,
-      (result: ETHBalanceChangedResponse) => {
-        if (result.origin === this.walletUrl) {
-          const balance: BigNumber = new BigNumber(result.data.ethBalance);
-          this.props.setEthBalance(balance.toNumber());
-        }
-      }
-    );
-
     window.funwallet.sdk.on<ERC20TokenBalanceChangedResponse>(
       MessageListeners.erc20TokenBalanceChanged,
       (result: ERC20TokenBalanceChangedResponse) => {
         if (result.origin === this.walletUrl) {
           const balance = new BigNumber(result.data.tokenBalance);
           const symbol = result.data.symbol;
-          this.props.setTokenBalance(balance.toNumber());
-          this.props.setTokenSymbol(symbol);
+
+          if (symbol.toLowerCase() === 'weth') {
+            this.props.setEthBalance(balance.toNumber());
+          } else {
+            this.props.setTokenBalance(balance.toNumber());
+            this.props.setTokenSymbol(symbol);
+          }
         }
       }
     );
