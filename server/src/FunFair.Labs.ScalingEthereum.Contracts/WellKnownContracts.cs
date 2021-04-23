@@ -9,7 +9,7 @@
         ///     The token.
         /// </summary>
         /// <remarks>Wish this had a better name, but that's what its been called</remarks>
-        public const string Token = @"Stub ERC667 Token";
+        public const string Token = @"The Lab Rats";
 
         /// <summary>
         ///     The Faucet for issuing test funds.

@@ -18,8 +18,8 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.Token
         {
             // TODO: Add contract addresses here once deployed
             return ContractInfoBuilder.Create(WellKnownContracts.Token)
-                                      .Network(network: Layer2EthereumNetworks.OptimismKovan, new ContractAddress("0x2222222222222222222222222222222222222222"))
-                                      .BuildErc20Token(symbol: "SE667", decimalPlaces: 8);
+                                      .Network(network: Layer2EthereumNetworks.OptimismKovan, new ContractAddress("0x11160251d4283A48B7A8808aa0ED8EA5349B56e2"))
+                                      .BuildErc20Token(symbol: "LABRATS", decimalPlaces: 8);
         }
     }
 }
