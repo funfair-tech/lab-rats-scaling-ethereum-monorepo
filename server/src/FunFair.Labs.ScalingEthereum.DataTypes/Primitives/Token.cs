@@ -22,7 +22,7 @@ namespace FunFair.Labs.ScalingEthereum.DataTypes.Primitives
     {
         private const int DECIMAL_PLACES = 8;
 
-        private const string SYMBOL = "SE667";
+        private const string SYMBOL = "LABRATS";
 
         /// <summary>
         ///     Size in Bytes.
@@ -290,7 +290,7 @@ namespace FunFair.Labs.ScalingEthereum.DataTypes.Primitives
         /// </param>
         public static void Transfer(ref Token from, ref Token to, int amount)
         {
-            Transfer(@from: ref from, to: ref to, new Token(amount));
+            Transfer(from: ref from, to: ref to, new Token(amount));
         }
 
         /// <summary>
@@ -308,7 +308,7 @@ namespace FunFair.Labs.ScalingEthereum.DataTypes.Primitives
         /// </param>
         public static void Transfer(ref Token from, ref Token to, BigInteger amount)
         {
-            Transfer(@from: ref from, to: ref to, new Token(amount));
+            Transfer(from: ref from, to: ref to, new Token(amount));
         }
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace FunFair.Labs.ScalingEthereum.DataTypes.Primitives
             Erc20TokenBalance fromToken = from.Erc20Value;
             Erc20TokenBalance toToken = to.Erc20Value;
 
-            Erc20TokenBalance.Transfer(@from: ref fromToken, to: ref toToken, amount: amount.Erc20Value);
+            Erc20TokenBalance.Transfer(from: ref fromToken, to: ref toToken, amount: amount.Erc20Value);
 
             from = new Token(fromToken);
             to = new Token(toToken);
