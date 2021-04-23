@@ -16,7 +16,6 @@ export class TestServer_Bet {
     public betType: Logic_BetType = Logic_BetType.NONE;
     public winnings: number = 0;
     public resolved: boolean = false;
-    public isLocalPlayer: boolean = false;
 
     constructor(_address: string, _amount: number, _betType: Logic_BetType) {
         this.address = _address;
@@ -124,7 +123,6 @@ export class Logic_TestCode {
                 currentPrice: state.currentPrice,
                 historicPrices: state.historicPrices,
                 lastAdjustment: state.lastAdjustment,
-                bets: state.bets,
                 currentPrizePool: state.currentPrizePool,
                 carryOverPrizePool: state.carryOverPrizePool
             });
@@ -163,7 +161,7 @@ export class Logic_TestCode {
             if(state.roundState === Logic_RoundState.CLOSEDFORBETS) {
                 //Contract would verify hash and permission to close too
 
-                let thisRoundAdjust: number = parseInt(commitRNG, 16) %  ((2 * (this.configuration.stepMaxDeltaRange + 1)) - (this.configuration.stepMaxDeltaRange + 1));
+                let thisRoundAdjust: number = (parseInt(commitRNG, 16) %  ((2 * (this.configuration.stepMaxDeltaRange + 1)))) - (this.configuration.stepMaxDeltaRange + 1);
             
                 //End the game round, work out winnings and remaining pool and send it to the client
 
@@ -278,10 +276,12 @@ export class Logic_TestCode {
     public PlaceBet(_roundID: string, _address: string, _amount: number, _betType: Logic_BetType): void {
         
         let response: Logic_BetResponse;
+        let state: TestServer_GameState = this.testGameState;
 
         //Prep the message describing the bet
-
+        
         let messageData: any = {
+            nonce: state.nonce,
             roundID: _roundID,
             address: _address,
             amount: _amount,
@@ -307,14 +307,16 @@ export class Logic_TestCode {
                 response = Logic_BetResponse.BETALREADYPLACED;
             } else {
                 //Add the bet to the current state
-
-                this.testGameState.bets.push(new TestServer_Bet(_address,  _amount, _betType));
+                
+                state.nonce++;
+                state.bets.push(new TestServer_Bet(_address,  _amount, _betType));
                 response = Logic_BetResponse.BETSUBMITTED;
             }
         }
         
         //Send the message
 
+        messageData.nonce = state.nonce;
         messageData.response = response;
         LOGIC_SERVERFEEDQUEUE.SendDummyMessage('PLACEBET', messageData);
     }

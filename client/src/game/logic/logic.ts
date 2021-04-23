@@ -4,9 +4,10 @@
  * Class for logic
  */
 
-import { Logic_GameState, Logic_Configuration, Logic_ServerMessage, Logic_BetType, Logic_BetResponse, Logic_RoundState } from './logic_defines';
+import { Logic_GameState, Logic_Configuration, Logic_ServerMessage, Logic_BetType, Logic_BetResponse, Logic_RoundState, Logic_Bet } from './logic_defines';
 import { LOGIC_SERVERFEEDQUEUE, Logic_ServerFeedQueue } from './logic_serverfeedqueue';
 import { LOGIC_TESTCODE, Logic_TestCode } from './logic_testcode';
+import { Logic_SeededName } from './logic_seededname';
 
 export class Logic {
 
@@ -14,6 +15,7 @@ export class Logic {
     protected currentState: Logic_GameState = new Logic_GameState();
     protected reportedState: Logic_GameState = JSON.parse(JSON.stringify(this.currentState));
     protected isLocalMode: boolean = false;
+    protected localPlayerAddress: string = 'tobedone';
 
     static Create(config: Logic_Configuration, localMode: boolean): void {
         Logic_ServerFeedQueue.Create();
@@ -28,6 +30,10 @@ export class Logic {
         this.isLocalMode = localMode;
         this.configuration = configuration;
     }
+
+    /**
+     * CALL FOR THE GAME TO MAKE TO THE LOGIC
+     */
 
     public CheckLocalMode(): boolean {
         return this.isLocalMode;
@@ -57,7 +63,8 @@ export class Logic {
 
     public Tick(): void {        
 
-        let stateNonceAtStartOfTick: number = this.reportedState.nonce;
+        let stateServerNonceAtStartOfTick: number = this.reportedState.serverNonce;
+        let stateLocalNonceAtStartOfTick: number = this.reportedState.localNonce;
 
         LOGIC_TESTCODE.Tick();
         
@@ -80,15 +87,20 @@ export class Logic {
 
         //Change to report (debug)
 
-        if(this.reportedState.nonce !== stateNonceAtStartOfTick) {
+        if((this.reportedState.serverNonce !== stateServerNonceAtStartOfTick) || (this.reportedState.localNonce !== stateLocalNonceAtStartOfTick)) {
             console.log('snc new reported state: ' + JSON.stringify(this.reportedState));
         }
         
     }
 
+    /**
+     * INTERNAL CALLS
+     */
     //Handle messages
 
-    public FeedFromWebSocket(message: Logic_ServerMessage): void { 
+    protected FeedFromWebSocket(message: Logic_ServerMessage): void { 
+
+        let handled: boolean = false;
 
         //Handle the message
 
@@ -96,74 +108,146 @@ export class Logic {
             //Set to this configuration
 
             this.configuration = message.data.configuration;     
-
+            handled = true;
         } else if (message.type === 'STARTROUND') {
-            //Update the game with the new data
-
-            this.StartRoundFromFeed(message);
+            handled = this.StartRoundFromFeed(message);
         } else if (message.type === 'CLOSEDFORBETS') {
-            //Update the game with the new data
-
-            this.ClosedForBetsFromFeed(message);
+            handled = this.ClosedForBetsFromFeed(message);
         } else if (message.type === 'ENDROUND') {
-            //Update the game with the new data
+            handled = this.EndRoundFromFeed(message);
+        } else if (message.type === 'PLACEBET') {
+            let betPlaceResponse: Logic_BetResponse = this.PlaceBetFromFeed(message);
 
-            this.EndRoundFromFeed(message);
+            if(betPlaceResponse === Logic_BetResponse.NONE) {
+                handled = false;
+            } else if(betPlaceResponse !== Logic_BetResponse.BETSUBMITTED) {
+                //Need to warn UI of bet being refused
+                console.log('need to warn UI of bet refusal for message: ' + JSON.stringify(message));
+                handled = true;
+            } else {
+                handled = true;
+            }
+        } 
+        
+        if(handled) {
+            this.currentState.localNonce++;
         } else {
-            console.log('*** UNHANDLED FEED MESSAGE ***');
-        }
+            console.log('*** UNHANDLED FEED MESSAGE ***\n' + JSON.stringify(message));
+        } 
     }
 
-    protected StartRoundFromFeed(message: any): void {
+    protected StartRoundFromFeed(message: any): boolean {
     
         if(message.type !== 'STARTROUND') {
-            return;
+            return false;
         }
 
         let state: Logic_GameState = this.currentState;
 
-        state.nonce = message.data.nonce;
+        state.serverNonce = message.data.nonce;
         state.roundID = message.data.roundID;
         state.roundState = message.data.roundState;
         state.currentPrice = message.data.currentPrice;
         state.historicPrices = message.data.historicPrices;
         state.lastAdjustment = message.data.lastAdjustment;
-        state.bets = message.data.bets;
+        state.bets = [];
         state.currentPrizePool = message.data.currentPrizePool;
         state.carryOverPrizePool = message.data.carryOverPrizePool;
+
+        return true;
     }
 
-    protected ClosedForBetsFromFeed(message: any): void {
+    protected ClosedForBetsFromFeed(message: any): boolean {
     
         if(message.type !== 'CLOSEDFORBETS') {
-            return;
+            return false;
         }
 
         let state: Logic_GameState = this.currentState;
 
-        state.nonce = message.data.nonce;
+        state.serverNonce = message.data.nonce;
         state.roundID = message.data.roundID;
         state.roundState = message.data.roundState;
+        return true;
     }
 
-    protected EndRoundFromFeed(message: any): void {
+    protected EndRoundFromFeed(message: any): boolean {
         //Ensure it is correct message type
 
         if(message.type !== 'ENDROUND') {
-            return;
+            return false;
         }
 
         let state: Logic_GameState = this.currentState;
 
-        state.nonce = message.data.nonce;
+        state.serverNonce = message.data.nonce;
         state.roundID = message.data.roundID;
         state.roundState = message.data.roundState;
         state.currentPrice = message.data.currentPrice;
         state.historicPrices = message.data.historicPrices;
         state.lastAdjustment = message.data.lastAdjustment;
-        state.bets = message.data.bets;
+
+        state.bets = [];
+        
+        message.data.bets.forEach((bet: any) => {
+            state.bets.push(this.MakeLogicBetFromServerBet(bet));
+        });
+
+        //Need to run though bets and add/apply correctly with additional data such as friendly name and winnings
+
         state.currentPrizePool = message.data.currentPrizePool;
         state.carryOverPrizePool = message.data.carryOverPrizePool;
+        return true;
+    }
+
+    protected PlaceBetFromFeed(message: any): Logic_BetResponse {
+        //Ensure it is correct message type
+
+        if(message.type !== 'PLACEBET') {
+            return Logic_BetResponse.NONE;
+        } 
+        
+        if(message.data.response !== Logic_BetResponse.BETSUBMITTED) {
+            return message.data.response;
+        }
+
+        let state: Logic_GameState = this.currentState;
+
+        //Check the bet valid for placement, and still for the current round
+
+        if(state.roundID !== message.data.roundID) {
+            return Logic_BetResponse.INVALIDROUNDID;
+        }
+
+        //Place the bet
+
+        state.bets.push(this.MakeLogicBetFromServerBet(message.data));
+
+        //Add the bet value to the current prize pool
+
+        state.currentPrizePool += message.data.amount;
+        return Logic_BetResponse.BETSUBMITTED;
+    }
+
+    protected MakeLogicBetFromServerBet(serverBet: any): Logic_Bet {
+        
+        let newBet: Logic_Bet = new Logic_Bet(
+            serverBet.address,
+            Logic_SeededName.GetNameFromString(serverBet.address),
+            serverBet.amount,
+            serverBet.betType,
+            (serverBet.address === this.localPlayerAddress)
+        );
+
+        if(serverBet.winnings !== undefined) {
+            newBet.winnings = serverBet.winnings;
+        }
+            
+        if(serverBet.resolved !== undefined) {
+            newBet.resolved = serverBet.resolved;
+        }
+        
+        return newBet;
     }
 
     protected UpdateReportedState(): void {

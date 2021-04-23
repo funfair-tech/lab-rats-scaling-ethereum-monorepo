@@ -102,7 +102,8 @@ export class Logic_GameState {
 
     //Reporting control
 
-    public nonce: number = 0;
+    public serverNonce: number = 0;
+    public localNonce: number = 0;
 }
 
 
