@@ -5,6 +5,7 @@ export const SET_TOKEN_SYMBOL = 'SET_TOKEN_SYMBOL';
 export const SET_NETWORK_NAME = 'SET_NETWORK_NAME';
 export const SET_BLOCK_HEADER = 'SET_BLOCK_HEADER';
 export const CLEAR_NETWORK_STATE = 'CLEAR_NETWORK_STATE';
+export const SET_TRANSACTION_HASH = 'SET_TRANSACTION_HASH';
 
 export interface SetNetworkId {
   type: typeof SET_NETWORK_ID;
@@ -30,4 +31,15 @@ export interface ClearNetworkStaate {
   type: typeof CLEAR_NETWORK_STATE;
 }
 
-export type NetworkActionTypes = SetNetworkId | SetTokenSymbol | SetNetworkName | SetBlockHeader | ClearNetworkStaate;
+export interface SetTransactionHash {
+  type: typeof SET_TRANSACTION_HASH;
+  payload: string | null;
+}
+
+export type NetworkActionTypes =
+  | SetNetworkId
+  | SetTokenSymbol
+  | SetNetworkName
+  | SetBlockHeader
+  | ClearNetworkStaate
+  | SetTransactionHash;

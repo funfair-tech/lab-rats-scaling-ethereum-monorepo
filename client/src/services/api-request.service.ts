@@ -37,7 +37,7 @@ class ApiRequest {
     return (await response.json()) as TResponse;
   }
 
-  private buildEndpoint(endpoint: string): string {
+  public buildEndpoint(endpoint: string): string {
     return this.buildBaseUrl() + endpoint;
   }
 

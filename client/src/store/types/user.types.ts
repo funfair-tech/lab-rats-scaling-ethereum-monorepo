@@ -34,4 +34,10 @@ export interface ClearUserState {
   type: typeof CLEAR_USER_STATE;
 }
 
-export type UserActionTypes = SetAuthenticatedAction | SetEthBalanceAction | SetTokenBalanceAction | SetAddressAction | SetLoading | ClearUserState;
+export type UserActionTypes =
+  | SetAuthenticatedAction
+  | SetEthBalanceAction
+  | SetTokenBalanceAction
+  | SetAddressAction
+  | SetLoading
+  | ClearUserState;

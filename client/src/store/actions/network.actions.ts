@@ -1,6 +1,13 @@
 import { BlockHeader } from '../../model/blockHeader';
-import { CLEAR_NETWORK_STATE, NetworkActionTypes, SET_BLOCK_HEADER, SET_NETWORK_ID, SET_NETWORK_NAME, SET_TOKEN_SYMBOL } from '../types/network.types';
-
+import {
+  CLEAR_NETWORK_STATE,
+  NetworkActionTypes,
+  SET_BLOCK_HEADER,
+  SET_NETWORK_ID,
+  SET_NETWORK_NAME,
+  SET_TOKEN_SYMBOL,
+  SET_TRANSACTION_HASH,
+} from '../types/network.types';
 
 export const setNetworkId = (id: number): NetworkActionTypes => {
   return {
@@ -33,5 +40,12 @@ export const setBlockHeader = (blockHeader: BlockHeader): NetworkActionTypes => 
 export const clearNetworkState = (): NetworkActionTypes => {
   return {
     type: CLEAR_NETWORK_STATE,
+  };
+};
+
+export const setTransactionHash = (hash: string | null): NetworkActionTypes => {
+  return {
+    type: SET_TRANSACTION_HASH,
+    payload: hash,
   };
 };

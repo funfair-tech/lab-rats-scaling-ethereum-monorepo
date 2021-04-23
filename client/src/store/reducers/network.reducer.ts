@@ -1,21 +1,31 @@
 import { BlockHeader } from '../../model/blockHeader';
-import { SET_NETWORK_ID, SET_NETWORK_NAME, SET_BLOCK_HEADER, NetworkActionTypes, CLEAR_NETWORK_STATE, SET_TOKEN_SYMBOL } from '../types/network.types';
+import {
+  SET_NETWORK_ID,
+  SET_NETWORK_NAME,
+  SET_BLOCK_HEADER,
+  NetworkActionTypes,
+  CLEAR_NETWORK_STATE,
+  SET_TOKEN_SYMBOL,
+  SET_TRANSACTION_HASH,
+} from '../types/network.types';
 
 export interface Network {
-  id: number|null; 
-  name: string|null; 
+  id: number | null;
+  name: string | null;
   blockHeader: BlockHeader | null;
   tokenSymbol: string | null;
+  transactionHash: string | null;
 }
 
 const initialState: Network = {
-  id: null, 
-  name: null, 
+  id: null,
+  name: null,
   blockHeader: null,
   tokenSymbol: null,
+  transactionHash: null,
 };
 
-const networkReducer = (state = {...initialState}, action: NetworkActionTypes): Network => {
+const networkReducer = (state = { ...initialState }, action: NetworkActionTypes ): Network => {
   switch (action.type) {
     case CLEAR_NETWORK_STATE:
       return initialState;
@@ -39,10 +49,15 @@ const networkReducer = (state = {...initialState}, action: NetworkActionTypes): 
         ...state,
         blockHeader: action.payload,
       };
+    case SET_TRANSACTION_HASH:
+      return {
+        ...state,
+        transactionHash: action.payload,
+      };
     default: {
       return state;
     }
   }
-}
+};
 
 export default networkReducer;
