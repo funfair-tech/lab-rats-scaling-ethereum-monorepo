@@ -6,6 +6,7 @@ import "./Ownable.sol";
 
 contract Faucet is Ownable {
     ERC20Interface _token;
+    ERC20Interface _WETH;
 
     event DistributedEth(address from, address to, uint256 amount);
     event DistributedToken(address from, address to, uint256 amount);
@@ -17,16 +18,17 @@ contract Faucet is Ownable {
 
     constructor(address token) {
         _token = ERC20Interface(token);
+        _WETH = ERC20Interface(0x4200000000000000000000000000000000000006);
     }
 
     function withdrawEth(address to) public onlyOwner {
-        uint256 totalEth =
-            ERC20Interface(0x4200000000000000000000000000000000000006)
-                .balanceOf(address(this));
+        uint256 totalEth =_WETH.balanceOf(address(this));
 
-        address payable recipient = payable(to);
+        require(
+            _WETH.transfer(to, totalEth),
+            "Failed to distribute ETH/WETH"
+        );
 
-        recipient.transfer(totalEth);
         emit WithdrewEthFromContract(to, totalEth);
     }
 
@@ -44,14 +46,15 @@ contract Faucet is Ownable {
 
     function distributeEth(address recipient, uint256 value) public onlyAdmin {
         require(
-            value <=
-                ERC20Interface(0x4200000000000000000000000000000000000006)
-                    .balanceOf(address(this)),
-            "Can't withdraw more ETH than faucet has"
+            value <= _WETH.balanceOf(address(this)),
+            "Can't withdraw more ETH/WETH than faucet has"
         );
 
-        address payable payable_recipient = payable(recipient);
-        payable_recipient.transfer(value);
+        require(
+            _WETH.transfer(recipient, value),
+            "Failed to distribute ETH/WETH"
+        );
+
         emit DistributedEth(address(this), recipient, value);
     }
 
