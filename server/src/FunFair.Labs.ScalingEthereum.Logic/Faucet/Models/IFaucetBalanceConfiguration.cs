@@ -2,12 +2,15 @@
 
 namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Models
 {
+    /// <summary>
+    ///     Faucet balance configuration settings.
+    /// </summary>
     public interface IFaucetBalanceConfiguration
     {
         /// <summary>
-        ///     Minimum XDAI balance.
+        ///     Minimum native currency balance.
         /// </summary>
-        EthereumAmount MinimumAllowedXdaiBalance { get; }
+        EthereumAmount MinimumAllowedNativeCurrencyBalance { get; }
 
         /// <summary>
         ///     Minimum FUN balance.

@@ -10,16 +10,16 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Models
         /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="minimumAllowedXdaiBalance">Minimum XDAI balance.</param>
+        /// <param name="minimumAllowedNativeCurrencyBalance">Minimum balance in the native network currency.</param>
         /// <param name="minimumAllowedTokenBalance">Minimum TOKEN balance.</param>
-        public FaucetBalanceConfiguration(EthereumAmount minimumAllowedXdaiBalance, TokenAmount minimumAllowedTokenBalance)
+        public FaucetBalanceConfiguration(EthereumAmount minimumAllowedNativeCurrencyBalance, TokenAmount minimumAllowedTokenBalance)
         {
-            this.MinimumAllowedXdaiBalance = minimumAllowedXdaiBalance;
+            this.MinimumAllowedNativeCurrencyBalance = minimumAllowedNativeCurrencyBalance;
             this.MinimumAllowedTokenBalance = minimumAllowedTokenBalance;
         }
 
         /// <inheritdoc />
-        public EthereumAmount MinimumAllowedXdaiBalance { get; }
+        public EthereumAmount MinimumAllowedNativeCurrencyBalance { get; }
 
         /// <inheritdoc />
         public TokenAmount MinimumAllowedTokenBalance { get; }

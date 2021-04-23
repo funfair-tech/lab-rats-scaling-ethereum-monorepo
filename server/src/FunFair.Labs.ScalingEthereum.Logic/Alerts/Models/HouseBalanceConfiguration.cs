@@ -12,14 +12,14 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Alerts.Models
             /// <summary>
             ///     Constructor.
             /// </summary>
-            /// <param name="minimumAllowedXdaiBalance">Minimum XDAI balance.</param>
-            public HouseBalanceConfiguration(EthereumAmount minimumAllowedXdaiBalance)
+            /// <param name="minimumAllowedBalance">Minimum balance.</param>
+            public HouseBalanceConfiguration(EthereumAmount minimumAllowedBalance)
             {
-                this.MinimumAllowedXdaiBalance = minimumAllowedXdaiBalance;
+                this.MinimumAllowedNativeCurrencyBalance = minimumAllowedBalance;
             }
 
             /// <inheritdoc />
-            public EthereumAmount MinimumAllowedXdaiBalance { get; }
+            public EthereumAmount MinimumAllowedNativeCurrencyBalance { get; }
         }
     }
 }

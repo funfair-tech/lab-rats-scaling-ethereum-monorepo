@@ -5,8 +5,8 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Alerts.Models
     public interface IHouseBalanceConfiguration
     {
         /// <summary>
-        ///     Minimum XDAI balance.
+        ///     Minimum balance in the network's native currency.
         /// </summary>
-        EthereumAmount MinimumAllowedXdaiBalance { get; }
+        EthereumAmount MinimumAllowedNativeCurrencyBalance { get; }
     }
 }

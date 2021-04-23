@@ -105,7 +105,9 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
 
                 Task NotifyEthBalanceChange(EthereumBalanceChangeEventArgs args)
                 {
-                    return this.NotifyForAllEthBalanceChangesAsync(contractAccount: networkAccount, new EthereumAmount(this._faucetBalanceConfiguration.MinimumAllowedXdaiBalance.Value), args: args);
+                    return this.NotifyForAllEthBalanceChangesAsync(contractAccount: networkAccount,
+                                                                   new EthereumAmount(this._faucetBalanceConfiguration.MinimumAllowedNativeCurrencyBalance.Value),
+                                                                   args: args);
                 }
             }
         }
