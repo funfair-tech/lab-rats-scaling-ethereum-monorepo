@@ -6,6 +6,7 @@ import { setTransactionHash } from '../../store/actions/network.actions';
 import { FaucetRequest } from '../../model/faucetRequst';
 import { FaucetResponse } from '../../model/faucetResponse';
 import { setUserError } from '../../store/actions/user.actions';
+import { ethers } from '../../services/ether.service';
 
 interface Props extends ReduxProps {}
 
@@ -13,7 +14,7 @@ export const Faucet: FunctionComponent<Props> = (props) => {
 
   useEffect(() => {
     const tokenBalance = props.user.tokenBalance;
-    if(props.user.authenticated && !!tokenBalance && tokenBalance < 100) {
+    if(props.user.authenticated && tokenBalance < 100) {
       openFaucet();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -30,6 +31,9 @@ export const Faucet: FunctionComponent<Props> = (props) => {
       props.setUserError(response.message)
     } else {
       props.setTransactionHash(response.transaction.transactionHash);
+      await ethers.waitForTransactionReceipt(response.transaction.transactionHash);
+      props.setTransactionHash(null);
+
     }
   }
 
@@ -45,7 +49,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: Function) => {
   return {
-    setTransactionHash: (transactionHash: string) => dispatch(setTransactionHash(transactionHash)),
+    setTransactionHash: (transactionHash: string|null) => dispatch(setTransactionHash(transactionHash)),
     setUserError: (error: string) => dispatch(setUserError(error)),
   };
 };

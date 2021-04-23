@@ -39,6 +39,12 @@ class EtherService {
   ): Promise<TransactionReceipt> {
     return await this._provider.getTransactionReceipt(transactionHash);
   }
+
+  public async waitForTransactionReceipt(
+    transactionHash: string
+  ): Promise<TransactionReceipt> {
+    return await this._provider.waitForTransaction(transactionHash, 1);
+  }
 }
 
 export let ethers: EtherService;

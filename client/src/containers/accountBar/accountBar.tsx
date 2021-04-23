@@ -21,10 +21,12 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
     props.clearUserState();
   };
 
+  const tokenBalance = props.user.tokenBalance > 0 ? props.user.tokenBalance : null; 
+  
   return <div className='accountBar'>
     <section className='accountBar__content'>
       <section>{props.title}</section>
-      <section>{props.user.tokenBalance}</section>
+      <section>{tokenBalance}</section>
       <section>{
         props.user.authenticated ? <Button onClick={logOutOfWallet}>Sign out</Button> :
         <Button onClick={loginToWallet} disabled={props.user.loading}>{props.user.loading ? 'Loading...': 'Sign in'}</Button>
