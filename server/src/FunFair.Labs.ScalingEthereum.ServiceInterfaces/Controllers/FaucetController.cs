@@ -20,7 +20,6 @@ using FunFair.Labs.ScalingEthereum.Logic.Faucet;
 using FunFair.Labs.ScalingEthereum.Logic.Faucet.Models;
 using FunFair.Labs.ScalingEthereum.ServiceInterfaces.Extensions;
 using FunFair.Labs.ScalingEthereum.ServiceInterfaces.Models.Faucet;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FunFair.Labs.ScalingEthereum.ServiceInterfaces.Controllers
@@ -78,7 +77,6 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterfaces.Controllers
         [ProducesResponseType(typeof(ServerUnavailableDto), (int) HttpStatusCode.ServiceUnavailable)]
         [Produces(contentType: "application/json")]
         [Route(template: "Open")]
-        [AllowAnonymous]
         public Task<IActionResult> OpenFaucetAsync([FromBody] OpenFaucetDto request, CancellationToken cancellationToken)
         {
             return this.RequestFromFaucetAsync(request: request, cancellationToken: cancellationToken);
