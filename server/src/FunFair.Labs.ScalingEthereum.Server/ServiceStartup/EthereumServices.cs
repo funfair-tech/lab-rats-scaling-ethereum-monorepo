@@ -24,7 +24,6 @@ using FunFair.Ethereum.GasPrices;
 using FunFair.Ethereum.GasPrices.Interfaces;
 using FunFair.Ethereum.GasPrices.Service;
 using FunFair.Ethereum.Proxy.Client;
-using FunFair.Ethereum.Standard;
 using FunFair.Ethereum.Transactions;
 using FunFair.Ethereum.Transactions.Interfaces;
 using FunFair.Ethereum.Transactions.Service;
@@ -54,7 +53,7 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
 
         public static void ConfigureEthereumServices(IServiceCollection services, ApplicationConfiguration configuration)
         {
-            EthereumProxyNetworksSetup.ConfigureDynamic(services: services, PublicEthereumNetworks.KOVAN, Layer2EthereumNetworks.OptimismKovan);
+            EthereumProxyNetworksSetup.ConfigureDynamic(services: services, Layer2EthereumNetworks.OptimismKovan);
 
             EthereumProxyClientSetup.Configure(services: services, proxyServerBaseUrl: configuration.Proxy);
 

@@ -1,6 +1,5 @@
 ﻿using FunFair.Ethereum.Contracts;
 using FunFair.Ethereum.DataTypes.Primitives;
-using FunFair.Ethereum.Standard;
 using FunFair.Labs.ScalingEthereum.Contracts.Faucet.Events;
 using FunFair.Labs.ScalingEthereum.Contracts.Faucet.Transactions;
 using FunFair.Labs.ScalingEthereum.Contracts.Networks;
@@ -21,7 +20,6 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.Faucet
             // TODO: Add contract addresses here once deployed
             return ContractInfoBuilder.Create(WellKnownContracts.Faucet)
                                       .Network(network: Layer2EthereumNetworks.OptimismKovan, new ContractAddress("0x1111111111111111111111111111111111111111"))
-                                      .Network(network: PublicEthereumNetworks.KOVAN, new ContractAddress("0x6f3C554Fb96EEb00E64688b6d8980eb6856Cfa78"))
                                       .Transaction<WithdrawEth>()
                                       .Transaction<WithdrawToken>()
                                       .Transaction<DistributeEth>()
