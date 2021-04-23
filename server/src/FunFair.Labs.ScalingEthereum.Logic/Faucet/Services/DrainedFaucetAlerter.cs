@@ -10,6 +10,7 @@ using FunFair.Ethereum.Balances.Interfaces.EventArguments;
 using FunFair.Ethereum.Contracts;
 using FunFair.Ethereum.Contracts.Erc20;
 using FunFair.Ethereum.DataTypes;
+using FunFair.Ethereum.DataTypes.Extensions;
 using FunFair.Ethereum.DataTypes.Primitives;
 using FunFair.Ethereum.Networks.Interfaces;
 using FunFair.Labs.ScalingEthereum.Contracts;
@@ -113,12 +114,12 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
         {
             if (args.NewBalance < minimumEthereumAmount)
             {
-                string message = $"{contractAccount.Network.Name}: Faucet contract at address {contractAccount.Address}  is low on XDAI";
+                string message = $"{contractAccount.Network.Name}: Faucet contract at address {contractAccount.Address} is low on {contractAccount.Network.NativeCurrency}";
                 this._logger.LogCritical(message);
                 await this._alertDispatcher.TriggerAsync(GetContractEthBalanceAlertKey(args.Account),
                                                          summary: message,
                                                          severity: EventSeverity.CRITICAL,
-                                                         new Dictionary<string, string> {{"Current balance", args.NewBalance.Value.ToString()}});
+                                                         new Dictionary<string, string> {{"Current balance", args.NewBalance.ToFormattedUnit()}});
             }
         }
 
@@ -126,12 +127,12 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
         {
             if (args.NewBalance.TokenAmount < minimumTokenAmount)
             {
-                string message = $"{contractAccount.Network.Name}: Faucet contract at address {contractAccount.Address} is low on TOKEN";
+                string message = $"{contractAccount.Network.Name}: Faucet contract at address {contractAccount.Address} is low on {args.Token.Symbol}";
                 this._logger.LogCritical(message);
                 await this._alertDispatcher.TriggerAsync(GetContractTokenBalanceAlertKey(args.Account),
                                                          summary: message,
                                                          severity: EventSeverity.CRITICAL,
-                                                         new Dictionary<string, string> {{"Current balance", args.NewBalance.TokenAmount.Value.ToString()}});
+                                                         new Dictionary<string, string> {{"Current balance", args.NewBalance.ToFormattedUnit()}});
             }
         }
 

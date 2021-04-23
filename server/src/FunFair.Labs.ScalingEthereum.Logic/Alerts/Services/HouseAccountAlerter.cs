@@ -105,7 +105,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Alerts.Services
                 SubscriptionToken subscriptionToken = await this._ethereumAccountWatcher.SubscribeAsync(builder);
                 this._houseAccounts.TryAdd(key: account, value: subscriptionToken);
 
-                this._logger.LogInformation($"{account.Network}: {account.Address} Subscribed for eth balance updates with {subscriptionToken}");
+                this._logger.LogInformation($"{account.Network}: {account.Address} Subscribed for {account.Network.NativeCurrency} balance updates with {subscriptionToken}");
             }
         }
 
