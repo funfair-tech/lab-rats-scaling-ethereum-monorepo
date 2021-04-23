@@ -12,6 +12,9 @@ export class MultiTrader extends FFEngine.Component {
 
     public Create(params: any): void {
 
+        //assign global singleton
+        MULTITRADER = this;
+
         //create game scene container
         this.container = new FFEngine.THREE.Object3D();
 
@@ -72,3 +75,9 @@ export class MultiTrader extends FFEngine.Component {
     }
 
 }
+
+/**
+ * Global Singleton reference to the asset pack
+ */
+ let MULTITRADER!: MultiTrader;
+ export { MULTITRADER };
