@@ -43,11 +43,16 @@ export class MultiTrader extends FFEngine.Component {
 
     public OnKeyUp(params: any): void {
         super.OnKeyUp(params);
-
         if (this.startupFinished === true) {
             if (FFEngine.instance.debugBuild) {
                 if (params.keyCode === 68) { // 'D'
                     FFEngine.instance.ToggleDebugDisplay();
+                }
+
+                //Reserve some keys for testlogic
+                // 0 - 9 inclusive
+                if ((params.keyCode >= 48) && (params.keyCode <= 57)) {
+                    LOGIC_TESTCODE.KeyPressed(params.keyCode);
                 }
             }
         }

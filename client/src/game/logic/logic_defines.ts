@@ -44,10 +44,20 @@ export enum Logic_BetType {
     SMALLHIGHER,
     LARGEHIGHER,
     SMALLLOWER,
-    LARGELOWER
+    LARGELOWER,
+    NUMBETTYPES
 }
 
- export class Logic_Bet {
+export enum Logic_BetResponse {
+    NONE = -1,
+    BETSUBMITTED = 0,
+    BETALREADYPLACED,
+    NOTINBETTINGPHASE,
+    INVALIDROUNDID,
+    INVALIDAMOUNT, 
+    INVALIDBET
+}
+export class Logic_Bet {
     public address: string = '';
     public name: string = '';
     public amount: number = 0;

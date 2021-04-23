@@ -4,7 +4,7 @@
  * Class for logic
  */
 
-import { Logic_GameState, Logic_Configuration, Logic_ServerMessage } from './logic_defines';
+import { Logic_GameState, Logic_Configuration, Logic_ServerMessage, Logic_BetType, Logic_BetResponse, Logic_RoundState } from './logic_defines';
 import { LOGIC_SERVERFEEDQUEUE, Logic_ServerFeedQueue } from './logic_serverfeedqueue';
 import { LOGIC_TESTCODE, Logic_TestCode } from './logic_testcode';
 
@@ -37,7 +37,27 @@ export class Logic {
         return this.reportedState;
     }
 
+    public PlaceBetForLocalPlayer(playerAddress: string, betType: Logic_BetType): Logic_BetResponse {
+
+        //Does the local state show a suitable stage to place bet?
+
+        if(this.reportedState.roundState !== Logic_RoundState.ACCEPTINGBETS) {
+            return Logic_BetResponse.NOTINBETTINGPHASE;
+        }
+
+        if((betType < 0) || (betType >= Logic_BetType.NUMBETTYPES)) {
+            return Logic_BetResponse.INVALIDBET;
+        }
+
+        //Assume all is ok, and send request to server (for now to test logic)
+
+        LOGIC_TESTCODE.PlaceBet(this.reportedState.roundID, playerAddress, this.configuration.betAmount, betType);
+        return Logic_BetResponse.BETSUBMITTED;
+    }
+
     public Tick(): void {        
+
+        let stateNonceAtStartOfTick: number = this.reportedState.nonce;
 
         LOGIC_TESTCODE.Tick();
         
@@ -56,9 +76,14 @@ export class Logic {
             //Update the reported state
         
             this.UpdateReportedState();
-
-            //console.log('snc new reported state: ' + JSON.stringify(this.reportedState));
         }
+
+        //Change to report (debug)
+
+        if(this.reportedState.nonce !== stateNonceAtStartOfTick) {
+            console.log('snc new reported state: ' + JSON.stringify(this.reportedState));
+        }
+        
     }
 
     //Handle messages
@@ -84,6 +109,8 @@ export class Logic {
             //Update the game with the new data
 
             this.EndRoundFromFeed(message);
+        } else {
+            console.log('*** UNHANDLED FEED MESSAGE ***');
         }
     }
 

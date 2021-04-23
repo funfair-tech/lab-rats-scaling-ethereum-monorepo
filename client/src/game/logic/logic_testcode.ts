@@ -7,8 +7,42 @@
  */
 
 import { LOGIC_SERVERFEEDQUEUE } from './logic_serverfeedqueue';
-import { Logic_BetType, Logic_GameState, Logic_Configuration,Logic_RoundState, Logic_BetWinData, Logic_Bet } from './logic_defines';
+import { Logic_BetType, Logic_Configuration,Logic_RoundState, Logic_BetWinData, Logic_BetResponse } from './logic_defines';
+import { LOGIC } from './logic';
 
+export class TestServer_Bet {
+    public address: string = '';
+    public amount: number = 0;
+    public betType: Logic_BetType = Logic_BetType.NONE;
+    public winnings: number = 0;
+    public resolved: boolean = false;
+    public isLocalPlayer: boolean = false;
+
+    constructor(_address: string, _amount: number, _betType: Logic_BetType) {
+        this.address = _address;
+        this.amount = _amount;
+        this.betType = _betType;
+    }
+
+    public Resolve(_winnings: number) {
+        this.winnings = _winnings;
+        this.resolved = true;
+    }    
+}
+export class TestServer_GameState {
+    public roundState: Logic_RoundState = Logic_RoundState.NOTSTARTED;
+    public roundID: string = '';
+    public currentPrice: number = 0;   
+    public historicPrices: number[] = [];    
+    public lastAdjustment: number = 0;
+    public bets: TestServer_Bet[] = [];
+    public carryOverPrizePool: number = 0;
+    public currentPrizePool: number = 0;
+
+    //Reporting control
+
+    public nonce: number = 0;
+}
 
 export class Logic_TestCode {
     
@@ -18,7 +52,7 @@ export class Logic_TestCode {
 
     protected tickCount: number = 0;
     protected roundID: number = 0;
-    protected testGameState: Logic_GameState = new Logic_GameState();
+    protected testGameState: TestServer_GameState = new TestServer_GameState();
     protected configuration: Logic_Configuration = new Logic_Configuration(1000, 10, 5, 100, 30);
 
     constructor() {
@@ -28,34 +62,49 @@ export class Logic_TestCode {
         });
     }
 
+    public KeyPressed(keyCode: number): void {
+        if(keyCode === 48) { //0
+            //Advance state
+
+            if((this.testGameState.roundState === Logic_RoundState.NOTSTARTED) || (this.testGameState.roundState === Logic_RoundState.COMPLETE)) {
+                this.NextRoundID();
+                this.StartBettingOnRound(this.GetRoundID(),'fakernghash');
+            } else if(this.testGameState.roundState === Logic_RoundState.ACCEPTINGBETS) {
+                this.StopBettingOnRound(this.GetRoundID());
+            } else if(this.testGameState.roundState === Logic_RoundState.CLOSEDFORBETS) {
+                this.EndRound(this.GetRoundID(), Math.floor(Math.random() * 0xffff).toString(16));
+            } else {
+                console.log('Logic_TestCode.KeyPressed advance state fails due to state');
+            }
+
+            return;
+        }
+
+        if((keyCode >= 49) && (keyCode <=54))  { //1 - 6
+            
+            //Call to place a bet as a local player
+
+            let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('LogicTest_FakePlayer', Logic_BetType.HIGHER + (keyCode - 49));
+            if(response === Logic_BetResponse.BETSUBMITTED) {
+                console.log('Logic_TestCode.Keypressed local player bet type ' + (keyCode - 49) + ' successfully submitted');
+            } else {
+                console.log('Logic_TestCode.Keypressed local player bet type ' + (keyCode - 49) + ' failed with Logic_BetResponse value ' + response);
+            }
+    
+            return;
+        }
+
+    }
+
     public Tick(): void {
         //For now it play through sequences
 
-        this.tickCount++;
-
-        if(this.tickCount === 100) {
-            //Start the round
-            this.NextRoundID();
-            this.StartBettingOnRound(this.GetRoundID(),'fakernghash');
-        }
-
-        if(this.tickCount === 150) {
-            //Stop betting
-            this.StopBettingOnRound(this.GetRoundID());
-        }
-
-        if(this.tickCount === 200) {
-            //End round
-
-            this.EndRound(this.GetRoundID(), Math.floor(Math.random() * 0xffff).toString(16));
-
-            this.tickCount = 0;
-        }
+        this.tickCount++;        
     }
 
     public StartBettingOnRound(_roundID: string, commitHash: string): void {
 
-        let state: Logic_GameState = this.testGameState;
+        let state: TestServer_GameState = this.testGameState;
 
         //If the game is in a suitable state, start betting
 
@@ -84,7 +133,7 @@ export class Logic_TestCode {
     
     public StopBettingOnRound(_roundID: string): void {
 
-        let state: Logic_GameState = this.testGameState;
+        let state: TestServer_GameState = this.testGameState;
 
         //Stop accepting bets
 
@@ -106,7 +155,7 @@ export class Logic_TestCode {
 
     public EndRound(_roundID: string, commitRNG: string): void {
 
-        let state: Logic_GameState = this.testGameState;
+        let state: TestServer_GameState = this.testGameState;
 
         //End the round and pay out 
 
@@ -138,7 +187,7 @@ export class Logic_TestCode {
                 state.currentPrizePool = state.carryOverPrizePool;
 
                 for(let index: number = 0; index < state.bets.length; index++) {
-                    let thisBet: Logic_Bet = state.bets[index];
+                    let thisBet: TestServer_Bet = state.bets[index];
                     let thisBetPrizeAllocation: number = 0;
 
                     state.currentPrizePool += thisBet.amount;
@@ -204,7 +253,7 @@ export class Logic_TestCode {
                 //Payout reducing the carry over prize pool
 
                 winningBetData.forEach((winData) => {
-                    let thisBet: Logic_Bet = state.bets[winData.betIndex];
+                    let thisBet: TestServer_Bet = state.bets[winData.betIndex];
                     let thisPrize: number = prizePerPlayer * winData.prizeAllocation;
                     thisBet.Resolve(thisPrize);
                     state.carryOverPrizePool -= thisPrize;
@@ -225,18 +274,49 @@ export class Logic_TestCode {
             }
         }
     }
-
+    
     public PlaceBet(_roundID: string, _address: string, _amount: number, _betType: Logic_BetType): void {
         
+        let response: Logic_BetResponse;
+
+        //Prep the message describing the bet
+
+        let messageData: any = {
+            roundID: _roundID,
+            address: _address,
+            amount: _amount,
+            betType: _betType,
+            response: Logic_BetResponse.NONE
+        };
+
+        //Act like the server and see if this bet should be placed
+
+        if(this.testGameState.roundID !== _roundID) {
+            response = Logic_BetResponse.INVALIDROUNDID;
+        } else if(this.testGameState.roundState !== Logic_RoundState.ACCEPTINGBETS) {
+            response = Logic_BetResponse.NOTINBETTINGPHASE;
+        } else if(this.configuration.betAmount !== _amount) {
+            response = Logic_BetResponse.INVALIDAMOUNT;
+        } else if((_betType < 0) || (_betType >= Logic_BetType.NUMBETTYPES)) {
+            response = Logic_BetResponse.INVALIDBET;
+        } else {
+            //Try to place the bet
+            
+            let matchingBetIndex: number = this.testGameState.bets.findIndex(currentBet => currentBet.address === _address);
+            if(matchingBetIndex !== -1) {
+                response = Logic_BetResponse.BETALREADYPLACED;
+            } else {
+                //Add the bet to the current state
+
+                this.testGameState.bets.push(new TestServer_Bet(_address,  _amount, _betType));
+                response = Logic_BetResponse.BETSUBMITTED;
+            }
+        }
         
-        
-        // LOGIC_SERVERFEEDQUEUE.SendDummyMessage('PLACEBET', {
-        //     nonce: _nonce
-        //     roundID: _roundID,
-        //     address: _address,
-        //     amount: _amount,
-        //     betType: _betType
-        // });
+        //Send the message
+
+        messageData.response = response;
+        LOGIC_SERVERFEEDQUEUE.SendDummyMessage('PLACEBET', messageData);
     }
 
     public NextRoundID(): void {
@@ -251,7 +331,7 @@ export class Logic_TestCode {
 
     protected MakeRandomPreviousGamePlay(): void {
         
-        let state: Logic_GameState = this.testGameState;
+        let state: TestServer_GameState = this.testGameState;
 
         //Set up the basic gamestate
 
