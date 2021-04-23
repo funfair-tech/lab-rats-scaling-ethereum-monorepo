@@ -19,7 +19,7 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.Faucet
         {
             // TODO: Add contract addresses here once deployed
             return ContractInfoBuilder.Create(WellKnownContracts.Faucet)
-                                      .Network(network: Layer2EthereumNetworks.OptimismKovan, new ContractAddress("0x1111111111111111111111111111111111111111"))
+                                      .Network(network: Layer2EthereumNetworks.OptimismKovan, new ContractAddress("0x4697d0CB9E40699237d0f40F3EE211527a5619fF"))
                                       .Transaction<WithdrawEth>()
                                       .Transaction<WithdrawToken>()
                                       .Transaction<DistributeEth>()
