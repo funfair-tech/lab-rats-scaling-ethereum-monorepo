@@ -1,5 +1,4 @@
 import { FFEngine } from '@funfair/engine';
-import { ASSETPACK, TextureAssetType } from '../assetPack';
 
 /**
  * A display object representing a single cell on the graph grid
