@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const { Contract, Wallet } = require('ethers');
 const { JsonRpcProvider } = require('@ethersproject/providers');
+const { parseEther } = require('ethers/lib/utils');
 
 const KOVAN_CONTRACT_ADDRESS = '0xf3902e50dA095bD2e954AB320E8eafDA6152dFDa';
 const ABI =
@@ -21,7 +22,7 @@ async function main() {
   const contract = new Contract(KOVAN_CONTRACT_ADDRESS, ABI, l1Wallet);
   // we use this one so you can change address if you want
   const response = await contract.depositTo(l1Wallet.address, {
-    value: '100000000000000',
+    value: parseEther('1').toHexString(),
   });
   console.log(response);
   await response.wait();
