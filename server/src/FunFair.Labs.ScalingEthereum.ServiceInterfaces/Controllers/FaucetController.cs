@@ -90,7 +90,7 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterfaces.Controllers
 
                 if (jwtUser == null)
                 {
-                    return this.BadRequest();
+                    return ResultHelpers.ExceptionResult(message: "Not authorised (1).", nameof(FaucetController), statusCode: HttpStatusCode.Unauthorized);
                 }
 
                 IPAddress ipAddress = this._remoteIpAddressRetriever.Get(this.HttpContext);
@@ -118,7 +118,7 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterfaces.Controllers
 
                 if (jwtUser.AccountAddress != address)
                 {
-                    return this.BadRequest();
+                    return ResultHelpers.ExceptionResult(message: "Not authorised (2).", nameof(FaucetController), statusCode: HttpStatusCode.Unauthorized);
                 }
 
                 INetworkAccount account = new NetworkAccount(network: network, address: address);
