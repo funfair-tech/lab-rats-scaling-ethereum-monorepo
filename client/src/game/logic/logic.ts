@@ -5,7 +5,8 @@
  */
 
 import { Logic_GameState, Logic_Configuration, Logic_ServerMessage } from './logic_defines';
-import { LOGIC_DUMMYFEED } from './logic_dummyfeed';
+import { LOGIC_SERVERFEEDQUEUE, Logic_ServerFeedQueue } from './logic_serverfeedqueue';
+import { LOGIC_TESTCODE, Logic_TestCode } from './logic_testcode';
 
 export class Logic {
 
@@ -15,6 +16,8 @@ export class Logic {
     protected isLocalMode: boolean = false;
 
     static Create(config: Logic_Configuration, localMode: boolean): void {
+        Logic_ServerFeedQueue.Create();
+        Logic_TestCode.Create();
         LOGIC = new Logic(config, localMode);        
     }
 
@@ -36,25 +39,25 @@ export class Logic {
 
     public Tick(): void {        
 
-        //If this is a local game, check the dummy message queue
+        LOGIC_TESTCODE.Tick();
+        
+        //Check and response to the message queue
 
-        if(this.CheckLocalMode()) {
-            if(LOGIC_DUMMYFEED.CountServerMessages() !== 0) {
-                let message: Logic_ServerMessage | null;
+        if(LOGIC_SERVERFEEDQUEUE.CountServerMessages() !== 0) {
+            let message: Logic_ServerMessage | null;
 
-                while((message = LOGIC_DUMMYFEED.GetNextServerMessage()) !== null) {
+            while((message = LOGIC_SERVERFEEDQUEUE.GetNextServerMessage()) !== null) {
 
-                    //Handle the feed
+                //Handle the feed
 
-                    this.FeedFromWebSocket(message);
-                }
-
-                //Update the reported state
-            
-                this.UpdateReportedState();
-
-                console.log('snc new reported state: ' + JSON.stringify(this.reportedState));
+                this.FeedFromWebSocket(message);
             }
+
+            //Update the reported state
+        
+            this.UpdateReportedState();
+
+            //console.log('snc new reported state: ' + JSON.stringify(this.reportedState));
         }
     }
 

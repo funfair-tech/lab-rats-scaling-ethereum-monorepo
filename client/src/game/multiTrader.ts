@@ -3,6 +3,10 @@ import { AssetPack } from './assetPack';
 import { GLUI, MultiTraderUI } from './multiTraderUI';
 import { EnvironmentManager, ENVIRONMENT_MANAGER } from './objectManagers/environmentManager';
 
+import { LOGIC, Logic } from './logic/logic';
+import { LOGIC_TESTCODE } from './logic/logic_testcode';
+import { Logic_Configuration } from './logic/logic_defines';
+
 /**
  * Main game scene for the multiplayer trader game
  */
@@ -27,10 +31,14 @@ export class MultiTrader extends FFEngine.Component {
 
         //Asset loading callback
         FFEngine.instance.assetLoader.AddLoadingPhaseCompleteCallback(() => this.AssetLoadingFinished());
+
+        Logic.Create(new Logic_Configuration(1000, 10, 5, 100, 30), true);
     }
 
     public Update(): void {
         this.UpdateLoadingPhase();
+        LOGIC.Tick();
+        //console.log('paul this is the gamestate - watch and it will change over time... ' + JSON.stringify(LOGIC.GetCurrentState()));
     }
 
     public OnKeyUp(params: any): void {

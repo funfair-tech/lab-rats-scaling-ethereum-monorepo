@@ -6,7 +6,7 @@
  * can be drived by keys
  */
 
-import { LOGIC_DUMMYFEED } from './logic_dummyfeed';
+import { LOGIC_SERVERFEEDQUEUE } from './logic_serverfeedqueue';
 import { Logic_BetType, Logic_GameState, Logic_Configuration,Logic_RoundState, Logic_BetWinData, Logic_Bet } from './logic_defines';
 
 
@@ -23,7 +23,7 @@ export class Logic_TestCode {
 
     constructor() {
         this.MakeRandomPreviousGamePlay();
-        LOGIC_DUMMYFEED.SendDummyMessage('CONFIGURATION', {
+        LOGIC_SERVERFEEDQUEUE.SendDummyMessage('CONFIGURATION', {
             configuration:this.configuration
         });
     }
@@ -68,7 +68,7 @@ export class Logic_TestCode {
             state.currentPrizePool = state.carryOverPrizePool;
             state.roundState = Logic_RoundState.ACCEPTINGBETS;
 
-            LOGIC_DUMMYFEED.SendDummyMessage('STARTROUND', {                
+            LOGIC_SERVERFEEDQUEUE.SendDummyMessage('STARTROUND', {                
                 nonce: state.nonce,
                 roundID: state.roundID,
                 roundState: state.roundState,
@@ -95,7 +95,7 @@ export class Logic_TestCode {
                 state.nonce++;
                 state.roundState = Logic_RoundState.CLOSEDFORBETS;
 
-                LOGIC_DUMMYFEED.SendDummyMessage('CLOSEDFORBETS', {
+                LOGIC_SERVERFEEDQUEUE.SendDummyMessage('CLOSEDFORBETS', {
                     nonce: state.nonce,
                     roundID: state.roundID,
                     roundState: state.roundState
@@ -211,7 +211,7 @@ export class Logic_TestCode {
                 });
 
                 //Report 
-                LOGIC_DUMMYFEED.SendDummyMessage('ENDROUND', {
+                LOGIC_SERVERFEEDQUEUE.SendDummyMessage('ENDROUND', {
                     nonce: state.nonce,
                     roundID: state.roundID,
                     roundState: state.roundState,
@@ -230,7 +230,7 @@ export class Logic_TestCode {
         
         
         
-        // LOGIC_DUMMYFEED.SendDummyMessage('PLACEBET', {
+        // LOGIC_SERVERFEEDQUEUE.SendDummyMessage('PLACEBET', {
         //     nonce: _nonce
         //     roundID: _roundID,
         //     address: _address,

@@ -1,18 +1,17 @@
 /**
- * logic_dummyfeed.ts
+ * logic_serverfeedqueue.ts
  * 
  * Provides simulated feeds for testing
  */
 
 import {  Logic_ServerMessage } from './logic_defines';
 
-export class Logic_DummyFeed {
+export class Logic_ServerFeedQueue {
 
     protected serverMessageQueue: Logic_ServerMessage[] = [];
-    protected fakeRoundID: number = 1;
     
     static Create(): void {
-        LOGIC_DUMMYFEED = new Logic_DummyFeed();        
+        LOGIC_SERVERFEEDQUEUE = new Logic_ServerFeedQueue();        
     }
 
     public CountServerMessages(): number {
@@ -23,14 +22,6 @@ export class Logic_DummyFeed {
         let message: Logic_ServerMessage = new Logic_ServerMessage(type);
         message.data = data;
         this.serverMessageQueue.push(message);
-    }
-
-    public GetRoundID(): string {
-        return 'DUMMYROUND_' + this.fakeRoundID;
-    }
-
-    public NextRoundID(): void {
-        this.fakeRoundID++;
     }
 
     public GetNextServerMessage(): Logic_ServerMessage | null {
@@ -44,6 +35,5 @@ export class Logic_DummyFeed {
 
 }
 
-
-let LOGIC_DUMMYFEED!: Logic_DummyFeed;
-export { LOGIC_DUMMYFEED };
+let LOGIC_SERVERFEEDQUEUE!: Logic_ServerFeedQueue;
+export { LOGIC_SERVERFEEDQUEUE };
