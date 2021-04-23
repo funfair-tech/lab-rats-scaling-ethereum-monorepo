@@ -1,10 +1,11 @@
-class ApiRequest {
-  constructor() {}
+import window from '@funfair-tech/wallet-sdk/window';
 
+class ApiRequest {
   public async post<TBody, TResponse>(
     endpoint: string,
     body: TBody
   ): Promise<TResponse> {
+    const jwt = await window.funwallet.sdk.auth.app.jwt();
     // Default options are marked with *
     const response = await fetch(this.buildEndpoint(endpoint), {
       method: 'POST',
@@ -13,11 +14,13 @@ class ApiRequest {
       credentials: 'same-origin',
       headers: {
         'Content-Type': 'application/json',
+        'x-auth-token': 'Bearer ' + jwt,
       },
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
       body: JSON.stringify(body),
     });
+
     return (await response.json()) as TResponse;
   }
 

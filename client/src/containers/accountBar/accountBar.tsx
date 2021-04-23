@@ -24,6 +24,7 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
   return <div className='accountBar'>
     <section className='accountBar__content'>
       <section>{props.title}</section>
+      <section>{props.user.tokenBalance}</section>
       <section>{
         props.user.authenticated ? <Button onClick={logOutOfWallet}>Sign out</Button> :
         <Button onClick={loginToWallet} disabled={props.user.loading}>{props.user.loading ? 'Loading...': 'Sign in'}</Button>

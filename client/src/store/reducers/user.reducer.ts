@@ -5,10 +5,12 @@ import {
   SET_ETH_BALANCE,
   SET_LOADING,
   SET_TOKEN_BALANCE,
+  SET_USER_ERROR,
   UserActionTypes,
 } from '../types/user.types';
 
 export interface User {
+  error: string|null;
   authenticated: boolean;
   ethBalance: number | undefined;
   tokenBalance: number | undefined;
@@ -17,6 +19,7 @@ export interface User {
 }
 
 const initialState: User = {
+  error: null,
   authenticated: false,
   ethBalance: undefined,
   tokenBalance: undefined,
@@ -26,6 +29,11 @@ const initialState: User = {
 
 const userReducer = (state = { ...initialState }, action: UserActionTypes): User => {
   switch (action.type) {
+    case SET_USER_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case CLEAR_USER_STATE:
       return {
         ...initialState,

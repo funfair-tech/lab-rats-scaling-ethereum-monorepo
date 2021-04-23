@@ -8,7 +8,7 @@ function App() {
     <div className="app">
         <AccountBar title='Lab Rats'/>
         <Game />
-        {/* <Faucet /> */}
+        <Faucet />
     </div>
   );
 }

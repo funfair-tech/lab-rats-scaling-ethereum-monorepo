@@ -1,9 +1,15 @@
+export const SET_USER_ERROR = 'SET_USER_ERROR';
 export const SET_AUTHENTICATED = 'SET_AUTHENTICATED';
 export const SET_ETH_BALANCE = 'SET_ETH_BALANCE';
 export const SET_TOKEN_BALANCE = 'SET_TOKEN_BALANCE';
 export const SET_ADDRESS = 'SET_ADDRESS';
 export const SET_LOADING = 'SET_LOADING';
 export const CLEAR_USER_STATE = 'CLEAR_USER_STATE';
+
+export interface SetUserErrorAction {
+  type: typeof SET_USER_ERROR;
+  payload: string|null;
+}
 
 export interface SetAuthenticatedAction {
   type: typeof SET_AUTHENTICATED;
@@ -35,6 +41,7 @@ export interface ClearUserState {
 }
 
 export type UserActionTypes =
+  | SetUserErrorAction
   | SetAuthenticatedAction
   | SetEthBalanceAction
   | SetTokenBalanceAction
