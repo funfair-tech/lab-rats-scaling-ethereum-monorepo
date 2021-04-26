@@ -30,6 +30,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Locking
         private static void RegisterDataManagers(IServiceCollection services)
         {
             services.AddSingleton<IObjectLockDataManager<EthereumAddress>, GameManagerLockDataManager>();
+            services.AddSingleton<IObjectLockDataManager<GameRoundId>, GameRoundLockDataManager>();
         }
     }
 }
