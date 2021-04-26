@@ -80,6 +80,18 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
         }
 
         /// <inheritdoc />
+        public Task MarkAsBettingClosingAsync(GameRoundId gameRoundId, BlockNumber blockNumber, TransactionHash transactionHash)
+        {
+            return this._database.ExecuteAsync(storedProcedure: @"Games.GameRound_BeginBettingClose", new {GameRoundId = gameRoundId, BlockNumber = blockNumber, TransactionHash = transactionHash});
+        }
+
+        /// <inheritdoc />
+        public Task MarkAsBettingCompleteAsync(GameRoundId gameRoundId, BlockNumber blockNumber, TransactionHash transactionHash)
+        {
+            return this._database.ExecuteAsync(storedProcedure: @"Games.GameRound_BettingComplete", new {GameRoundId = gameRoundId, BlockNumber = blockNumber, TransactionHash = transactionHash});
+        }
+
+        /// <inheritdoc />
         public Task SaveStartRoundAsync(GameRoundId gameRoundId,
                                         AccountAddress createdByAccount,
                                         NetworkContract gameContract,
@@ -150,6 +162,12 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
         }
 
         /// <inheritdoc />
+        public Task<BlockNumber?> GetEarliestBlockNumberForPendingBettingCloseAsync(EthereumNetwork network)
+        {
+            return this._database.QuerySingleOrDefaultAsync(builder: this._blockNumberBuilder, storedProcedure: "Games.GameRound_GetBlockNumberForBettingClose", new {Network = network.Name});
+        }
+
+        /// <inheritdoc />
         public Task<BlockNumber?> GetEarliestBlockNumberForPendingCloseAsync(EthereumNetwork network)
         {
             return this._database.QuerySingleOrDefaultAsync(builder: this._blockNumberBuilder, storedProcedure: "Games.GameRound_GetBlockNumberForClosing", new {Network = network.Name});
@@ -160,6 +178,14 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
         {
             return this._database.QueryAsync(builder: this._gameRoundBuilder,
                                              storedProcedure: @"Games.GameRound_GetAllForClosing",
+                                             new {Network = network.Name, DateTimeOnNetwork = dateTimeOnNetwork});
+        }
+
+        /// <inheritdoc />
+        public Task<IReadOnlyList<GameRound>> GetAllForClosingBettingAsync(EthereumNetwork network, DateTime dateTimeOnNetwork)
+        {
+            return this._database.QueryAsync(builder: this._gameRoundBuilder,
+                                             storedProcedure: @"Games.GameRound_GetAllForClosingBetting",
                                              new {Network = network.Name, DateTimeOnNetwork = dateTimeOnNetwork});
         }
 
