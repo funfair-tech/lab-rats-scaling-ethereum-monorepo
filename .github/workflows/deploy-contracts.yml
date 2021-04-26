@@ -17,3 +17,5 @@ jobs:
           node-version: '10.14.2'
       - run: npm install
       - run: npm run deploy-optimism
+      - env:
+          YOUR_PRIVATE_KEY: secrets.YOUR_PRIVATE_KEY
