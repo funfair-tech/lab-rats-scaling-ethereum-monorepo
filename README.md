@@ -10,6 +10,10 @@ This is the labs rats scaling hackathon project
 
 [![Contracts](https://github.com/funfair-tech/lab-rats-scaling-ethereum-monorepo/actions/workflows/deploy-contracts.yml/badge.svg)](https://github.com/funfair-tech/lab-rats-scaling-ethereum-monorepo/actions/workflows/deploy-contracts.yml)
 
+[![Server](https://teamcity.funfair.io/guestAuth/app/rest/builds/buildType:(id:Labs_EthGlobalScalingEthereum_Server_Master)/statusIcon.svg)](https://teamcity.funfair.io/viewType.html?buildTypeId=Labs_EthGlobalScalingEthereum_Server_Master)
+
+buildType:Labs_EthGlobalScalingEthereum_Server_Master
+
 [![SQL](https://github.com/funfair-tech/lab-rats-scaling-ethereum-monorepo/actions/workflows/reformat-sql.yml/badge.svg)](https://github.com/funfair-tech/lab-rats-scaling-ethereum-monorepo/actions/workflows/reformat-sql.yml)
 
 
