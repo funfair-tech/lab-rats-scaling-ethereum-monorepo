@@ -306,18 +306,18 @@ contract MultiplayerGamesManager is Ownable() {
 
     //************************************************************************************************
     // Needs many additional checks and thoughts on when this should be allowed
-    function withdrawHouseFunds(address payable _withdrawalAddress) public onlyOwner {
-        require(contractState == ContractState.Paused, "Contract is not paused");
-        require(numRoundsInProgress == 0, "Rounds still in progress");
+    // function withdrawHouseFunds(address payable _withdrawalAddress) public onlyOwner {
+    //     require(contractState == ContractState.Paused, "Contract is not paused");
+    //     require(numRoundsInProgress == 0, "Rounds still in progress");
 
-        uint256 balance = address(this).balance;
-        uint256 tokenBalance = gameToken.balanceOf(address(this));
+    //     uint256 balance = address(this).balance;
+    //     uint256 tokenBalance = gameToken.balanceOf(address(this));
 
-        _withdrawalAddress.transfer(balance);
-        require(gameToken.transfer(_withdrawalAddress, tokenBalance), "Game Token transfer failed");
+    //     _withdrawalAddress.transfer(balance);
+    //     require(gameToken.transfer(_withdrawalAddress, tokenBalance), "Game Token transfer failed");
 
-        emit WithdrawHouseFunds(_withdrawalAddress, balance, tokenBalance);
-    }
+    //     emit WithdrawHouseFunds(_withdrawalAddress, balance, tokenBalance);
+    // }
 
     //************************************************************************************************
     // Needs many additional checks and thoughts on when this should be allowed
