@@ -5,7 +5,7 @@ import { EnvironmentManager, ENVIRONMENT_MANAGER } from './objectManagers/enviro
 
 import { LOGIC, Logic } from './logic/logic';
 import { LOGIC_TESTCODE } from './logic/logic_testcode';
-import { Logic_Configuration } from './logic/logic_defines';
+import { Logic_Configuration, Logic_RoundState } from './logic/logic_defines';
 
 /**
  * Main game scene for the multiplayer trader game
@@ -13,6 +13,7 @@ import { Logic_Configuration } from './logic/logic_defines';
 export class MultiTrader extends FFEngine.Component {
 
     private startupFinished: boolean = false;
+    private gamePhase: Logic_RoundState = Logic_RoundState.NOTSTARTED;
 
     public Create(params: any): void {
 
@@ -37,8 +38,10 @@ export class MultiTrader extends FFEngine.Component {
 
     public Update(): void {
         this.UpdateLoadingPhase();
-        LOGIC.Tick();
-        //console.log('paul this is the gamestate - watch and it will change over time... ' + JSON.stringify(LOGIC.GetCurrentState()));
+
+        if (this.startupFinished === true) {
+            this.UpdateLogicState();
+        }
     }
 
     public OnKeyUp(params: any): void {
@@ -83,6 +86,42 @@ export class MultiTrader extends FFEngine.Component {
             if (assetLoadCoef >= 1) {
                 FFEngine.instance.assetLoader.EndLoadingPhase();
                 this.startupFinished = true;
+            }
+        }
+    }
+
+    private UpdateLogicState(): void {
+        LOGIC.Tick();
+        let state = LOGIC.GetCurrentState();
+        this.SetGamePhase(state.roundState);
+    }
+
+    /**
+     * State Machine handles changes of state to the game display at any time
+     */
+    private SetGamePhase(phase: Logic_RoundState): void {
+        if (phase !== this.gamePhase) {
+
+            //leave old state
+            switch (this.gamePhase) {
+                default: break;
+                case Logic_RoundState.NOTSTARTED: break;
+                case Logic_RoundState.ACCEPTINGBETS: break;
+                case Logic_RoundState.CLOSEDFORBETS: break;
+                case Logic_RoundState.COMPLETE: break;
+            }
+
+            //set new game state
+            console.log('Game entering new state: ' + phase);
+            this.gamePhase = phase;
+
+            //setup new state
+            switch (this.gamePhase) {
+                default: break;
+                case Logic_RoundState.NOTSTARTED: break;
+                case Logic_RoundState.ACCEPTINGBETS: break;
+                case Logic_RoundState.CLOSEDFORBETS: break;
+                case Logic_RoundState.COMPLETE: break;
             }
         }
     }
