@@ -160,7 +160,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
         /// <inheritdoc />
         public Task<BlockNumber?> GetEarliestBlockNumberForPendingBettingCloseAsync(EthereumNetwork network)
         {
-            return this._database.QuerySingleOrDefaultAsync(builder: this._blockNumberBuilder, storedProcedure: "Games.GameRound_GetBlockNumberForBettingClose", new {Network = network.Name});
+            return this._database.QuerySingleOrDefaultAsync(builder: this._blockNumberBuilder, storedProcedure: "Games.GameRound_GetBlockNumberForClosingBetting", new {Network = network.Name});
         }
 
         /// <inheritdoc />
