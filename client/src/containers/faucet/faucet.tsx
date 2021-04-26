@@ -6,6 +6,7 @@ import { setTransactionHash } from '../../store/actions/network.actions';
 import { FaucetRequest } from '../../model/faucetRequst';
 import { FaucetResponse } from '../../model/faucetResponse';
 import { setUserError } from '../../store/actions/user.actions';
+import { Notification } from '../../components/notification/notification';
 import { ethers } from '../../services/ether.service';
 
 interface Props extends ReduxProps {}
@@ -37,7 +38,7 @@ export const Faucet: FunctionComponent<Props> = (props) => {
     }
   }
 
-  return null;
+  return <Notification label='Funding your account' visible={!!props.network.transactionHash}/>;
 }
 
 const mapStateToProps = (state: RootState) => {
