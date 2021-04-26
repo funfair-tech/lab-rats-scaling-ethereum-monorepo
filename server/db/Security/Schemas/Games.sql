@@ -1,0 +1,4 @@
+CREATE SCHEMA [Games] AUTHORIZATION [dbo]
+GO
+
+
