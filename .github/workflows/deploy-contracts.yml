@@ -1,7 +1,11 @@
 name: Deploy optimism contracts
 on:
   push:
-    branches: []
+    branches:
+    - "master"
+    - "feature/*"
+    paths:
+    - 'solidity/**/*'
   workflow_dispatch:
 jobs:
   build:
