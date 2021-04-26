@@ -26,13 +26,7 @@ class EtherService {
     abi: ContractInterface,
     contractAddress: string
   ): TGeneratedTypedContext {
-    const signer = this._provider.getSigner(0);
-
-    // const contract = new Contract(contractAddress, abi, this._provider.getSigner());
-    const contract = new Contract(contractAddress, abi, signer);
-    // const contract = new Contract(contractAddress, abi);
-    // contract.connect(this._provider);
-
+    const contract = new Contract(contractAddress, abi, this._provider.getSigner());
     return (contract as unknown) as TGeneratedTypedContext;
   }
 

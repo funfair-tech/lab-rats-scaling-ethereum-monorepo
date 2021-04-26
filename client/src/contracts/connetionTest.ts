@@ -1,6 +1,8 @@
+import { TransactionResponse } from '@ethersproject/providers';
+
 export interface IConnectionTest {
 
-  setMessage(newMessage: string): void;
+  setMessage(newMessage: string): Promise<TransactionResponse>;
 
   getMessage(): Promise<string>;
 

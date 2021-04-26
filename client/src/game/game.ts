@@ -12,6 +12,7 @@ export class Game {
 
   public handleRoundResult(roundResult: RoundResult): void {
     // TODO: ...
+    // console.log('round result in game: ', roundResult);
   }
 
   public handleRoundAction(roundAction: RoundAction): void {
