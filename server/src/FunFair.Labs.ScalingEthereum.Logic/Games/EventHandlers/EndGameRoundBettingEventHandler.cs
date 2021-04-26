@@ -61,7 +61,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
 
             this.Logger.LogInformation($"{networkBlockHeader.Network.Name}: {eventData.GameRoundId}. Betting over");
 
-            this.GameRoundDataManager.MarkAsBettingComplete(gameRound.GameRoundId, networkBlockHeader.Number, transactionHash);
+            this.GameRoundDataManager.MarkAsBettingCompleteAsync(gameRound.GameRoundId, networkBlockHeader.Number, transactionHash);
 
             await this._gameStatsPublisher.GameRoundBettingEndedAsync(network: networkBlockHeader.Network,
                                                                       gameRoundId: gameRound.GameRoundId,
