@@ -19,22 +19,22 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
     [SuppressMessage(category: "ReSharper", checkId: "ClassNeverInstantiated.Global", Justification = "Instantiated by DI")]
     public sealed class EndGameRoundBettingEventHandler : GameRoundEventHandlerBase<EndGameRoundBettingEventOutput>
     {
-        private readonly IGameStatsPublisher _gameStatsPublisher;
+        private readonly IGameStatisticsPublisher _gameStatisticsPublisher;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="gameRoundDataManager">Game Round Data manager</param>
         /// <param name="gameRoundLockManager">Game Lock manager.</param>
-        /// <param name="gameStatsPublisher">Game stats publisher.</param>
+        /// <param name="gameStatisticsPublisher">Game stats publisher.</param>
         /// <param name="logger">Logging.</param>
         public EndGameRoundBettingEventHandler(IGameRoundDataManager gameRoundDataManager,
                                                IObjectLockManager<GameRoundId> gameRoundLockManager,
-                                               IGameStatsPublisher gameStatsPublisher,
+                                               IGameStatisticsPublisher gameStatisticsPublisher,
                                                ILogger<EndGameRoundBettingEventHandler> logger)
             : base(gameRoundDataManager: gameRoundDataManager, gameRoundLockManager: gameRoundLockManager, logger: logger)
         {
-            this._gameStatsPublisher = gameStatsPublisher ?? throw new ArgumentNullException(nameof(gameStatsPublisher));
+            this._gameStatisticsPublisher = gameStatisticsPublisher ?? throw new ArgumentNullException(nameof(gameStatisticsPublisher));
         }
 
         /// <inheritdoc />
@@ -63,10 +63,10 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
 
             await this.GameRoundDataManager.MarkAsBettingCompleteAsync(gameRoundId: gameRound.GameRoundId, blockNumber: networkBlockHeader.Number, transactionHash: transactionHash);
 
-            await this._gameStatsPublisher.GameRoundBettingEndedAsync(network: networkBlockHeader.Network,
-                                                                      gameRoundId: gameRound.GameRoundId,
-                                                                      blockNumber: networkBlockHeader.Number,
-                                                                      startBlockNumber: gameRound.BlockNumberCreated);
+            await this._gameStatisticsPublisher.GameRoundBettingEndedAsync(network: networkBlockHeader.Network,
+                                                                           gameRoundId: gameRound.GameRoundId,
+                                                                           blockNumber: networkBlockHeader.Number,
+                                                                           startBlockNumber: gameRound.BlockNumberCreated);
 
             return true;
         }

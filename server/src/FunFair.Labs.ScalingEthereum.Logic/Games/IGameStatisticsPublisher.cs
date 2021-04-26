@@ -8,7 +8,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games
     /// <summary>
     ///     Game stats events publisher
     /// </summary>
-    public interface IGameStatsPublisher
+    public interface IGameStatisticsPublisher
     {
         /// <summary>
         ///     Game round started data

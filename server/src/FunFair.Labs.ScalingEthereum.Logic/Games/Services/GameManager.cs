@@ -22,7 +22,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
     public sealed class GameManager : IGameManager
     {
         private readonly IGameRoundDataManager _gameRoundDataManager;
-        private readonly IGameStatsPublisher _gameStatsPublisher;
+        private readonly IGameStatisticsPublisher _gameStatisticsPublisher;
         private readonly IHasher _hasher;
         private readonly ILogger<GameManager> _logger;
         private readonly ILowBalanceWatcher _lowBalanceWatcher;
@@ -36,14 +36,14 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
         /// <param name="randomSource">Random source</param>
         /// <param name="transactionService">Transaction service</param>
         /// <param name="hasher">Hasher</param>
-        /// <param name="gameStatsPublisher">The game stats publisher</param>
+        /// <param name="gameStatisticsPublisher">The game stats publisher</param>
         /// <param name="lowBalanceWatcher">Low balance watcher</param>
         /// <param name="logger">Logger</param>
         public GameManager(IGameRoundDataManager gameRoundDataManager,
                            IRandomSource randomSource,
                            ITransactionService transactionService,
                            IHasher hasher,
-                           IGameStatsPublisher gameStatsPublisher,
+                           IGameStatisticsPublisher gameStatisticsPublisher,
                            ILowBalanceWatcher lowBalanceWatcher,
                            ILogger<GameManager> logger)
         {
@@ -52,7 +52,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
             this._transactionService = transactionService ?? throw new ArgumentNullException(nameof(transactionService));
             this._hasher = hasher ?? throw new ArgumentNullException(nameof(hasher));
             this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this._gameStatsPublisher = gameStatsPublisher ?? throw new ArgumentNullException(nameof(gameStatsPublisher));
+            this._gameStatisticsPublisher = gameStatisticsPublisher ?? throw new ArgumentNullException(nameof(gameStatisticsPublisher));
             this._lowBalanceWatcher = lowBalanceWatcher ?? throw new ArgumentNullException(nameof(lowBalanceWatcher));
         }
 
@@ -91,7 +91,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
                                                                  blockNumberCreated: networkBlockHeader.Number,
                                                                  transactionHash: pendingTransaction.TransactionHash);
 
-            await this._gameStatsPublisher.GameRoundStartingAsync(network: account.Network, gameRoundId: gameRoundId, transactionHash: pendingTransaction.TransactionHash);
+            await this._gameStatisticsPublisher.GameRoundStartingAsync(network: account.Network, gameRoundId: gameRoundId, transactionHash: pendingTransaction.TransactionHash);
         }
 
         /// <inheritdoc />
@@ -121,7 +121,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
 
                 await this._gameRoundDataManager.MarkAsBrokenAsync(gameRoundId: gameRoundId, closingBlockNumber: networkBlockHeader.Number, exceptionMessage: exception.Message);
 
-                await this._gameStatsPublisher.GameRoundBrokenAsync(network: account.Network, gameRoundId: gameRoundId);
+                await this._gameStatisticsPublisher.GameRoundBrokenAsync(network: account.Network, gameRoundId: gameRoundId);
 
                 return;
             }
@@ -130,7 +130,10 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
 
             await this._gameRoundDataManager.BeginCompleteAsync(gameRoundId: gameRoundId, blockNumberCreated: networkBlockHeader.Number, transactionHash: pendingTransaction.TransactionHash);
 
-            await this._gameStatsPublisher.GameRoundEndingAsync(network: account.Network, gameRoundId: gameRoundId, transactionHash: pendingTransaction.TransactionHash, seedReveal: game.SeedReveal);
+            await this._gameStatisticsPublisher.GameRoundEndingAsync(network: account.Network,
+                                                                     gameRoundId: gameRoundId,
+                                                                     transactionHash: pendingTransaction.TransactionHash,
+                                                                     seedReveal: game.SeedReveal);
         }
 
         /// <inheritdoc />
@@ -160,7 +163,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
 
                 await this._gameRoundDataManager.MarkAsBrokenAsync(gameRoundId: gameRoundId, closingBlockNumber: networkBlockHeader.Number, exceptionMessage: exception.Message);
 
-                await this._gameStatsPublisher.GameRoundBrokenAsync(network: account.Network, gameRoundId: gameRoundId);
+                await this._gameStatisticsPublisher.GameRoundBrokenAsync(network: account.Network, gameRoundId: gameRoundId);
 
                 return;
             }
@@ -169,7 +172,10 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
 
             await this._gameRoundDataManager.BeginCompleteAsync(gameRoundId: gameRoundId, blockNumberCreated: networkBlockHeader.Number, transactionHash: pendingTransaction.TransactionHash);
 
-            await this._gameStatsPublisher.GameRoundEndingAsync(network: account.Network, gameRoundId: gameRoundId, transactionHash: pendingTransaction.TransactionHash, seedReveal: game.SeedReveal);
+            await this._gameStatisticsPublisher.GameRoundEndingAsync(network: account.Network,
+                                                                     gameRoundId: gameRoundId,
+                                                                     transactionHash: pendingTransaction.TransactionHash,
+                                                                     seedReveal: game.SeedReveal);
         }
 
         /// <inheritdoc />
@@ -192,7 +198,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
 
                 await this._gameRoundDataManager.MarkAsBrokenAsync(gameRoundId: game.GameRoundId, closingBlockNumber: networkBlockHeader.Number, exceptionMessage: exception.Message);
 
-                await this._gameStatsPublisher.GameRoundBrokenAsync(network: account.Network, gameRoundId: game.GameRoundId);
+                await this._gameStatisticsPublisher.GameRoundBrokenAsync(network: account.Network, gameRoundId: game.GameRoundId);
 
                 return;
             }

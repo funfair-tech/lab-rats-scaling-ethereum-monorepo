@@ -20,24 +20,24 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
     public sealed class StartGameRoundEventHandler : GameRoundEventHandlerBase<StartGameRoundEventOutput>
     {
         private readonly IGameRoundTimeCalculator _gameRoundTimeCalculator;
-        private readonly IGameStatsPublisher _gameStatsPublisher;
+        private readonly IGameStatisticsPublisher _gameStatisticsPublisher;
 
         /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="gameStatsPublisher">Game stats web socket publisher</param>
+        /// <param name="gameStatisticsPublisher">Game stats web socket publisher</param>
         /// <param name="gameRoundDataManager">Game Round Data manager</param>
         /// <param name="gameRoundLockManager">Game Round Lock manager.</param>
         /// <param name="gameRoundTimeCalculator">Game Round time calculator.</param>
         /// <param name="logger">Logging.</param>
-        public StartGameRoundEventHandler(IGameStatsPublisher gameStatsPublisher,
+        public StartGameRoundEventHandler(IGameStatisticsPublisher gameStatisticsPublisher,
                                           IGameRoundDataManager gameRoundDataManager,
                                           IObjectLockManager<GameRoundId> gameRoundLockManager,
                                           IGameRoundTimeCalculator gameRoundTimeCalculator,
                                           ILogger<StartGameRoundEventHandler> logger)
             : base(gameRoundDataManager: gameRoundDataManager, gameRoundLockManager: gameRoundLockManager, logger: logger)
         {
-            this._gameStatsPublisher = gameStatsPublisher ?? throw new ArgumentNullException(nameof(gameStatsPublisher));
+            this._gameStatisticsPublisher = gameStatisticsPublisher ?? throw new ArgumentNullException(nameof(gameStatisticsPublisher));
             this._gameRoundTimeCalculator = gameRoundTimeCalculator ?? throw new ArgumentNullException(nameof(gameRoundTimeCalculator));
         }
 
@@ -73,10 +73,10 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
                                                           blockNumberCreated: newRoundState.BlockNumberCreated,
                                                           transactionHash: transactionHash);
 
-            await this._gameStatsPublisher.GameRoundStartedAsync(network: newRoundState.GameContract.Network,
-                                                                 gameRoundId: newRoundState.GameRoundId,
-                                                                 this._gameRoundTimeCalculator.CalculateTimeLeft(gameRound: newRoundState),
-                                                                 blockNumber: newRoundState.BlockNumberCreated);
+            await this._gameStatisticsPublisher.GameRoundStartedAsync(network: newRoundState.GameContract.Network,
+                                                                      gameRoundId: newRoundState.GameRoundId,
+                                                                      this._gameRoundTimeCalculator.CalculateTimeLeft(gameRound: newRoundState),
+                                                                      blockNumber: newRoundState.BlockNumberCreated);
 
             return true;
         }
