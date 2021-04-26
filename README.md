@@ -2,9 +2,7 @@
 
 This is the labs rats scaling hackathon project
 
-[Deployed](https://lab-rats-scaling-ethereum.netlify.app) - https://lab-rats-scaling-ethereum.netlify.app
-
-## Status
+[Deployed](https://lab-rats-scaling-ethereum.netlify.app)
 
 | What | Status |
 | --- | :-- |
