@@ -8,6 +8,7 @@ using FunFair.Common.Data.Services;
 using FunFair.Labs.ScalingEthereum.Data.SqlServer.Accounts;
 using FunFair.Labs.ScalingEthereum.Data.SqlServer.Events;
 using FunFair.Labs.ScalingEthereum.Data.SqlServer.Faucet;
+using FunFair.Labs.ScalingEthereum.Data.SqlServer.Games;
 using FunFair.Labs.ScalingEthereum.Data.SqlServer.Locking;
 using FunFair.Labs.ScalingEthereum.Data.SqlServer.Players;
 using FunFair.Labs.ScalingEthereum.Data.SqlServer.Transactions;
@@ -50,6 +51,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer
             ObjectLocking.Configure(services);
             FaucetTracking.Configure(services);
             Player.Configure(services);
+            GameSupport.Configure(services);
         }
 
         private static void RegisterDatabaseServices(IServiceCollection services)

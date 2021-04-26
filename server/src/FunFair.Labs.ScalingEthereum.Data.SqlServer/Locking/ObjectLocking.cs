@@ -6,6 +6,7 @@ using FunFair.Labs.ScalingEthereum.Data.SqlServer.Locking.Builders.ObjectBuilder
 using FunFair.Labs.ScalingEthereum.Data.SqlServer.Locking.Builders.ObjectBuilders.Entities;
 using FunFair.Labs.ScalingEthereum.Data.SqlServer.Locking.Builders.ObjectBuilders.Models;
 using FunFair.Labs.ScalingEthereum.Data.SqlServer.Locking.DataManagers;
+using FunFair.Labs.ScalingEthereum.DataTypes.Primitives;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Locking
@@ -23,6 +24,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Locking
         private static void RegisterSqlToDomainObjectsBuilders(IServiceCollection services)
         {
             services.AddSingleton(typeof(IObjectBuilder<ObjectLockEntity<EthereumAddress>, ObjectLock<EthereumAddress>>), typeof(ObjectLockBuilder<EthereumAddress>));
+            services.AddSingleton(typeof(IObjectBuilder<ObjectLockEntity<GameRoundId>, ObjectLock<GameRoundId>>), typeof(ObjectLockBuilder<GameRoundId>));
         }
 
         private static void RegisterDataManagers(IServiceCollection services)

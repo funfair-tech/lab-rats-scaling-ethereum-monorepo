@@ -26,7 +26,6 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games
         {
             services.AddSingleton<IObjectBuilder<BlockNumberEntity, BlockNumber>, BlockNumberBuilder>();
             services.AddSingleton<IObjectBuilder<GameRoundEntity, GameRound>, GameRoundBuilder>();
-            services.AddSingleton<IObjectBuilder<GameRoundPlayerWinEntity, GameRoundPlayerWin>, GameRoundPlayerWinBuilder>();
             services.AddSingleton<IObjectBuilder<GameHistoryEntity, GameHistory>, GameHistoryBuilder>();
             services.AddSingleton<IObjectBuilder<TransactionHashEntity, TransactionHash>, TransactionHashBuilder>();
         }

@@ -22,7 +22,6 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
         private readonly ISqlServerDatabase _database;
         private readonly IObjectCollectionBuilder<GameHistoryEntity, GameHistory> _gameHistoryBuilder;
         private readonly IObjectCollectionBuilder<GameRoundEntity, GameRound> _gameRoundBuilder;
-        private readonly IObjectCollectionBuilder<GameRoundPlayerWinEntity, GameRoundPlayerWin> _gameRoundPlayerWinsBuilder;
         private readonly IObjectCollectionBuilder<TransactionHashEntity, TransactionHash> _transactionHashBuilder;
         private readonly ISqlDataTableBuilder<WinAmountEntity> _winAmountTableBuilder;
 
@@ -32,14 +31,12 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
         /// <param name="database">The database to connect to.</param>
         /// <param name="gameRoundBuilder">Game round builder.</param>
         /// <param name="blockNumberBuilder">Block number builder.</param>
-        /// <param name="gameRoundWinHistoryBuilder">Game round win history builder</param>
         /// <param name="winAmountTableBuilder">Win amount table builder</param>
         /// <param name="gameHistoryBuilder">Game history builder.</param>
         /// <param name="transactionHashBuilder"></param>
         public GameRoundDataManager(ISqlServerDatabase database,
                                     IObjectCollectionBuilder<GameRoundEntity, GameRound> gameRoundBuilder,
                                     IObjectBuilder<BlockNumberEntity, BlockNumber> blockNumberBuilder,
-                                    IObjectCollectionBuilder<GameRoundPlayerWinEntity, GameRoundPlayerWin> gameRoundWinHistoryBuilder,
                                     ISqlDataTableBuilder<WinAmountEntity> winAmountTableBuilder,
                                     IObjectCollectionBuilder<GameHistoryEntity, GameHistory> gameHistoryBuilder,
                                     IObjectCollectionBuilder<TransactionHashEntity, TransactionHash> transactionHashBuilder)
@@ -50,7 +47,6 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
             this._winAmountTableBuilder = winAmountTableBuilder ?? throw new ArgumentNullException(nameof(winAmountTableBuilder));
             this._gameHistoryBuilder = gameHistoryBuilder ?? throw new ArgumentNullException(nameof(gameHistoryBuilder));
             this._transactionHashBuilder = transactionHashBuilder ?? throw new ArgumentNullException(nameof(transactionHashBuilder));
-            this._gameRoundPlayerWinsBuilder = gameRoundWinHistoryBuilder ?? throw new ArgumentNullException(nameof(gameRoundWinHistoryBuilder));
         }
 
         /// <inheritdoc />
