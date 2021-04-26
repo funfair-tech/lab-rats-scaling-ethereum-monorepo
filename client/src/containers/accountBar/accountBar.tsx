@@ -28,8 +28,8 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
     <section className='accountBar__content'>
       <section>{props.title}</section>
       <section>{tokenBalance}</section>
-      <section><Button onClick={()=>{gameService.callTest()}}>test call</Button></section>
-      <section><Button onClick={()=>{gameService.sendTest()}}>test send</Button></section>
+      {/* <section><Button onClick={()=>{gameService.callTest()}}>test call</Button></section> */}
+      {/* <section><Button onClick={()=>{gameService.sendTest()}}>test send</Button></section> */}
       <section>{
         props.user.authenticated ? <Button onClick={logOutOfWallet}>Sign out</Button> :
         <Button onClick={loginToWallet} disabled={props.user.loading}>{props.user.loading ? 'Loading...': 'Sign in'}</Button>
