@@ -3,7 +3,6 @@ on:
   push:
     branches:
     - "master"
-    - "feature/*"
     paths:
     - 'solidity/**/*'
   workflow_dispatch:
