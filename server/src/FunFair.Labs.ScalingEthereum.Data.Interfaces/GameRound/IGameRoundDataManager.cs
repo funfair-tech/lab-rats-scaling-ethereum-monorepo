@@ -102,8 +102,18 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         /// <summary>
         ///     Get all game rounds that can be closed
         /// </summary>
+        /// <param name="network">The network</param>
+        /// <param name="dateTimeOnNetwork">The time according to the network.</param>
         /// <returns>Collection of games that can be closed on that network.</returns>
         Task<IReadOnlyList<GameRound>> GetAllForClosingAsync(EthereumNetwork network, DateTime dateTimeOnNetwork);
+
+        /// <summary>
+        ///     Get all game rounds where betting can be closed
+        /// </summary>
+        /// <param name="network">The network</param>
+        /// <param name="dateTimeOnNetwork">The time according to the network.</param>
+        /// <returns>Collection of games where betting can be closed on the network.</returns>
+        Task<IReadOnlyList<GameRound>> GetAllForClosingBettingAsync(EthereumNetwork network, DateTime dateTimeOnNetwork);
 
         /// <summary>
         ///     Get the last game round that was completed on the network
@@ -140,13 +150,6 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         /// <param name="exceptionMessage">Reason why it's broken.</param>
         /// <returns></returns>
         Task MarkAsBrokenAsync(GameRoundId gameRoundId, BlockNumber closingBlockNumber, string exceptionMessage);
-
-        /// <summary>
-        ///     Game round player wins
-        /// </summary>
-        /// <param name="gameRoundId">Game round id</param>
-        /// <returns>Game round win history data</returns>
-        Task<IReadOnlyList<GameRoundPlayerWin>> GetGameRoundPlayerWinsAsync(GameRoundId gameRoundId);
 
         /// <summary>
         ///     Gets a list of games that need to be fixed.

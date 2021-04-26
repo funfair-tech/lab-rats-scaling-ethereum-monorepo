@@ -60,12 +60,6 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
         }
 
         /// <inheritdoc />
-        public Task<IReadOnlyList<GameRoundPlayerWin>> GetGameRoundPlayerWinsAsync(GameRoundId gameRoundId)
-        {
-            return this._database.QueryAsync(builder: this._gameRoundPlayerWinsBuilder, storedProcedure: @"Games.GameRoundPlayerWin_GetByGameRoundId", new {GameRoundId = gameRoundId});
-        }
-
-        /// <inheritdoc />
         public Task<IReadOnlyList<GameRound>> GetGamesToFixAsync(EthereumNetwork network, DateTime dateTimeOnNetwork)
         {
             return this._database.QueryAsync(builder: this._gameRoundBuilder, storedProcedure: @"Games.GameRound_GetGamesToFix", new {network = network.Name, dateTimeOnNetwork});
