@@ -1,4 +1,4 @@
-# lab-rats-scaling-ethereum-monorepo
+# Lab Rats: Eth Global Scaling Ethereum Hackathon
 
 This is the labs rats scaling hackathon project
 
