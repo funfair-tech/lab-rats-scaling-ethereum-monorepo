@@ -31,10 +31,6 @@ BEGIN
         G.[DateStarted],
         G.[DateClosed]
     FROM Games.GameRound G
-    INNER JOIN Games.ProgressivePot P
-        ON G.[Network] = P.[Network]
-            AND G.[ProgressivePotId] = P.[ProgressivePotId]
-            AND P.[Status] = 'ACTIVE'
     WHERE G.[Network] = @Network
         AND (
             (
