@@ -1,6 +1,6 @@
 ﻿using FunFair.Ethereum.DataTypes.Primitives;
 
-namespace FunFair.Labs.ScalingEthereum.Logic.Alerts.Models
+namespace FunFair.Labs.ScalingEthereum.Logic.House.Models
 {
     namespace FunFair.Labs.MultiPlayer.Logic.Alerts.Models
     {

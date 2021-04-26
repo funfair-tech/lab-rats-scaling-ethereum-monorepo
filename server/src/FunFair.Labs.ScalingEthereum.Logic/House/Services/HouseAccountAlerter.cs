@@ -13,7 +13,7 @@ using FunFair.Ethereum.Networks.Interfaces;
 using FunFair.Ethereum.Wallet.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace FunFair.Labs.ScalingEthereum.Logic.Alerts.Services
+namespace FunFair.Labs.ScalingEthereum.Logic.House.Services
 {
     /// <summary>
     ///     House Account Alerting

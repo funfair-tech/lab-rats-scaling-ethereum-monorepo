@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FunFair.Ethereum.Balances.Interfaces.EventArguments;
 
-namespace FunFair.Labs.ScalingEthereum.Logic.Alerts
+namespace FunFair.Labs.ScalingEthereum.Logic.House
 {
     /// <summary>
     ///     House Account Alerting
