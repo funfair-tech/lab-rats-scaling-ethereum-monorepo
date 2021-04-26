@@ -10,3 +10,5 @@ UPDATE [Players].[PlayerCount]
 SET [PlayerCount] = 0
 WHERE [MachineName] = @MachineName
 GO
+
+

@@ -1,5 +1,6 @@
 SET QUOTED_IDENTIFIER ON
 GO
+
 SET ANSI_NULLS ON
 GO
 
@@ -19,3 +20,5 @@ BEGIN
     RETURN @applyAccessControlChecks;
 END
 GO
+
+

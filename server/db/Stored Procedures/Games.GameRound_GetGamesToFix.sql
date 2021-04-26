@@ -41,8 +41,7 @@ BEGIN
                 G.STATUS = 'BETTING_STOPPING'
                 AND DATEADD(MINUTE, @closeGameTimeout, G.DateUpdated) < @DateTimeOnNetwork
                 )
-
-                OR (
+            OR (
                 G.STATUS = 'COMPLETING'
                 AND DATEADD(MINUTE, @closeGameTimeout, G.DateUpdated) < @DateTimeOnNetwork
                 )

@@ -26,7 +26,7 @@ BEGIN
         inserted.[DateUpdated],
         @blockNumber,
         NULL
-    INTO [Games].[GameRoundBlockHistory]([GameRoundId],  [Status], [ChangeDate], [BlockNumber], [TransactionHash])
+    INTO [Games].[GameRoundBlockHistory]([GameRoundId], [Status], [ChangeDate], [BlockNumber], [TransactionHash])
     WHERE GameRoundId = @GameRoundId;
 
     INSERT INTO [Games].[BrokenGames] (

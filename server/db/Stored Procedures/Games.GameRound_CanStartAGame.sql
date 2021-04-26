@@ -4,9 +4,7 @@ GO
 SET ANSI_NULLS ON
 GO
 
-CREATE PROCEDURE [Games].[GameRound_CanStartAGameForPot] (
-    @InterGameDelay INT
-    )
+CREATE PROCEDURE [Games].[GameRound_CanStartAGameForPot] (@InterGameDelay INT)
 AS
 BEGIN
     SET NOCOUNT ON;

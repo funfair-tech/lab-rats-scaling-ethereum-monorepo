@@ -40,7 +40,7 @@ BEGIN
         inserted.[DateCreated],
         inserted.[BlockNumberCreated],
         @TransactionHash
-    INTO [Games].[GameRoundBlockHistory]([GameRoundId],  [Status], [ChangeDate], [BlockNumber], [TransactionHash])
+    INTO [Games].[GameRoundBlockHistory]([GameRoundId], [Status], [ChangeDate], [BlockNumber], [TransactionHash])
     VALUES (
         @GameRoundId,
         @GameContract,

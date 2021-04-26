@@ -10,3 +10,5 @@ SELECT COALESCE(SUM([PlayerCount]), 0) AS [PlayerCount]
 FROM [Players].[PlayerCount](NOLOCK)
 WHERE NETWORK = @Network
 GO
+
+
