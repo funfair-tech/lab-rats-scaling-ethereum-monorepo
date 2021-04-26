@@ -33,6 +33,8 @@ namespace FunFair.Labs.ScalingEthereum.Contracts
 
         private static void AddAbiConverters(IServiceCollection services)
         {
+            services.AddSingleton<IAbiType<GameRoundId>, GameRoundIdAbiConverter>();
+            services.AddSingleton<IAbiType<WinLoss>, WinLossAbiConverter>();
             services.AddSingleton<IAbiType<Seed>, SeedAbiConverter>();
             services.AddSingleton<IAbiType<DataTypes.Primitives.Token>, TokenAbiConverter>();
         }

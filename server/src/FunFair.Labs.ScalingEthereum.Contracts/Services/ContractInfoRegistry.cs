@@ -1,5 +1,6 @@
 ﻿using FunFair.Ethereum.Contracts;
 using FunFair.Labs.ScalingEthereum.Contracts.Faucet;
+using FunFair.Labs.ScalingEthereum.Contracts.GameManager;
 using FunFair.Labs.ScalingEthereum.Contracts.Token;
 
 namespace FunFair.Labs.ScalingEthereum.Contracts.Services
@@ -13,7 +14,7 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.Services
         ///     Constructor.
         /// </summary>
         public ContractInfoRegistry()
-            : base(new[] {TokenContract.Create(), FaucetContract.Create()})
+            : base(new[] {TokenContract.Create(), FaucetContract.Create(), GameManagerContract.Create()})
         {
         }
     }
