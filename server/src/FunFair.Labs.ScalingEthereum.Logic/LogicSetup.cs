@@ -20,13 +20,13 @@ using Microsoft.Extensions.DependencyInjection;
 namespace FunFair.Labs.ScalingEthereum.Logic
 {
     /// <summary>
-    ///     Configures the Ethereum Contracts
+    ///     Configures the Server logic
     /// </summary>
     [ExcludeFromCodeCoverage]
     public static class LogicSetup
     {
         /// <summary>
-        ///     Configures the Ethereum Contracts
+        ///     Configures the Server logic
         /// </summary>
         /// <param name="services">The services collection to register services in.</param>
         /// <param name="faucetConfiguration">Faucet configuration</param>
@@ -79,13 +79,15 @@ namespace FunFair.Labs.ScalingEthereum.Logic
             services.AddSingleton<IGameManager, GameManager>();
             services.AddSingleton<ITransactionService, TransactionService>();
 
-            services.AddSingleton<IEndGameService, EndGameService>();
             services.AddSingleton<IStartGameService, StartGameService>();
+            services.AddSingleton<IEndGameBettingService, EndGameBettingService>();
+            services.AddSingleton<IEndGameService, EndGameService>();
             services.AddSingleton<IBrokenGameRecovery, BrokenGameRecovery>();
             services.AddSingleton<IStartRoundGameHistoryBuilder, StartRoundGameHistoryBuilder>();
             services.AddSingleton<IGameRoundTimeCalculator, GameRoundTimeCalculator>();
 
             services.AddHostedSingletonService<IStartGameBackgroundService, StartGameBackgroundService>();
+            services.AddHostedSingletonService<IEndGameBettingBackgroundService, EndGameBettingBackgroundService>();
             services.AddHostedSingletonService<IEndGameBackgroundService, EndGameBackgroundService>();
             services.AddHostedSingletonService<IBrokenGameRecoveryService, BrokenGameRecoveryService>();
         }

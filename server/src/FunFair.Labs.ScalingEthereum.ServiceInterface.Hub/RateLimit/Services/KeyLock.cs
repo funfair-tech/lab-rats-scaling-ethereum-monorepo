@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using NonBlocking;
 
 namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub.RateLimit.Services
 {
@@ -29,6 +29,11 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub.RateLimit.Services
         /// <returns>The object to lock on</returns>
         public object GetLock(T key)
         {
+            return this.GetLockCommon(key);
+        }
+
+        private object GetLockCommon(T key)
+        {
             return this._locks.GetOrAdd(key: key, valueFactory: _ => new object());
         }
 
@@ -41,7 +46,7 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub.RateLimit.Services
         /// <returns>The result of the func</returns>
         public TResult RunWithLock<TResult>(T key, Func<TResult> func)
         {
-            lock (this._locks.GetOrAdd(key: key, valueFactory: _ => new object()))
+            lock (this.GetLockCommon(key))
             {
                 return func();
             }
@@ -54,7 +59,7 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub.RateLimit.Services
         /// <param name="action">The action to run</param>
         public void RunWithLock(T key, Action action)
         {
-            lock (this._locks.GetOrAdd(key: key, valueFactory: _ => new object()))
+            lock (this.GetLockCommon(key))
             {
                 action();
             }

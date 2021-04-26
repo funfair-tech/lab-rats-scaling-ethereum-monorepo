@@ -14,9 +14,9 @@ using FunFair.Ethereum.DataTypes.Helpers;
 using FunFair.Ethereum.DataTypes.Primitives;
 using FunFair.Labs.ScalingEthereum.Authentication.Config;
 using FunFair.Labs.ScalingEthereum.DataTypes.Primitives;
-using FunFair.Labs.ScalingEthereum.Logic.Alerts.Models;
-using FunFair.Labs.ScalingEthereum.Logic.Alerts.Models.FunFair.Labs.MultiPlayer.Logic.Alerts.Models;
 using FunFair.Labs.ScalingEthereum.Logic.Faucet.Models;
+using FunFair.Labs.ScalingEthereum.Logic.House;
+using FunFair.Labs.ScalingEthereum.Logic.House.Models.FunFair.Labs.MultiPlayer.Logic.Alerts.Models;
 using FunFair.Labs.ScalingEthereum.Server.ServiceStartup;
 using Microsoft.Extensions.Configuration;
 
