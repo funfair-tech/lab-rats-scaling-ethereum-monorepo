@@ -23,5 +23,5 @@ jobs:
         run: npm install
       - name: deploy contracts
         env: 
-          YOUR_PRIVATE_KEY: secrets.YOUR_PRIVATE_KEY
+          YOUR_PRIVATE_KEY: {{secrets.YOUR_PRIVATE_KEY}}
         run: npm run deploy-optimism
