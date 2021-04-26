@@ -4,15 +4,16 @@
   border-width: 0;
   outline: none;
   border-radius: 2px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
-  background-color: #3c6eb5;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  background-color: #a500e1;
   color: #ecf0f1;
-  transition: background-color .3s;
+  transition: background-color 0.3s;
   cursor: pointer;
 }
 
-.btn:hover, .btn:focus {
-  background-color: #2f5487;
+.btn:hover,
+.btn:focus {
+  background-color: #650488;
 }
 
 .btn > * {
