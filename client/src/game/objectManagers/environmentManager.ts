@@ -30,6 +30,11 @@ export class EnvironmentManager extends FFEngine.Component {
     public OnRendererResize(params: FFEngine.IRendererResizeParams): void {
         super.OnRendererResize(params);
         console.log('Game Resized to: ' + params.width + ',' + params.height);
+
+        if (this.camera) {
+            this.camera.aspect = params.width / params.height;
+            this.camera.updateProjectionMatrix();
+        }
     }
 
     public AssetLoadingFinished(): void {
