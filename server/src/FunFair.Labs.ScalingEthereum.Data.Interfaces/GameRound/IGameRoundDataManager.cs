@@ -79,14 +79,21 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
                                byte[] history);
 
         /// <summary>
-        ///     Gets the earliest block number of pots that are being created.
+        ///     Gets the earliest block number of games that are being created.
         /// </summary>
         /// <param name="network">The network to query.</param>
-        /// <returns>The block number, if there are pending pots; otherwise, null.</returns>
+        /// <returns>The block number, if there are pending games; otherwise, null.</returns>
         Task<BlockNumber?> GetEarliestBlockNumberForPendingCreationAsync(EthereumNetwork network);
 
         /// <summary>
         ///     Gets the earliest block number of pots that are being closed.
+        /// </summary>
+        /// <param name="network">The network to query.</param>
+        /// <returns>The block number, if there are closing games; otherwise, null.</returns>
+        Task<BlockNumber?> GetEarliestBlockNumberForPendingBettingCloseAsync(EthereumNetwork network);
+
+        /// <summary>
+        ///     Gets the earliest block number of games that are being closed.
         /// </summary>
         /// <param name="network">The network to query.</param>
         /// <returns>The block number, if there are closing pots; otherwise, null.</returns>
@@ -106,7 +113,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         Task<GameRound?> GetLastCompletedForNetworkAsync(EthereumNetwork network);
 
         /// <summary>
-        ///     Gets all the running games for the progressive pot.
+        ///     Gets all the running games.
         /// </summary>
         /// <returns>Collection of games.</returns>
         Task<IReadOnlyList<GameRound>> GetAllRunningAsync();
@@ -164,5 +171,23 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         /// <param name="functionName">Function name</param>
         /// <returns>List of transactions.</returns>
         Task<IReadOnlyList<TransactionHash>> GetTransactionsAsync(GameRoundId gameRoundId, string functionName);
+
+        /// <summary>
+        ///     Marks the game so that it is in the state where no more bets can be accepted.
+        /// </summary>
+        /// <param name="gameRoundId">The game stop betting on.</param>
+        /// <param name="blockNumber">The block number the state change was initiated in.</param>
+        /// <param name="transactionHash">The transaction hash the change was initiated in.</param>
+        /// <returns></returns>
+        Task MarkAsBettingClosingAsync(GameRoundId gameRoundId, BlockNumber blockNumber, TransactionHash transactionHash);
+
+        /// <summary>
+        ///     Marks the game so that it reflects that no more bets can be accepted..
+        /// </summary>
+        /// <param name="gameRoundId">The game betting was stopped oon.</param>
+        /// <param name="blockNumber">The block number the state change was completed in.</param>
+        /// <param name="transactionHash">The transaction hash the change was completed.</param>
+        /// <returns></returns>
+        Task MarkAsBettingCompleteAsync(GameRoundId gameRoundId, BlockNumber blockNumber, TransactionHash transactionHash);
     }
 }
