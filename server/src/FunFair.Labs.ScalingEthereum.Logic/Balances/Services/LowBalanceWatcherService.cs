@@ -3,11 +3,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using FunFair.Common.Services;
-using FunFair.Labs.ScalingEthereum.Logic.Alerts;
 using FunFair.Labs.ScalingEthereum.Logic.Faucet;
+using FunFair.Labs.ScalingEthereum.Logic.House;
 using Microsoft.Extensions.Logging;
 
-namespace FunFair.Labs.ScalingEthereum.Logic
+namespace FunFair.Labs.ScalingEthereum.Logic.Balances.Services
 {
     /// <summary>
     ///     Watcher of Casino accounts.
