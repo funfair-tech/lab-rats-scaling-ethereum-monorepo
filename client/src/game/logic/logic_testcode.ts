@@ -83,7 +83,7 @@ export class Logic_TestCode {
             
             //Call to place a bet as a local player
 
-            let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('LogicTest_FakePlayer', Logic_BetType.HIGHER + (keyCode - 49));
+            let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('0x1234567fakeplayer89abcdef', Logic_BetType.HIGHER + (keyCode - 49));
             if(response === Logic_BetResponse.BETSUBMITTED) {
                 console.log('Logic_TestCode.Keypressed local player bet type ' + (keyCode - 49) + ' successfully submitted');
             } else {
