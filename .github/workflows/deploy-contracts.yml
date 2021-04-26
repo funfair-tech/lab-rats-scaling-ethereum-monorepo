@@ -19,7 +19,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '10.14.2'
-      - run: npm install
-      - run: npm run deploy-optimism
-      - env:
+      - name: install dependencies
+        run: npm install
+      - name: deploy contracts
+        env: 
           YOUR_PRIVATE_KEY: secrets.YOUR_PRIVATE_KEY
+        run: npm run deploy-optimism
