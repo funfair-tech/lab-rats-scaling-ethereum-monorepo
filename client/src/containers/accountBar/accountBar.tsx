@@ -5,6 +5,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Button } from '../../components/button/button';
 import window from '@funfair-tech/wallet-sdk/window';
 import { clearUserState } from '../../store/actions/user.actions';
+import { gameService } from '../../services/game.service';
 
 interface Props extends ReduxProps {
   title: string;
@@ -27,6 +28,8 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
     <section className='accountBar__content'>
       <section>{props.title}</section>
       <section>{tokenBalance}</section>
+      <section><Button onClick={()=>{gameService.callTest()}}>test call</Button></section>
+      <section><Button onClick={()=>{gameService.sendTest()}}>test send</Button></section>
       <section>{
         props.user.authenticated ? <Button onClick={logOutOfWallet}>Sign out</Button> :
         <Button onClick={loginToWallet} disabled={props.user.loading}>{props.user.loading ? 'Loading...': 'Sign in'}</Button>

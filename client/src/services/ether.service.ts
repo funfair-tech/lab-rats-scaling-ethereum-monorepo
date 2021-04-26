@@ -1,10 +1,11 @@
 import { TransactionReceipt, Web3Provider } from '@ethersproject/providers';
 import window from '@funfair-tech/wallet-sdk/window';
-import { BigNumber, Contract, ContractInterface } from 'ethers';
+import { BigNumber, Contract, ContractInterface, utils } from 'ethers';
 
 class EtherService {
   private _provider: Web3Provider;
   constructor() {
+    // this._provider = new Web3Provider(window.funwallet.sdk.ethereum as any);
     this._provider = new Web3Provider(window.funwallet.sdk.ethereum as any);
   }
 
@@ -25,7 +26,12 @@ class EtherService {
     abi: ContractInterface,
     contractAddress: string
   ): TGeneratedTypedContext {
-    const contract = new Contract(contractAddress, abi, this._provider);
+    const signer = this._provider.getSigner(0);
+
+    // const contract = new Contract(contractAddress, abi, this._provider.getSigner());
+    const contract = new Contract(contractAddress, abi, signer);
+    // const contract = new Contract(contractAddress, abi);
+    // contract.connect(this._provider);
 
     return (contract as unknown) as TGeneratedTypedContext;
   }
@@ -44,6 +50,10 @@ class EtherService {
     transactionHash: string
   ): Promise<TransactionReceipt> {
     return await this._provider.waitForTransaction(transactionHash, 1);
+  }
+
+  public formatString(value: string): string {
+    return utils.formatBytes32String(value);
   }
 }
 
