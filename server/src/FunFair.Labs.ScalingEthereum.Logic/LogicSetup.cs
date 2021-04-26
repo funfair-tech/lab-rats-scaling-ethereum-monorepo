@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using FunFair.Common.Services;
-using FunFair.Labs.ScalingEthereum.Logic.Alerts;
-using FunFair.Labs.ScalingEthereum.Logic.Alerts.Models;
-using FunFair.Labs.ScalingEthereum.Logic.Alerts.Services;
+using FunFair.Labs.ScalingEthereum.Logic.Balances;
+using FunFair.Labs.ScalingEthereum.Logic.Balances.Services;
 using FunFair.Labs.ScalingEthereum.Logic.Faucet;
 using FunFair.Labs.ScalingEthereum.Logic.Faucet.Models;
 using FunFair.Labs.ScalingEthereum.Logic.Faucet.Services;
+using FunFair.Labs.ScalingEthereum.Logic.Games;
+using FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices;
+using FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services;
+using FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers;
+using FunFair.Labs.ScalingEthereum.Logic.Games.Services;
+using FunFair.Labs.ScalingEthereum.Logic.House;
+using FunFair.Labs.ScalingEthereum.Logic.House.Services;
 using FunFair.Labs.ScalingEthereum.Logic.Players;
 using FunFair.Labs.ScalingEthereum.Logic.Players.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,12 +42,19 @@ namespace FunFair.Labs.ScalingEthereum.Logic
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddSingleton<IDrainedFaucetAlerter, DrainedFaucetAlerter>();
-            services.AddSingleton<IHouseAccountAlerter, HouseAccountAlerter>();
-            services.AddHostedSingletonService<ILowBalanceWatcherService, LowBalanceWatcherService>();
-
+            RegisterBalances(services);
             RegisterPlayers(services);
             RegisterFaucet(services: services, faucetConfiguration: faucetConfiguration, faucetBalanceConfiguration: faucetBalanceConfiguration, houseAlerterConfiguration: houseAlerterConfiguration);
+            RegisterGames(services);
+        }
+
+        private static void RegisterBalances(IServiceCollection services)
+        {
+            services.AddSingleton<IDrainedFaucetAlerter, DrainedFaucetAlerter>();
+            services.AddSingleton<IHouseAccountAlerter, HouseAccountAlerter>();
+
+            services.AddSingleton<ILowBalanceWatcher, LowBalanceWatcher>();
+            services.AddHostedSingletonService<ILowBalanceWatcherService, LowBalanceWatcherService>();
         }
 
         private static void RegisterPlayers(IServiceCollection services)
@@ -58,6 +71,23 @@ namespace FunFair.Labs.ScalingEthereum.Logic
             services.AddSingleton(faucetConfiguration);
             services.AddSingleton(faucetBalanceConfiguration);
             services.AddSingleton(houseAlerterConfiguration);
+        }
+
+        private static void RegisterGames(IServiceCollection services)
+        {
+            services.AddSingleton<IGamesList, GamesList>();
+            services.AddSingleton<IGameManager, GameManager>();
+            services.AddSingleton<ITransactionService, TransactionService>();
+
+            services.AddSingleton<IEndGameService, EndGameService>();
+            services.AddSingleton<IStartGameService, StartGameService>();
+            services.AddSingleton<IBrokenGameRecovery, BrokenGameRecovery>();
+            services.AddSingleton<IStartRoundGameHistoryBuilder, StartRoundGameHistoryBuilder>();
+            services.AddSingleton<IGameRoundTimeCalculator, GameRoundTimeCalculator>();
+
+            services.AddHostedSingletonService<IStartGameBackgroundService, StartGameBackgroundService>();
+            services.AddHostedSingletonService<IEndGameBackgroundService, EndGameBackgroundService>();
+            services.AddHostedSingletonService<IBrokenGameRecoveryService, BrokenGameRecoveryService>();
         }
     }
 }
