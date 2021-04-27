@@ -75,8 +75,12 @@ contract MultiplayerGamesManager is Ownable() {
     //************************************************************************************************
     //** Contract Code
 
-    constructor(address _gameToken) {
+    constructor(address _gameToken, address[] memory _admins) {
         gameToken = ERC20Interface(_gameToken);
+
+        for(uint i = 0; i < _admins.length; i++) {
+            setAdmin(_admins[i], true);
+        }
 
         emit Constructor(_gameToken);
     }
