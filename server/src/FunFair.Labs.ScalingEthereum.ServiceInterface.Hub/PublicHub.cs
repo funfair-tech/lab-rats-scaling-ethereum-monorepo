@@ -37,7 +37,7 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
         /// </summary>
         /// <param name="networkName">Network id</param>
         /// <returns></returns>
-        [HubMethodName(name: "Subscribe")]
+        [HubMethodName(name: HubMethodNames.Subscribe)]
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Called by web socket clients.")]
         public Task SubscribeAsync(string networkName)
         {
