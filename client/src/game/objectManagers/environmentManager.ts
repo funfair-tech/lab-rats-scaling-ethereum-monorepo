@@ -1,10 +1,13 @@
 import { FFEngine } from '@funfair/engine';
-import { GridManager } from './gridManager';
+import { GridManager, GRID_MANAGER } from './gridManager';
 
 /**
  * Manages the 3D game environment including world camera and gameplay objects
  */
 export class EnvironmentManager extends FFEngine.Component {
+
+    private static readonly CAM_X_OFFSET: number = 2;
+    private static readonly CAM_Z: number = 7;
 
     private camera!: FFEngine.THREE.PerspectiveCamera;
     private cameraInterpolator!: FFEngine.Interpolator;
@@ -17,7 +20,7 @@ export class EnvironmentManager extends FFEngine.Component {
         ENVIRONMENT_MANAGER = this;
 
         //create world camera
-        let pos = new FFEngine.THREE.Vector3(2, 0, 7);
+        let pos = new FFEngine.THREE.Vector3(EnvironmentManager.CAM_X_OFFSET, 0, EnvironmentManager.CAM_Z);
         this.camera = FFEngine.instance.cameras['WORLD'] = FFEngine.instance.CreatePerspectiveCamera([pos.x, pos.y, pos.z]);
         this.camera.lookAt(new FFEngine.THREE.Vector3(0, 0, 0));
         this.container.add(this.camera);
@@ -40,26 +43,35 @@ export class EnvironmentManager extends FFEngine.Component {
         this.CreateScene();
     }
 
+    /**
+     * Moves the camera so the provided graph coordinate is centered on the screen
+     */
+    public SetCameraToGraphCoordinate(x: number, y: number): void {
+        let camPos = GRID_MANAGER.GridToWorld(x, y);
+        camPos.x += EnvironmentManager.CAM_X_OFFSET;
+        camPos.z = EnvironmentManager.CAM_Z;
+        this.MoveCamera(camPos);
+    }
+
     private CreateScene(): void {
 
         //create components
-        let grid = FFEngine.instance.CreateChildObjectWithComponent(this.container, GridManager);
+        FFEngine.instance.CreateChildObjectWithComponent(this.container, GridManager);
 
         //create some dummy graph data
-        grid.AddResult(0);
-        grid.AddResult(1);
-        grid.AddResult(-1);
-        grid.AddResult(2);
-        grid.AddResult(3);
+        GRID_MANAGER.AddResult(0);
+        GRID_MANAGER.AddResult(1);
+        GRID_MANAGER.AddResult(-1);
+        GRID_MANAGER.AddResult(2);
+        GRID_MANAGER.AddResult(3);
 
         //test camera
-        this.MoveCamera();
+        this.SetCameraToGraphCoordinate(4, 0);
     }
 
-    private MoveCamera(): void {
+    private MoveCamera(targetPosition: FFEngine.THREE.Vector3): void {
         
         let startPosition = new FFEngine.THREE.Vector3().copy(this.camera.position);
-        let targetPosition = new FFEngine.THREE.Vector3().set(1, 0, 6);
 
         let controlPosition = new FFEngine.THREE.Vector3(
             startPosition.x + ((targetPosition.x - startPosition.x) / 2 ),
