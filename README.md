@@ -2,6 +2,8 @@
 
 This is the labs rats scaling hackathon project
 
+A multiplayer trading graph betting game where you bet if the graph will go up or down. Sign and send the transaction on every bet using optimism L2 to show how you can do complete on chain betting without spending loads of ETH on gas.
+
 [Play](https://lab-rats-scaling-ethereum.netlify.app)
 
 
