@@ -1,5 +1,4 @@
 import { FFEngine } from '@funfair/engine';
-import { ASSETPACK, TextureAssetType } from '../assetPack';
 import { GridManager } from './gridManager';
 
 /**
