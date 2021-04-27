@@ -20,8 +20,11 @@ const func = async (hre) => {
 
   await deployFaucetContract(labRatsContractAddress, deploy, deployer, hre);
 
+  const gameContractAddress = await deployGameContract(deploy, deployer, hre);
+
   await deployMultiplayerGamesManagerContract(
     labRatsContractAddress,
+    gameContractAddress,
     deploy,
     deployer,
     hre
@@ -82,8 +85,18 @@ const deployFaucetContract = async (
   return faucetResult.address;
 };
 
+const deployGameContract = async (deploy, deployer, hre) => {
+  const gamesManagerResult = await deploy(
+    'RatTrace',
+    buildUpDeployOptions([], deployer, hre)
+  );
+
+  return gamesManagerResult.address;
+};
+
 const deployMultiplayerGamesManagerContract = async (
   labRatContractAddress,
+  gameContractAddress,
   deploy,
   deployer,
   hre
@@ -97,6 +110,7 @@ const deployMultiplayerGamesManagerContract = async (
           '0x16485F14e561214E2DFfBffDD5757059E8c74CA3',
           '0x1F9fcF0A1390C60b88f68e2912eA5f2673413C49',
         ],
+        [gameContractAddress],
       ],
       deployer,
       hre

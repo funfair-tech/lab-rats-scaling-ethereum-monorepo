@@ -97,7 +97,7 @@ contract MultiplayerGamesManager is Ownable() {
     }
 
     //************************************************************************************************
-    function setGameDefinitionPermission(address _gameDefinition, bool _permission) public onlyAdmin {
+    function setGameDefinitionPermission(address _gameDefinition, bool _permission) internal {
         permittedGameDefinitions[_gameDefinition] = _permission;
 
         emit SetGameDefinitionPermission(_gameDefinition, _permission);
