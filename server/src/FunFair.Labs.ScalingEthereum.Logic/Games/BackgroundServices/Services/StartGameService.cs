@@ -127,7 +127,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
                     return;
                 }
 
-                this._logger.LogInformation($"{blockHeader.Network.Name}: Starting new game {gameContract} using game manager: {gameManagerContractAddress}");
+                this._logger.LogInformation($"{blockHeader.Network.Name}: Starting new game of game contract {gameContract} using game manager: {gameManagerContractAddress}");
 
                 await this._gameManager.StartGameAsync(account: networkSigningAccount, gameContract: gameContract, networkBlockHeader: blockHeader, cancellationToken: cancellationToken);
             }
