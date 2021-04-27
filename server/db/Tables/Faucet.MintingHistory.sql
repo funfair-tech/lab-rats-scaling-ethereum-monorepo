@@ -1,5 +1,5 @@
 CREATE TABLE [Faucet].[MintingHistory] (
-    [MintId] [BIGINT] IDENTITY (1,1) NOT NULL,
+    [MintId] [BIGINT] IDENTITY(1, 1) NOT NULL,
     [Network] [varchar](50) COLLATE Latin1_General_CI_AS NOT NULL,
     [Address] [char](42) COLLATE Latin1_General_CI_AS NOT NULL,
     [NativeCurrencyIssued] [varchar](66) COLLATE Latin1_General_CI_AS NOT NULL,
