@@ -175,9 +175,9 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
 
                     await this.Clients.Caller.FaucetDrip(nativeCurrencyAmount: drip.EthAmount, tokenAmount: drip.TokenAmount, transactionHash: drip.Transaction.TransactionHash);
                 }
-                catch
+                catch (Exception exception)
                 {
-                    // TODO: Log
+                    this.Logger.LogError(new EventId(exception.HResult), exception: exception, $"Failed to issue funds from faucet: {exception.Message}");
                 }
             }
         }

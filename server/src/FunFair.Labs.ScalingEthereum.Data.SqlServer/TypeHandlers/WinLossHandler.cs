@@ -8,24 +8,24 @@ using FunFair.Labs.ScalingEthereum.DataTypes.Primitives;
 namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.TypeHandlers
 {
     /// <summary>
-    ///     Dapper type mapper for <see cref="Token" /> objects.
+    ///     Dapper type mapper for <see cref="WinLoss" /> objects.
     /// </summary>
-    public sealed class TokenHandler : SqlMapper.TypeHandler<Token>, IHandlerMetadata
+    public sealed class WinLossHandler : SqlMapper.TypeHandler<WinLoss>, IHandlerMetadata
     {
         /// <inheritdoc />
         public Type SerializeAsType => typeof(string);
 
         /// <inheritdoc />
-        public long MaximumLength => Token.MaximumStringLength;
+        public long MaximumLength => WinLoss.MaximumStringLength;
 
         /// <inheritdoc />
-        public override void SetValue(IDbDataParameter parameter, Token value)
+        public override void SetValue(IDbDataParameter parameter, WinLoss value)
         {
             parameter.Value = value.ToString();
         }
 
         /// <inheritdoc />
-        public override Token Parse(object value)
+        public override WinLoss Parse(object value)
         {
             switch (value)
             {
@@ -36,19 +36,19 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.TypeHandlers
             }
         }
 
-        private static Token ParseLong(in long longValue)
+        private static WinLoss ParseLong(in long longValue)
         {
             return new(longValue);
         }
 
-        private static Token ParseBytes(byte[] byteValue)
+        private static WinLoss ParseBytes(byte[] byteValue)
         {
             return new(byteValue);
         }
 
-        private static Token ParseString(string stringValue)
+        private static WinLoss ParseString(string stringValue)
         {
-            if (!Token.TryParse(source: stringValue, out Token? value))
+            if (!WinLoss.TryParse(source: stringValue, out WinLoss? value))
             {
                 throw new InvalidDataException();
             }

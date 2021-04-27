@@ -8,47 +8,41 @@ using FunFair.Labs.ScalingEthereum.DataTypes.Primitives;
 namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.TypeHandlers
 {
     /// <summary>
-    ///     Dapper type mapper for <see cref="Token" /> objects.
+    ///     Type Handler for Serializing <see cref="GameRoundId" /> properties to/from the database.
     /// </summary>
-    public sealed class TokenHandler : SqlMapper.TypeHandler<Token>, IHandlerMetadata
+    public sealed class GameRoundIdHandler : SqlMapper.TypeHandler<GameRoundId>, IHandlerMetadata
     {
         /// <inheritdoc />
         public Type SerializeAsType => typeof(string);
 
         /// <inheritdoc />
-        public long MaximumLength => Token.MaximumStringLength;
+        public long MaximumLength => GameRoundId.RequiredStringLength;
 
         /// <inheritdoc />
-        public override void SetValue(IDbDataParameter parameter, Token value)
+        public override void SetValue(IDbDataParameter parameter, GameRoundId value)
         {
             parameter.Value = value.ToString();
         }
 
         /// <inheritdoc />
-        public override Token Parse(object value)
+        public override GameRoundId Parse(object value)
         {
             switch (value)
             {
-                case long longValue: return ParseLong(longValue);
                 case string stringValue: return ParseString(stringValue);
                 case byte[] byteValue: return ParseBytes(byteValue);
                 default: throw new InvalidDataException();
             }
         }
 
-        private static Token ParseLong(in long longValue)
-        {
-            return new(longValue);
-        }
-
-        private static Token ParseBytes(byte[] byteValue)
+        private static GameRoundId ParseBytes(byte[] byteValue)
         {
             return new(byteValue);
         }
 
-        private static Token ParseString(string stringValue)
+        private static GameRoundId ParseString(string stringValue)
         {
-            if (!Token.TryParse(source: stringValue, out Token? value))
+            if (!GameRoundId.TryParse(source: stringValue, out GameRoundId? value))
             {
                 throw new InvalidDataException();
             }

@@ -355,7 +355,7 @@ namespace FunFair.Labs.ScalingEthereum.DataTypes.Primitives
         /// <inheritDoc />
         public override string ToString()
         {
-            return HexEncodedString.Create(this.ToBigEndianByteArray());
+            return this.TokenAmount.ToString();
         }
 
         /// <inheritDoc />

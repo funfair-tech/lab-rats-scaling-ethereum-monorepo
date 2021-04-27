@@ -38,10 +38,10 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Faucet.DataManagers
                                                new
                                                {
                                                    Network = recipient.Network.Name,
-                                                   IPAddress = ipAddress,
                                                    recipient.Address,
-                                                   NativeCurrencyAmount = nativeCurrencyAmount,
-                                                   TokenAmount = tokenAmount
+                                                   IPAddress = ipAddress,
+                                                   NativeCurrencyIssued = nativeCurrencyAmount,
+                                                   TokenIssued = tokenAmount
                                                });
         }
     }

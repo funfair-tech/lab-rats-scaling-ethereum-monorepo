@@ -21,8 +21,10 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer
 
         private static void RegisterServerSpecificTypes(ITypeMappingRegistrar handlers)
         {
+            handlers.AddHandler<GameRoundId, GameRoundIdHandler>();
             handlers.AddHandler<Seed, SeedHandler>();
             handlers.AddHandler<Token, TokenHandler>();
+            handlers.AddHandler<WinLoss, WinLossHandler>();
         }
     }
 }
