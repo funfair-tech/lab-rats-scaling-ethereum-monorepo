@@ -1,7 +1,7 @@
 import * as signalR from '@microsoft/signalr';
 import window from '@funfair-tech/wallet-sdk/window';
 import { apiRequest } from './api-request.service';
-import { RoundAction } from '../model/roundAction';
+import { Bet } from '../model/bet';
 import { MessageId } from '../model/messageId';
 import store from '../store/store';
 import { setPlayersOnline } from '../store/actions/game.actions';
@@ -64,7 +64,7 @@ class MessageService {
       .catch(console.error);
   }
 
-  public async play(action: RoundAction): Promise<void> {
+  public async play(bet: Bet): Promise<void> {
     const toSend = JSON.stringify({
       action: MessageId.PLAY,
     });

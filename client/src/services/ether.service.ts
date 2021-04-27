@@ -49,6 +49,10 @@ class EtherService {
   public formatString(value: string): string {
     return utils.formatBytes32String(value);
   }
+
+  public encode(types: any, parameter: any): string {
+    return utils.defaultAbiCoder.encode(types, parameter);
+  }
 }
 
 export let ethers: EtherService;

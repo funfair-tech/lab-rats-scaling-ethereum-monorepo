@@ -1,5 +1,5 @@
 import { FFEngine } from '@funfair/engine';
-import { RoundAction } from '../model/roundAction';
+import { Bet } from '../model/bet';
 import { MultiTrader } from './multiTrader';
 import { RoundResult } from '../model/roundResult';
 
@@ -8,14 +8,14 @@ import { RoundResult } from '../model/roundResult';
  */
 export class Game {
 
-  constructor(private play: (action: RoundAction) => void) {};
+  constructor(private play: (bet: Bet) => void) {};
 
   public handleRoundResult(roundResult: RoundResult): void {
     // TODO: ...
     // console.log('round result in game: ', roundResult);
   }
 
-  public handleRoundAction(roundAction: RoundAction): void {
+  public handleBet(roundAction: Bet): void {
     // TODO: ...
   }
 

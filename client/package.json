@@ -31,7 +31,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate-multiplayerGamesManager-type": "npx abi-types-generator './src/contracts/multiplayerGamesManager.json' --name=MultiplayerGamesManager --provider=ethers_v5",
+    "generate-token-type": "npx abi-types-generator './src/contracts/labRatsToken.json' --name=LabRatsToken --provider=ethers_v5",
+    "generate-abi-type": "npm run generate-token-type & npm run generate-multiplayerGamesManager-type"
+
   },
   "eslintConfig": {
     "extends": [
