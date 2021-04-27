@@ -9,7 +9,7 @@ CREATE TABLE [Faucet].[MintingHistory] (
     ) ON [PRIMARY]
 GO
 
-ALTER TABLE [Faucet].[MintingHistory] ADD CONSTRAINT [PK_MintingHistory] PRIMARY KEY CLUSTERED ([MintId]) ON [PRIMARY]
+ALTER TABLE [Faucet].[MintingHistory] ADD CONSTRAINT [PK_MintingHistory] PRIMARY KEY CLUSTERED ([MintId] DESC) ON [PRIMARY]
 GO
 
 
