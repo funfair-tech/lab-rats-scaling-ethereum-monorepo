@@ -3,7 +3,7 @@ import { FFEngine } from '@funfair/engine';
 /**
  * A display object representing a single cell on the graph grid
  */
-export class GridCell extends FFEngine.Component {
+export class GraphCell extends FFEngine.Component {
 
     private static readonly CELL_BORDER: number = 0.05;
 
@@ -22,7 +22,7 @@ export class GridCell extends FFEngine.Component {
 
     public SetSize(width: number, height: number): void {
         if (this.sprite) {
-            this.sprite.SetSize(width - GridCell.CELL_BORDER, height - GridCell.CELL_BORDER);
+            this.sprite.SetSize(width - GraphCell.CELL_BORDER, height - GraphCell.CELL_BORDER);
             this.sprite.GetContainer().position.set(width/2, height/2, 0);
         }
     }

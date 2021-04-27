@@ -1,6 +1,6 @@
 import { FFEngine } from '@funfair/engine';
 import { ASSETPACK, TextureAssetType } from '../assetPack';
-import { GRID_MANAGER } from '../objectManagers/gridManager';
+import { GRID_MANAGER } from '../objectManagers/graphManager';
 
 /**
  * A display object representing a the graph line

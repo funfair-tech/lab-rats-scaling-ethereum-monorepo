@@ -1,5 +1,5 @@
 import { FFEngine } from '@funfair/engine';
-import { GridManager, GRID_MANAGER } from './gridManager';
+import { GraphManager, GRID_MANAGER } from './graphManager';
 
 /**
  * Manages the 3D game environment including world camera and gameplay objects
@@ -56,7 +56,7 @@ export class EnvironmentManager extends FFEngine.Component {
     private CreateScene(): void {
 
         //create components
-        FFEngine.instance.CreateChildObjectWithComponent(this.container, GridManager);
+        FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphManager);
 
         //create some dummy graph data
         GRID_MANAGER.AddResult(0);
@@ -66,7 +66,7 @@ export class EnvironmentManager extends FFEngine.Component {
         GRID_MANAGER.AddResult(3);
 
         //test camera
-        this.SetCameraToGraphCoordinate(4, 0);
+        this.SetCameraToGraphCoordinate(4, 3);
     }
 
     private MoveCamera(targetPosition: FFEngine.THREE.Vector3): void {

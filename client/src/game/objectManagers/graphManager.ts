@@ -1,11 +1,11 @@
 import { FFEngine } from '@funfair/engine';
 import { GraphLine } from '../objects/graphLine';
-import { GridCell } from '../objects/gridCell';
+import { GraphCell } from '../objects/graphCell';
 
 /**
- * Manages the display of the grid of graph cells
+ * Manages the display of the grid of graph cells and line
  */
-export class GridManager extends FFEngine.Component {
+export class GraphManager extends FFEngine.Component {
 
     private static CELL_WIDTH: number = 3;
     private static CELL_HEIGHT: number = 1.5;
@@ -30,21 +30,21 @@ export class GridManager extends FFEngine.Component {
      * returns the width of a grid cell in world units
      */
     public GetCellWidth(): number {
-        return GridManager.CELL_WIDTH;
+        return GraphManager.CELL_WIDTH;
     }
 
     /**
      * returns the height of a grid cell in world units
      */
     public GetCellHeight(): number {
-        return GridManager.CELL_HEIGHT;
+        return GraphManager.CELL_HEIGHT;
     }
 
     /**
      * Converts a grid x,y coordinate to world position
      */
     public GridToWorld(x: number, y: number): FFEngine.THREE.Vector3 {
-        return new FFEngine.THREE.Vector3(x * GridManager.CELL_WIDTH, y * GridManager.CELL_HEIGHT, 0);
+        return new FFEngine.THREE.Vector3(x * GraphManager.CELL_WIDTH, y * GraphManager.CELL_HEIGHT, 0);
     }
 
     /**
@@ -60,9 +60,9 @@ export class GridManager extends FFEngine.Component {
         //test grid cells
         for (let i=-10;i<10;i++) {
             for (let j=-10;j<10;j++) {
-                let cell = FFEngine.instance.CreateChildObjectWithComponent(this.container, GridCell);
+                let cell = FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphCell);
                 cell.GetContainer().position.copy(this.GridToWorld(i, j));
-                cell.SetSize(GridManager.CELL_WIDTH, GridManager.CELL_HEIGHT);
+                cell.SetSize(GraphManager.CELL_WIDTH, GraphManager.CELL_HEIGHT);
             }
         }
     }
@@ -71,5 +71,5 @@ export class GridManager extends FFEngine.Component {
 /**
  * Global Singleton reference
  */
- let GRID_MANAGER!: GridManager;
+ let GRID_MANAGER!: GraphManager;
  export { GRID_MANAGER };
