@@ -75,6 +75,7 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
         /// <param name="networkName">The network id</param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
+        [HubMethodName(name: "Subscribe")]
         [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Called by web socket client")]
         public async Task SubscribeAsync(string networkName)
         {
