@@ -107,17 +107,17 @@ contract MultiplayerGamesManager is Ownable() {
 
     //************************************************************************************************
     function createPersistentGameData(bytes32 _ID, address _gameAddress) internal {
-        require(persistentGameData[_ID].owner == address(0x0), "Progressive pot already created");
-        require(permittedGameDefinitions[_gameAddress], "Game not permitted");
+        //require(persistentGameData[_ID].owner == address(0x0), "Progressive pot already created");
+        //require(permittedGameDefinitions[_gameAddress], "Game not permitted");
 
         persistentGameData[_ID].owner = msg.sender;
         persistentGameData[_ID].gameAddress = _gameAddress;
         persistentGameData[_ID].potValue = 0;
-        persistentGameData[_ID].gameData = IMultiplayerGameDefinition(gameRounds[_ID].config.gameAddress).getInitialPersistentData();
+        persistentGameData[_ID].gameData = IMultiplayerGameDefinition(persistentGameData[_ID].gameAddress).getInitialPersistentData();
    }
 
     //************************************************************************************************
-    function getPersistentGameData() public view returns (uint256 _potValue, bytes memory _gameData) {
+    function getPersistentGameData() public view returns (uint256 _potValue, bytes memory _gameData)  {
         _potValue = persistentGameData[bytes32(bytes20(msg.sender))].potValue;
         _gameData = persistentGameData[bytes32(bytes20(msg.sender))].gameData;        
     }
@@ -128,14 +128,11 @@ contract MultiplayerGamesManager is Ownable() {
         address gameAddress,
         bytes32 entropyCommit) public ownerAndAdmin {
 
-        GameRoundConfig memory config;
-        config.roundID = roundID;
-        config.gameAddress = gameAddress;
-        config.entropyCommit = entropyCommit;
-        config.persistentGameDataID = bytes32(bytes20(msg.sender));
+        GameRoundConfig memory config = GameRoundConfig(roundID, gameAddress, entropyCommit, bytes32(bytes20(msg.sender)));
         if(persistentGameData[config.persistentGameDataID].owner == address(0x0)) {
             createPersistentGameData(bytes32(bytes20(msg.sender)), gameAddress);
         }
+
         return startGameRoundInternal(config);
     }
 
