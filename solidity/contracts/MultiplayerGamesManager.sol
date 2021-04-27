@@ -86,6 +86,8 @@ contract MultiplayerGamesManager is Ownable() {
             permittedGameDefinitions[_permittedGames[i]] = true;
         }
 
+        contractState = ContractState.Running;
+
         emit Constructor(_gameToken);
     }
 
