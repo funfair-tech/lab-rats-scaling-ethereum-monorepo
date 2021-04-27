@@ -1,10 +1,13 @@
 import { FFEngine } from '@funfair/engine';
+import { GraphLine } from '../objects/graphLine';
 import { GridCell } from '../objects/gridCell';
 
 /**
  * Manages the display of the grid of graph cells
  */
 export class GridManager extends FFEngine.Component {
+
+    private graphLine!: GraphLine;
 
     public Create(params: any): void {
         super.Create(params);
@@ -15,12 +18,15 @@ export class GridManager extends FFEngine.Component {
 
         //create grid
         this.CreateGrid();
+
+        //create graph line
+        this.graphLine = FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphLine);
     }
 
     private CreateGrid(): void {
 
         //test grid cells
-        let width = 2;
+        let width = 3;
         let height = 1.5;
         for (let i=-10;i<10;i++) {
             for (let j=-10;j<10;j++) {
@@ -29,7 +35,6 @@ export class GridManager extends FFEngine.Component {
                 cell.SetSize(width, height);
             }
         }
-
     }
 }
 

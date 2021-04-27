@@ -45,22 +45,6 @@ export class EnvironmentManager extends FFEngine.Component {
 
         //create components
         FFEngine.instance.CreateChildObjectWithComponent(this.container, GridManager);
-        
-        //test line
-        let line = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Line, { map:  ASSETPACK.GetTextureAsset(TextureAssetType.LINE), numPoints: 1024});
-        line.GetContainer().position.set(0, 0, 0.5);
-        line.SetWidth(0.1);
-        line.SetFacingDirection(new FFEngine.THREE.Vector3(0, 0, 1));
-        line.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
-        line.SetColor(0xffffff);
-
-        let points: FFEngine.THREE.Vector3[] = [
-            new FFEngine.THREE.Vector3(-2, 0, 0),
-            new FFEngine.THREE.Vector3(-1, 1, 0),
-            new FFEngine.THREE.Vector3(1, -1, 0),
-            new FFEngine.THREE.Vector3(2, 0, 0),
-        ];
-        line.SetShape(points);
 
         //test camera
         this.MoveCamera();
