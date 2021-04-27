@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Reactive.Linq;
+using FunFair.Ethereum.Balances.Interfaces.EventArguments;
 using FunFair.Ethereum.DataTypes;
 using FunFair.Ethereum.DataTypes.Primitives;
 using FunFair.Labs.ScalingEthereum.Logic.House;
@@ -7,11 +9,11 @@ using FunFair.Labs.ScalingEthereum.Logic.House;
 namespace FunFair.Labs.ScalingEthereum.Logic.Balances.Services
 {
     /// <inheritdoc />
-    public sealed class LowBalanceWatcher : ILowBalanceWatcher
+    public sealed class LowBalanceWatcher : ILowBalanceWatcher, IDisposable
     {
-        private readonly IHouseAccountAlerter _houseAccountAlerter;
         private readonly ConcurrentDictionary<NetworkAccount, bool> _houseAccounts;
         private readonly IHouseBalanceConfiguration _houseBalanceConfiguration;
+        private readonly IDisposable _subscription;
 
         /// <summary>
         ///     Constructor
@@ -20,11 +22,24 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Balances.Services
         /// <param name="houseBalanceConfiguration">House balance configuration</param>
         public LowBalanceWatcher(IHouseAccountAlerter houseAccountAlerter, IHouseBalanceConfiguration houseBalanceConfiguration)
         {
-            this._houseAccountAlerter = houseAccountAlerter ?? throw new ArgumentNullException(nameof(houseAccountAlerter));
+            if (houseAccountAlerter == null)
+            {
+                throw new ArgumentNullException(nameof(houseAccountAlerter));
+            }
+
             this._houseBalanceConfiguration = houseBalanceConfiguration ?? throw new ArgumentNullException(nameof(houseBalanceConfiguration));
             this._houseAccounts = new ConcurrentDictionary<NetworkAccount, bool>();
 
-            this._houseAccountAlerter.OnEthereumBalanceChanged += (_, e) => this.UpdateBalanceStatus((NetworkAccount) e.Account, ethereumAmount: e.NewBalance);
+            this._subscription = Observable.FromEventPattern<EthereumBalanceChangeEventArgs>(addHandler: h => houseAccountAlerter.OnEthereumBalanceChanged += h,
+                                                                                             removeHandler: h => houseAccountAlerter.OnEthereumBalanceChanged -= h)
+                                           .Select(e => e.EventArgs)
+                                           .Subscribe(e => this.UpdateBalanceStatus((NetworkAccount) e.Account, ethereumAmount: e.NewBalance));
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            this._subscription.Dispose();
         }
 
         /// <inheritdoc />

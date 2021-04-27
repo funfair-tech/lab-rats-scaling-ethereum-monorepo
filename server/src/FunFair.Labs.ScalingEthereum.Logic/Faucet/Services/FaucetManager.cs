@@ -102,92 +102,39 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
         {
             const string sourceName = @"Test Network Faucet";
 
-            // ETH & FUN source (Faucet account - no need to be a signing account)
-            if (!this._faucetContract.Addresses.TryGetValue(key: recipient.Network, out ContractAddress? contractAddress))
+            if (!this._faucetContract.Addresses.TryGetValue(key: recipient.Network, out ContractAddress? faucetContractAddress))
             {
-                this._logger.LogCritical($"{recipient.Network.Name}: Cannot issue ETH from faucet. Faucet not available on network");
+                this._logger.LogCritical($"{recipient.Network.Name}: Cannot issue {recipient.Network.NativeCurrency} from faucet. Faucet not available on network");
 
                 throw new InsufficientTokenException();
             }
 
             INetworkSigningAccount networkSigningAccount = this._ethereumAccountManager.GetAccount(network: recipient.Network);
 
-            NetworkContract fundsSourceContract = new(network: recipient.Network, contractAddress: contractAddress);
-
-            IReadOnlyList<EthereumAddress> networkAccounts = new EthereumAddress[] {contractAddress, recipient.Address};
-
-            IReadOnlyDictionary<EthereumAddress, EthereumAmount> accountBalances =
-                await this._ethereumAccountBalanceSource.GetAccountBalancesAsync(networkAccounts: networkAccounts, networkBlockHeader: networkBlockHeader, cancellationToken: CancellationToken.None);
-
-            // get the SOURCE account's balance
-            if (!accountBalances.TryGetValue(key: contractAddress, out EthereumAmount? sourceAccountBalance))
-            {
-                this._logger.LogCritical($"{recipient.Network.Name}: Could not retrieve balance for {networkSigningAccount.Address}");
-
-                throw new InsufficientTokenException();
-            }
-
-            // get the account's current ETH balance
-            if (!accountBalances.TryGetValue(key: recipient.Address, out EthereumAmount? recipientEthBalance))
-            {
-                this._logger.LogCritical($"{recipient.Network.Name}: Could not retrieve balance for {recipient.Address}");
-
-                throw new InsufficientTokenException();
-            }
-
-            IReadOnlyDictionary<EthereumAddress, Erc20TokenBalance> balances = await this._ethereumAccountBalanceSource.GetErc20TokenBalancesAsync(
-                addresses: networkAccounts,
+            (EthereumAmount sourceAccountBalance, EthereumAmount recipientEthBalance) = await this.GetNativeCurrencyBalancesAsync(
+                recipient: recipient,
                 networkBlockHeader: networkBlockHeader,
-                tokenContract: this._tokenContract,
+                faucetContractAddress: faucetContractAddress,
+                networkSigningAccount: networkSigningAccount,
                 cancellationToken: cancellationToken);
 
-            // get the SOURCE account's current FUN balance
-            if (!balances.TryGetValue(key: fundsSourceContract.Address, out Erc20TokenBalance sourceTokenBalance))
-            {
-                this._logger.LogCritical($"{recipient.Network.Name}: Could not retrieve balance for {fundsSourceContract.Address}");
+            (Token sourceBalanceForToken, Token recipientBalanceForToken) =
+                await this.GetTokenBalancesAsync(recipient: recipient, networkBlockHeader: networkBlockHeader, faucetContractAddress: faucetContractAddress, cancellationToken: cancellationToken);
 
-                throw new InsufficientTokenException();
-            }
-
-            Token sourceBalanceForToken = new(sourceTokenBalance);
-
-            // get the recipient account's current FUN balance
-            if (!balances.TryGetValue(key: recipient.Address, out Erc20TokenBalance recipientTokenBalance))
-            {
-                this._logger.LogCritical($"{recipient.Network.Name}: Could not retrieve balance for {recipient.Address}");
-
-                throw new InsufficientTokenException();
-            }
-
-            Token recipientBalanceForToken = new(recipientTokenBalance);
-
-            bool giveToken = recipientBalanceForToken < this._maximumRecipientTokenBalance;
-            bool giveEth = recipientEthBalance < this._maximumRecipientEthBalance;
-
-            this._logger.LogInformation(
-                $"{recipient.Network.Name}: Source: {sourceAccountBalance.ToFormattedUnitWithSymbol()} {sourceBalanceForToken.ToFormattedUnitWithSymbol()} Recipient: {recipientEthBalance.ToFormattedUnitWithSymbol()} {recipientBalanceForToken.ToFormattedUnitWithSymbol()} Issue: ETH: {giveEth} FUN: {giveToken} Max Eth: {this._maximumRecipientEthBalance.ToFormattedUnitWithSymbol()} Max FUN: {this._maximumRecipientTokenBalance.ToFormattedUnitWithSymbol()}");
-
-            if (!giveToken && !giveEth)
-            {
-                if (this._executionEnvironment.IsDevelopmentOrTest())
-                {
-                    this._logger.LogWarning($"{recipient.Network.Name}: Could not issue eth to {recipient.Address} - Recipient balance > max");
-                }
-
-                throw new TooMuchTokenException();
-            }
+            (EthereumAmount ethAmount, Token tokenAmount) = this.CalculateFundsToIssue(recipient: recipient,
+                                                                                       recipientNativeCurrencyBalance: recipientEthBalance,
+                                                                                       recipientTokenBalance: recipientBalanceForToken,
+                                                                                       faucetNativeCurrencyBalance: sourceAccountBalance,
+                                                                                       faucetTokenBalance: sourceBalanceForToken);
 
             if (!await this.IsAllowedToIssueFromFaucetAsync(ipAddress: ipAddress, recipientAddress: recipient.Address))
             {
                 throw new TooFrequentTokenException();
             }
 
-            EthereumAmount ethAmount = giveEth ? this.CalculateAmountOfEthToIssueFromFaucet(recipientEthBalance) : EthereumAmount.Zero;
-            Token tokenAmount = giveToken ? this.CalculateAmountOfFunToIssueFromFaucet(recipientBalanceForToken) : Token.Zero;
-
             Issuance issuance =
                 new(recipient: recipient, ethToIssue: ethAmount, tokenToIssue: tokenAmount, sourceAccountBalance: sourceAccountBalance, sourceTokenBalance: sourceBalanceForToken, sourceName:
-                    sourceName, fundsSourceContract: fundsSourceContract, contractInfo: this._faucetContract);
+                    sourceName, new NetworkContract(network: recipient.Network, contractAddress: faucetContractAddress), contractInfo: this._faucetContract);
 
             try
             {
@@ -199,10 +146,104 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
             }
             catch (TransactionWillAlwaysFailException exception)
             {
-                this._logger.LogCritical(new EventId(exception.HResult), exception: exception, $"{issuance.Recipient.Network.Name}: Cannot issue FUN from faucet: {exception.Message}");
+                this._logger.LogCritical(new EventId(exception.HResult),
+                                         exception: exception,
+                                         $"{issuance.Recipient.Network.Name}: Cannot issue {this._tokenContract.Symbol} from faucet: {exception.Message}");
 
-                throw new InsufficientTokenException(message: "Could not request fun from faucet", innerException: exception);
+                throw new InsufficientTokenException(message: "Could not request funds from faucet", innerException: exception);
             }
+        }
+
+        private (EthereumAmount ethAmount, Token tokenAmount) CalculateFundsToIssue(INetworkAccount recipient,
+                                                                                    EthereumAmount recipientNativeCurrencyBalance,
+                                                                                    Token recipientTokenBalance,
+                                                                                    EthereumAmount faucetNativeCurrencyBalance,
+                                                                                    Token faucetTokenBalance)
+        {
+            bool giveToken = recipientTokenBalance < this._maximumRecipientTokenBalance;
+            bool giveEth = recipientNativeCurrencyBalance < this._maximumRecipientEthBalance;
+
+            this._logger.LogInformation(
+                $"{recipient.Network.Name}: Source: {faucetNativeCurrencyBalance.ToFormattedUnitWithSymbol()} {faucetTokenBalance.ToFormattedUnitWithSymbol()} Recipient: {recipientNativeCurrencyBalance.ToFormattedUnitWithSymbol()} {recipientTokenBalance.ToFormattedUnitWithSymbol()} Issue: ETH: {giveEth} FUN: {giveToken} Max Eth: {this._maximumRecipientEthBalance.ToFormattedUnitWithSymbol()} Max FUN: {this._maximumRecipientTokenBalance.ToFormattedUnitWithSymbol()}");
+
+            if (!giveToken && !giveEth)
+            {
+                if (this._executionEnvironment.IsDevelopmentOrTest())
+                {
+                    this._logger.LogWarning(
+                        $"{recipient.Network.Name}: Could not issue {recipient.Network.NativeCurrency} or {this._tokenContract.Symbol} to {recipient.Address} - Recipient balance > max");
+                }
+
+                throw new TooMuchTokenException();
+            }
+
+            EthereumAmount ethAmount = giveEth ? this.CalculateAmountOfEthToIssueFromFaucet(recipientNativeCurrencyBalance) : EthereumAmount.Zero;
+            Token tokenAmount = giveToken ? this.CalculateAmountOfFunToIssueFromFaucet(recipientTokenBalance) : Token.Zero;
+
+            return (ethAmount, tokenAmount);
+        }
+
+        private async Task<(Token sourceBalanceForToken, Token recipientBalanceForToken)> GetTokenBalancesAsync(INetworkAccount recipient,
+                                                                                                                INetworkBlockHeader networkBlockHeader,
+                                                                                                                ContractAddress faucetContractAddress,
+                                                                                                                CancellationToken cancellationToken)
+        {
+            IReadOnlyDictionary<EthereumAddress, Erc20TokenBalance> balances = await this._ethereumAccountBalanceSource.GetErc20TokenBalancesAsync(
+                addresses: new EthereumAddress[] {faucetContractAddress, recipient.Address},
+                networkBlockHeader: networkBlockHeader,
+                tokenContract: this._tokenContract,
+                cancellationToken: cancellationToken);
+
+            // get the SOURCE account's current token balance
+            if (!balances.TryGetValue(key: faucetContractAddress, out Erc20TokenBalance sourceTokenBalance))
+            {
+                this._logger.LogCritical($"{recipient.Network.Name}: Could not retrieve {this._tokenContract.Symbol} balance for {faucetContractAddress}");
+
+                throw new InsufficientTokenException();
+            }
+
+            Token sourceBalanceForToken = new(sourceTokenBalance);
+
+            // get the recipient account's current FUN balance
+            if (!balances.TryGetValue(key: recipient.Address, out Erc20TokenBalance recipientTokenBalance))
+            {
+                this._logger.LogCritical($"{recipient.Network.Name}: Could not retrieve {this._tokenContract.Symbol} balance for {recipient.Address}");
+
+                throw new InsufficientTokenException();
+            }
+
+            Token recipientBalanceForToken = new(recipientTokenBalance);
+
+            return (sourceBalanceForToken, recipientBalanceForToken);
+        }
+
+        private async Task<(EthereumAmount sourceAccountBalance, EthereumAmount recipientEthBalance)> GetNativeCurrencyBalancesAsync(INetworkAccount recipient,
+            INetworkBlockHeader networkBlockHeader,
+            ContractAddress faucetContractAddress,
+            INetworkSigningAccount networkSigningAccount,
+            CancellationToken cancellationToken)
+        {
+            IReadOnlyDictionary<EthereumAddress, EthereumAmount> accountBalances = await this._ethereumAccountBalanceSource.GetAccountBalancesAsync(
+                networkAccounts: new EthereumAddress[] {faucetContractAddress, recipient.Address},
+                networkBlockHeader: networkBlockHeader,
+                cancellationToken: cancellationToken);
+
+            // get the SOURCE account's balance
+            if (!accountBalances.TryGetValue(key: faucetContractAddress, out EthereumAmount? sourceAccountBalance))
+            {
+                this._logger.LogCritical($"{recipient.Network.Name}: Could not retrieve {recipient.Network.NativeCurrency} balance for {networkSigningAccount.Address}");
+
+                throw new InsufficientTokenException();
+            }
+
+            if (!accountBalances.TryGetValue(key: recipient.Address, out EthereumAmount? recipientEthBalance))
+            {
+                this._logger.LogCritical($"{recipient.Network.Name}: Could not retrieve {recipient.Network.NativeCurrency} balance for {recipient.Address}");
+
+                throw new InsufficientTokenException();
+            }
+
+            return (sourceAccountBalance, recipientEthBalance);
         }
 
         private Token CalculateAmountOfFunToIssueFromFaucet(Token recipientTokenBalance)
@@ -236,7 +277,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
             if (issuance.SourceAccountBalance < minEth)
             {
                 string message =
-                    $"{issuance.Recipient.Network.Name}: Cannot issue ETH from {issuance.SourceName}. Faucet Contract {issuance.FundsSourceContract.Address} is low on ETH (Has {issuance.SourceAccountBalance.ToFormattedUnitWithSymbol()}. Minimum {minEth.ToFormattedUnitWithSymbol()})";
+                    $"{issuance.Recipient.Network.Name}: Cannot issue {issuance.Recipient.Network.NativeCurrency} from {issuance.SourceName}. Faucet Contract {issuance.FundsSourceContract.Address} is low on ETH (Has {issuance.SourceAccountBalance.ToFormattedUnitWithSymbol()}. Minimum {minEth.ToFormattedUnitWithSymbol()})";
                 this._logger.LogCritical(message);
 
                 throw new InsufficientTokenException(message);
@@ -245,7 +286,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
             if (issuance.SourceTokenBalance < minFun)
             {
                 string message =
-                    $"{issuance.Recipient.Network.Name}: Cannot issue TOKEN from {issuance.SourceName}. Faucet Contract {issuance.FundsSourceContract.Address} is low on FUN (Has {issuance.SourceTokenBalance.ToFormattedUnitWithSymbol()}. Minimum {minFun.ToFormattedUnitWithSymbol()})";
+                    $"{issuance.Recipient.Network.Name}: Cannot issue {this._tokenContract.Symbol} from {issuance.SourceName}. Faucet Contract {issuance.FundsSourceContract.Address} is low on FUN (Has {issuance.SourceTokenBalance.ToFormattedUnitWithSymbol()}. Minimum {minFun.ToFormattedUnitWithSymbol()})";
                 this._logger.LogCritical(message);
 
                 throw new InsufficientTokenException(message);
