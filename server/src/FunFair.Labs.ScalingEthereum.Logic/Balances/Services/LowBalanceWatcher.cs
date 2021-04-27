@@ -8,7 +8,9 @@ using FunFair.Labs.ScalingEthereum.Logic.House;
 
 namespace FunFair.Labs.ScalingEthereum.Logic.Balances.Services
 {
-    /// <inheritdoc />
+    /// <summary>
+    ///     Watching accounts if they have enough balance to start transactions
+    /// </summary>
     public sealed class LowBalanceWatcher : ILowBalanceWatcher, IDisposable
     {
         private readonly ConcurrentDictionary<NetworkAccount, bool> _houseAccounts;

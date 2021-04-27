@@ -34,17 +34,16 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
         private readonly IEthereumAccountBalanceSource _ethereumAccountBalanceSource;
         private readonly IEthereumAccountManager _ethereumAccountManager;
 
-        private readonly EthereumAmount _ethToGive;
         private readonly ExecutionEnvironment _executionEnvironment;
         private readonly IContractInfo _faucetContract;
 
         private readonly IFaucetDataManager _faucetDataManager;
         private readonly IWhiteListedIpAddressIdentifier _fundingWhiteList;
         private readonly ILogger<FaucetManager> _logger;
-        private readonly EthereumAmount _maximumRecipientEthBalance;
-        private readonly Token _maximumRecipientTokenBalance;
+
+        private readonly Limits<EthereumAmount> _nativeCurrencyLimits;
         private readonly Erc20TokenContractInfo _tokenContract;
-        private readonly Token _tokenToGiven;
+        private readonly Limits<Token> _tokenCurrencyLimits;
 
         private readonly ITransactionExecutorFactory _transactionExecutorFactory;
 
@@ -85,11 +84,10 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
             this._transactionExecutorFactory = transactionExecutorFactory ?? throw new ArgumentNullException(nameof(transactionExecutorFactory));
             this._fundingWhiteList = houseFundingIpWhiteList ?? throw new ArgumentNullException(nameof(houseFundingIpWhiteList));
             this._executionEnvironment = executionEnvironment;
-            this._ethereumAccountManager = ethereumAccountManager;
-            this._ethToGive = faucetConfiguration.EthToGive;
-            this._tokenToGiven = faucetConfiguration.TokenToGive;
-            this._maximumRecipientEthBalance = this._ethToGive / 2;
-            this._maximumRecipientTokenBalance = this._tokenToGiven / 2;
+            this._ethereumAccountManager = ethereumAccountManager ?? throw new ArgumentNullException(nameof(ethereumAccountManager));
+
+            this._nativeCurrencyLimits = new Limits<EthereumAmount>(amountToIssue: faucetConfiguration.EthToGive, faucetConfiguration.EthToGive / 2);
+            this._tokenCurrencyLimits = new Limits<Token>(amountToIssue: faucetConfiguration.TokenToGive, faucetConfiguration.TokenToGive / 2);
 
             this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -113,15 +111,14 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
 
             (EthereumAmount sourceAccountBalance, EthereumAmount recipientEthBalance) = await this.GetNativeCurrencyBalancesAsync(
                 recipient: recipient,
-                networkBlockHeader: networkBlockHeader,
                 faucetContractAddress: faucetContractAddress,
-                networkSigningAccount: networkSigningAccount,
+                networkBlockHeader: networkBlockHeader,
                 cancellationToken: cancellationToken);
 
             (Token sourceBalanceForToken, Token recipientBalanceForToken) =
                 await this.GetTokenBalancesAsync(recipient: recipient, networkBlockHeader: networkBlockHeader, faucetContractAddress: faucetContractAddress, cancellationToken: cancellationToken);
 
-            (EthereumAmount ethAmount, Token tokenAmount) = this.CalculateFundsToIssue(recipient: recipient,
+            (EthereumAmount nativeCurrencyAmount, Token tokenAmount) = this.CalculateFundsToIssue(recipient: recipient,
                                                                                        recipientNativeCurrencyBalance: recipientEthBalance,
                                                                                        recipientTokenBalance: recipientBalanceForToken,
                                                                                        faucetNativeCurrencyBalance: sourceAccountBalance,
@@ -133,7 +130,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
             }
 
             Issuance issuance =
-                new(recipient: recipient, ethToIssue: ethAmount, tokenToIssue: tokenAmount, sourceAccountBalance: sourceAccountBalance, sourceTokenBalance: sourceBalanceForToken, sourceName:
+                new(recipient: recipient, ethToIssue: nativeCurrencyAmount, tokenToIssue: tokenAmount, sourceAccountBalance: sourceAccountBalance, sourceTokenBalance: sourceBalanceForToken, sourceName:
                     sourceName, new NetworkContract(network: recipient.Network, contractAddress: faucetContractAddress), contractInfo: this._faucetContract);
 
             try
@@ -142,7 +139,9 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
                                                                    issuance: issuance,
                                                                    new TransactionContext(contextType: WellKnownContracts.Faucet, recipient.Address.ToString()));
 
-                return new FaucetDrip(transaction: tx, ethAmount: ethAmount, tokenAmount: tokenAmount);
+                await this.RecordSuccessfulFaucetDripAsync(recipient: recipient, nativeCurrencyAmount: nativeCurrencyAmount, tokenAmount: tokenAmount, ipAddress: ipAddress);
+
+                return new FaucetDrip(transaction: tx, ethAmount: nativeCurrencyAmount, tokenAmount: tokenAmount);
             }
             catch (TransactionWillAlwaysFailException exception)
             {
@@ -154,19 +153,24 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
             }
         }
 
-        private (EthereumAmount ethAmount, Token tokenAmount) CalculateFundsToIssue(INetworkAccount recipient,
-                                                                                    EthereumAmount recipientNativeCurrencyBalance,
-                                                                                    Token recipientTokenBalance,
-                                                                                    EthereumAmount faucetNativeCurrencyBalance,
-                                                                                    Token faucetTokenBalance)
+        private Task RecordSuccessfulFaucetDripAsync(INetworkAccount recipient, EthereumAmount nativeCurrencyAmount, Token tokenAmount, IPAddress ipAddress)
         {
-            bool giveToken = recipientTokenBalance < this._maximumRecipientTokenBalance;
-            bool giveEth = recipientNativeCurrencyBalance < this._maximumRecipientEthBalance;
+            return this._faucetDataManager.RecordFundsIssuedAsync(recipient: recipient, nativeCurrencyAmount: nativeCurrencyAmount, tokenAmount: tokenAmount, ipAddress: ipAddress);
+        }
+
+        private (EthereumAmount nativeCurrencyAmount, Token tokenAmount) CalculateFundsToIssue(INetworkAccount recipient,
+                                                                                               EthereumAmount recipientNativeCurrencyBalance,
+                                                                                               Token recipientTokenBalance,
+                                                                                               EthereumAmount faucetNativeCurrencyBalance,
+                                                                                               Token faucetTokenBalance)
+        {
+            bool giveNativeCurrency = recipientNativeCurrencyBalance < this._nativeCurrencyLimits.MaximumRecipientBalance;
+            bool giveToken = recipientTokenBalance < this._tokenCurrencyLimits.MaximumRecipientBalance;
 
             this._logger.LogInformation(
-                $"{recipient.Network.Name}: Source: {faucetNativeCurrencyBalance.ToFormattedUnitWithSymbol()} {faucetTokenBalance.ToFormattedUnitWithSymbol()} Recipient: {recipientNativeCurrencyBalance.ToFormattedUnitWithSymbol()} {recipientTokenBalance.ToFormattedUnitWithSymbol()} Issue: ETH: {giveEth} FUN: {giveToken} Max Eth: {this._maximumRecipientEthBalance.ToFormattedUnitWithSymbol()} Max FUN: {this._maximumRecipientTokenBalance.ToFormattedUnitWithSymbol()}");
+                $"{recipient.Network.Name}: Source: {faucetNativeCurrencyBalance.ToFormattedUnitWithSymbol()} {faucetTokenBalance.ToFormattedUnitWithSymbol()} Recipient: {recipientNativeCurrencyBalance.ToFormattedUnitWithSymbol()} {recipientTokenBalance.ToFormattedUnitWithSymbol()} Issue: ETH: {giveNativeCurrency} FUN: {giveToken} Max Eth: {this._nativeCurrencyLimits.MaximumRecipientBalance.ToFormattedUnitWithSymbol()} Max FUN: {this._tokenCurrencyLimits.MaximumRecipientBalance.ToFormattedUnitWithSymbol()}");
 
-            if (!giveToken && !giveEth)
+            if (!giveNativeCurrency && !giveToken)
             {
                 if (this._executionEnvironment.IsDevelopmentOrTest())
                 {
@@ -177,10 +181,10 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
                 throw new TooMuchTokenException();
             }
 
-            EthereumAmount ethAmount = giveEth ? this.CalculateAmountOfEthToIssueFromFaucet(recipientNativeCurrencyBalance) : EthereumAmount.Zero;
-            Token tokenAmount = giveToken ? this.CalculateAmountOfFunToIssueFromFaucet(recipientTokenBalance) : Token.Zero;
+            EthereumAmount nativeCurrencyAmount = giveNativeCurrency ? this.CalculateAmountOfNativeCurrencyToIssueFromFaucet(recipientNativeCurrencyBalance) : EthereumAmount.Zero;
+            Token tokenAmount = giveToken ? this.CalculateAmountOfTokenToIssueFromFaucet(recipientTokenBalance) : Token.Zero;
 
-            return (ethAmount, tokenAmount);
+            return (nativeCurrencyAmount, tokenAmount);
         }
 
         private async Task<(Token sourceBalanceForToken, Token recipientBalanceForToken)> GetTokenBalancesAsync(INetworkAccount recipient,
@@ -194,7 +198,6 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
                 tokenContract: this._tokenContract,
                 cancellationToken: cancellationToken);
 
-            // get the SOURCE account's current token balance
             if (!balances.TryGetValue(key: faucetContractAddress, out Erc20TokenBalance sourceTokenBalance))
             {
                 this._logger.LogCritical($"{recipient.Network.Name}: Could not retrieve {this._tokenContract.Symbol} balance for {faucetContractAddress}");
@@ -202,9 +205,6 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
                 throw new InsufficientTokenException();
             }
 
-            Token sourceBalanceForToken = new(sourceTokenBalance);
-
-            // get the recipient account's current FUN balance
             if (!balances.TryGetValue(key: recipient.Address, out Erc20TokenBalance recipientTokenBalance))
             {
                 this._logger.LogCritical($"{recipient.Network.Name}: Could not retrieve {this._tokenContract.Symbol} balance for {recipient.Address}");
@@ -212,15 +212,13 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
                 throw new InsufficientTokenException();
             }
 
-            Token recipientBalanceForToken = new(recipientTokenBalance);
-
-            return (sourceBalanceForToken, recipientBalanceForToken);
+            return (sourceBalanceForToken: new(sourceTokenBalance), recipientBalanceForToken: new(recipientTokenBalance));
         }
 
-        private async Task<(EthereumAmount sourceAccountBalance, EthereumAmount recipientEthBalance)> GetNativeCurrencyBalancesAsync(INetworkAccount recipient,
-            INetworkBlockHeader networkBlockHeader,
+        private async Task<(EthereumAmount sourceAccountBalance, EthereumAmount recipientEthBalance)> GetNativeCurrencyBalancesAsync(
+            INetworkAccount recipient,
             ContractAddress faucetContractAddress,
-            INetworkSigningAccount networkSigningAccount,
+            INetworkBlockHeader networkBlockHeader,
             CancellationToken cancellationToken)
         {
             IReadOnlyDictionary<EthereumAddress, EthereumAmount> accountBalances = await this._ethereumAccountBalanceSource.GetAccountBalancesAsync(
@@ -231,7 +229,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
             // get the SOURCE account's balance
             if (!accountBalances.TryGetValue(key: faucetContractAddress, out EthereumAmount? sourceAccountBalance))
             {
-                this._logger.LogCritical($"{recipient.Network.Name}: Could not retrieve {recipient.Network.NativeCurrency} balance for {networkSigningAccount.Address}");
+                this._logger.LogCritical($"{recipient.Network.Name}: Could not retrieve {recipient.Network.NativeCurrency} balance for {faucetContractAddress}");
 
                 throw new InsufficientTokenException();
             }
@@ -246,14 +244,14 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
             return (sourceAccountBalance, recipientEthBalance);
         }
 
-        private Token CalculateAmountOfFunToIssueFromFaucet(Token recipientTokenBalance)
+        private Token CalculateAmountOfTokenToIssueFromFaucet(Token recipientTokenBalance)
         {
-            return this._tokenToGiven - recipientTokenBalance;
+            return this._tokenCurrencyLimits.AmountToIssue - recipientTokenBalance;
         }
 
-        private EthereumAmount CalculateAmountOfEthToIssueFromFaucet(EthereumAmount recipientEthBalance)
+        private EthereumAmount CalculateAmountOfNativeCurrencyToIssueFromFaucet(EthereumAmount recipientEthBalance)
         {
-            return this._ethToGive - recipientEthBalance;
+            return this._nativeCurrencyLimits.AmountToIssue - recipientEthBalance;
         }
 
         private static Token MinSourceTokenAccountBalance(Token amountToGive)
@@ -261,7 +259,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
             return amountToGive * 2;
         }
 
-        private static EthereumAmount MinSourceEthAccountBalance(EthereumAmount amountToGive)
+        private static EthereumAmount MinSourceNativeCurrencyAccountBalance(EthereumAmount amountToGive)
         {
             return new(amountToGive.Value * 2);
         }
@@ -270,7 +268,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
         {
             this._logger.LogDebug($"Faucet Contract Balances: {issuance.SourceAccountBalance.ToFormattedUnitWithSymbol()}, {issuance.SourceTokenBalance.ToFormattedUnitWithSymbol()}");
 
-            EthereumAmount minEth = MinSourceEthAccountBalance(issuance.EthToIssue);
+            EthereumAmount minEth = MinSourceNativeCurrencyAccountBalance(issuance.EthToIssue);
             Token minFun = MinSourceTokenAccountBalance(issuance.TokenToIssue);
 
             // don't allow the source account balance to go too low
@@ -308,6 +306,19 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
         private bool IsFromAlwaysAllowedAddress(IPAddress ipAddress)
         {
             return this._fundingWhiteList.IsWhitelisted(ipAddress: ipAddress, out bool _);
+        }
+
+        private sealed class Limits<T>
+        {
+            public Limits(T amountToIssue, T maximumRecipientBalance)
+            {
+                this.AmountToIssue = amountToIssue;
+                this.MaximumRecipientBalance = maximumRecipientBalance;
+            }
+
+            public T AmountToIssue { get; }
+
+            public T MaximumRecipientBalance { get; }
         }
 
         private sealed class Issuance
