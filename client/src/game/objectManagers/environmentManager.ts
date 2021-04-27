@@ -43,7 +43,14 @@ export class EnvironmentManager extends FFEngine.Component {
     private CreateScene(): void {
 
         //create components
-        FFEngine.instance.CreateChildObjectWithComponent(this.container, GridManager);
+        let grid = FFEngine.instance.CreateChildObjectWithComponent(this.container, GridManager);
+
+        //create some dummy graph data
+        grid.AddResult(0);
+        grid.AddResult(1);
+        grid.AddResult(-1);
+        grid.AddResult(2);
+        grid.AddResult(3);
 
         //test camera
         this.MoveCamera();

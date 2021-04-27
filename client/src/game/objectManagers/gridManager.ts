@@ -7,6 +7,9 @@ import { GridCell } from '../objects/gridCell';
  */
 export class GridManager extends FFEngine.Component {
 
+    private static CELL_WIDTH: number = 3;
+    private static CELL_HEIGHT: number = 1.5;
+
     private graphLine!: GraphLine;
 
     public Create(params: any): void {
@@ -23,16 +26,28 @@ export class GridManager extends FFEngine.Component {
         this.graphLine = FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphLine);
     }
 
+    public GetCellWidth(): number {
+        return GridManager.CELL_WIDTH;
+    }
+
+    public GetCellHeight(): number {
+        return GridManager.CELL_HEIGHT;
+    }
+
+    public AddResult(price: number): void {
+        if (this.graphLine) {
+            this.graphLine.AddResult(price);
+        }
+    }
+
     private CreateGrid(): void {
 
         //test grid cells
-        let width = 3;
-        let height = 1.5;
         for (let i=-10;i<10;i++) {
             for (let j=-10;j<10;j++) {
                 let cell = FFEngine.instance.CreateChildObjectWithComponent(this.container, GridCell);
-                cell.GetContainer().position.set(i * width, j * height, 0);
-                cell.SetSize(width, height);
+                cell.GetContainer().position.set(i * GridManager.CELL_WIDTH, j * GridManager.CELL_HEIGHT, 0);
+                cell.SetSize(GridManager.CELL_WIDTH, GridManager.CELL_HEIGHT);
             }
         }
     }
