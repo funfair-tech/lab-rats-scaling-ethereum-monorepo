@@ -13,6 +13,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { BlockHeader } from '../../model/blockHeader';
 import { setEtherContext } from '../../services/ether.service';
 import { gameService } from '../../services/game.service';
+import { messageService } from '../../services/message.service';
 import {
   clearNetworkState,
   setBlockHeader,
@@ -49,6 +50,8 @@ class Wallet extends Component<Props> {
           this.props.setAddress(data.ethereumAddress);
           this.props.setNetworkName(data.currentNetwork.name);
           this.props.setNetworkId(data.currentNetwork.id.valueOf());
+
+          messageService.connectToServer(true, data.currentNetwork.name);
         }
       }
     );

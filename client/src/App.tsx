@@ -5,10 +5,10 @@ import Game from './containers/game/gameContainer';
 
 function App() {
   return (
-    <div className="app">
-        <AccountBar title='Lab Rats'/>
-        <Game />
-        <Faucet />
+    <div className='app'>
+      <AccountBar title='Lab Rats' />
+      <Game />
+      <Faucet />
     </div>
   );
 }

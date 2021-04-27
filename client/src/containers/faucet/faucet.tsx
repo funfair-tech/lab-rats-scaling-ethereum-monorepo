@@ -12,34 +12,52 @@ import { ethers } from '../../services/ether.service';
 interface Props extends ReduxProps {}
 
 export const Faucet: FunctionComponent<Props> = (props) => {
-
   useEffect(() => {
     const tokenBalance = props.user.tokenBalance;
-    if(props.user.authenticated && tokenBalance < 100) {
+    if (
+      !props.user.loading &&
+      !!props.user.address &&
+      !!props.network.id &&
+      tokenBalance < 100
+    ) {
       openFaucet();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.user.authenticated, props.user.tokenBalance]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    props.user.loading,
+    props.user.address,
+    props.user.tokenBalance,
+    props.network.id,
+  ]);
 
   const openFaucet = async () => {
     const request: FaucetRequest = {
       network: props.network.name as string,
       address: props.user.address,
-    } 
-    const response = await apiRequest.post<FaucetRequest, FaucetResponse>('api/faucet/open', request);
+    };
+    const response = await apiRequest.post<FaucetRequest, FaucetResponse>(
+      'api/faucet/open',
+      request
+    );
 
-    if(response.message) {
-      props.setUserError(response.message)
+    if (response.message) {
+      props.setUserError(response.message);
     } else {
       props.setTransactionHash(response.transaction.transactionHash);
-      await ethers.waitForTransactionReceipt(response.transaction.transactionHash);
+      await ethers.waitForTransactionReceipt(
+        response.transaction.transactionHash
+      );
       props.setTransactionHash(null);
-
     }
-  }
+  };
 
-  return <Notification label='Funding your account' visible={!!props.network.transactionHash}/>;
-}
+  return (
+    <Notification
+      label='Funding your account'
+      visible={!!props.network.transactionHash}
+    />
+  );
+};
 
 const mapStateToProps = (state: RootState) => {
   return {
@@ -50,7 +68,8 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: Function) => {
   return {
-    setTransactionHash: (transactionHash: string|null) => dispatch(setTransactionHash(transactionHash)),
+    setTransactionHash: (transactionHash: string | null) =>
+      dispatch(setTransactionHash(transactionHash)),
     setUserError: (error: string) => dispatch(setUserError(error)),
   };
 };
