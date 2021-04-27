@@ -8,7 +8,7 @@ pragma solidity ^0.7.6;
  */
 abstract contract Ownable {
     address public owner;
-    mapping(address => bool) admins;
+    mapping(address => bool) public admins;
 
     address newOwner;
 
