@@ -1,6 +1,4 @@
 const deployingNetworkContext = {
-  name: 'OPTIMISMKOVAN',
-  chainId: '69',
   // WE NEED A FIXED ADDRESS FOR THE TOKENS
   // ONLY CHANGE THIS IF YOU CHANGED THE LOGIC OF THE CONTRACT
   labRatsContractAddress: '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2',
@@ -9,7 +7,6 @@ const deployingNetworkContext = {
   faucetContractAddress: '0x4697d0CB9E40699237d0f40F3EE211527a5619fF',
 };
 
-// Just a standard hardhat-deploy deployment definition file!
 const func = async (hre) => {
   const { deployments, getNamedAccounts } = hre;
   const { deploy } = deployments;
