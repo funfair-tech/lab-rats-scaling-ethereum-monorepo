@@ -9,7 +9,7 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.Faucet.Transactions
     /// <summary>
     ///     Withdraws token from the faucet.
     /// </summary>
-    [DebuggerDisplay(value: "Owner: {OwnerAddress}")]
+    [DebuggerDisplay(value: "Owner: {" + nameof(OwnerAddress) + "}")]
     public sealed class WithdrawTokenInput : TransactionParameters
     {
         /// <summary>

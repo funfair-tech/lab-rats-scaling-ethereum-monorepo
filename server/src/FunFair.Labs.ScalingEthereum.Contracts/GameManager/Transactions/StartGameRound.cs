@@ -8,6 +8,6 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Transactions
     public sealed class StartGameRound : Transaction<StartGameRoundInput>
     {
         /// <inheritdoc />
-        public override string Name { get; } = "startGameRound";
+        public override string Name { get; } = "startGameRoundSplit";
     }
 }

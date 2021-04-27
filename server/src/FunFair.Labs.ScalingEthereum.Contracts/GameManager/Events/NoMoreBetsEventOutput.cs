@@ -7,17 +7,17 @@ using FunFair.Labs.ScalingEthereum.DataTypes.Primitives;
 namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
 {
     /// <summary>
-    ///     Event parameters for <see cref="EndGameRoundBettingEvent" />
+    ///     Event parameters for <see cref="NoMoreBetsEventOutput" />
     /// </summary>
-    [DebuggerDisplay("Game Round Id {GameRoundId}")]
-    public sealed class EndGameRoundBettingEventOutput : EventOutput, IGameRoundEventOutput
+    [DebuggerDisplay("Game Round Id {" + nameof(GameRoundId) + "}")]
+    public sealed class NoMoreBetsEventOutput : EventOutput, IGameRoundEventOutput
     {
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="gameRoundId">Game round id.</param>
-        public EndGameRoundBettingEventOutput([EventOutputParameter(ethereumDataType: "bytes32", order: 1, indexed: true)]
-                                              GameRoundId gameRoundId)
+        public NoMoreBetsEventOutput([EventOutputParameter(ethereumDataType: "bytes32", order: 1, indexed: true)]
+                                     GameRoundId gameRoundId)
         {
             this.GameRoundId = gameRoundId ?? throw new ArgumentNullException(nameof(gameRoundId));
         }

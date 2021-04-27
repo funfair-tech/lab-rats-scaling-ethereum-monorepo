@@ -17,7 +17,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
     /// </summary>
     [SuppressMessage(category: "Microsoft.Naming", checkId: "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Best name for it")]
     [SuppressMessage(category: "ReSharper", checkId: "ClassNeverInstantiated.Global", Justification = "Instantiated by DI")]
-    public sealed class EndGameRoundBettingEventHandler : GameRoundEventHandlerBase<EndGameRoundBettingEventOutput>
+    public sealed class NoMoreBetsEventHandler : GameRoundEventHandlerBase<NoMoreBetsEventOutput>
     {
         private readonly IGameStatisticsPublisher _gameStatisticsPublisher;
 
@@ -28,10 +28,10 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
         /// <param name="gameRoundLockManager">Game Lock manager.</param>
         /// <param name="gameStatisticsPublisher">Game stats publisher.</param>
         /// <param name="logger">Logging.</param>
-        public EndGameRoundBettingEventHandler(IGameRoundDataManager gameRoundDataManager,
-                                               IObjectLockManager<GameRoundId> gameRoundLockManager,
-                                               IGameStatisticsPublisher gameStatisticsPublisher,
-                                               ILogger<EndGameRoundBettingEventHandler> logger)
+        public NoMoreBetsEventHandler(IGameRoundDataManager gameRoundDataManager,
+                                      IObjectLockManager<GameRoundId> gameRoundLockManager,
+                                      IGameStatisticsPublisher gameStatisticsPublisher,
+                                      ILogger<NoMoreBetsEventHandler> logger)
             : base(gameRoundDataManager: gameRoundDataManager, gameRoundLockManager: gameRoundLockManager, logger: logger)
         {
             this._gameStatisticsPublisher = gameStatisticsPublisher ?? throw new ArgumentNullException(nameof(gameStatisticsPublisher));
@@ -48,7 +48,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
 
         /// <inheritdoc />
         protected override async Task<bool> ProcessEventUnderLockAsync(GameRound gameRound,
-                                                                       EndGameRoundBettingEventOutput eventData,
+                                                                       NoMoreBetsEventOutput eventData,
                                                                        TransactionHash transactionHash,
                                                                        INetworkBlockHeader networkBlockHeader,
                                                                        CancellationToken cancellationToken)

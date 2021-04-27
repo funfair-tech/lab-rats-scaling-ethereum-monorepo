@@ -8,6 +8,6 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Transactions
     public sealed class EndGameRoundBetting : Transaction<StartGameRoundInput>
     {
         /// <inheritdoc />
-        public override string Name { get; } = "endGameRoundBetting";
+        public override string Name { get; } = "noMoreBetsForGameRound";
     }
 }

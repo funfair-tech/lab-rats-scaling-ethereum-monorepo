@@ -9,7 +9,7 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
     /// <summary>
     ///     Event parameters for <see cref="StartGameRoundEvent" />
     /// </summary>
-    [DebuggerDisplay("Game Round Id {GameRoundId}")]
+    [DebuggerDisplay("Game Round Id {" + nameof(GameRoundId) + "}")]
     public sealed class StartGameRoundEventOutput : EventOutput, IGameRoundEventOutput
     {
         /// <summary>

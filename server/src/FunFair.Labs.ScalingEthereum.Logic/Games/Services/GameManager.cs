@@ -172,10 +172,9 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
 
             await this._gameRoundDataManager.BeginCompleteAsync(gameRoundId: gameRoundId, blockNumberCreated: networkBlockHeader.Number, transactionHash: pendingTransaction.TransactionHash);
 
-            await this._gameStatisticsPublisher.GameRoundEndingAsync(network: account.Network,
-                                                                     gameRoundId: gameRoundId,
-                                                                     transactionHash: pendingTransaction.TransactionHash,
-                                                                     seedReveal: game.SeedReveal);
+            await this._gameStatisticsPublisher.GameRoundBettingEndingAsync(network: account.Network,
+                                                                            gameRoundId: gameRoundId,
+                                                                            transactionHash: pendingTransaction.TransactionHash);
         }
 
         /// <inheritdoc />

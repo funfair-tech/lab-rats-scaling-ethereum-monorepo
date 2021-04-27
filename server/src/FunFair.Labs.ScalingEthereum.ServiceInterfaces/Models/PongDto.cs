@@ -5,7 +5,7 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterfaces.Models
     /// <summary>
     ///     The Pong Response
     /// </summary>
-    [DebuggerDisplay("{Value}")]
+    [DebuggerDisplay("{" + nameof(Value) + "}")]
     public sealed class PongDto
     {
         /// <summary>

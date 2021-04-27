@@ -9,7 +9,7 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Transactions
     /// <summary>
     ///     Input parameters for <seealso cref="EndGameRoundBetting" />.
     /// </summary>
-    [DebuggerDisplay("{RoundId}")]
+    [DebuggerDisplay("{" + nameof(RoundId) + "}")]
     public sealed class EndGameRoundBettingInput : TransactionParameters
     {
         /// <summary>
