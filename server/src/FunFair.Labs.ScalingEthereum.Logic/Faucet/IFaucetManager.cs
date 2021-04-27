@@ -7,7 +7,7 @@ using FunFair.Labs.ScalingEthereum.Logic.Faucet.Models;
 namespace FunFair.Labs.ScalingEthereum.Logic.Faucet
 {
     /// <summary>
-    ///     Faucet for Token and ETH.
+    ///     Faucet for Token and native currency.
     /// </summary>
     public interface IFaucetManager
     {

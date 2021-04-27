@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using FunFair.Common.Environment;
+using FunFair.Common.Middleware;
 using FunFair.Ethereum.Blocks.Interfaces;
 using FunFair.Ethereum.DataTypes;
 using FunFair.Ethereum.DataTypes.Primitives;
@@ -10,6 +13,8 @@ using FunFair.Ethereum.Networks.Interfaces;
 using FunFair.Labs.ScalingEthereum.Authentication;
 using FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound;
 using FunFair.Labs.ScalingEthereum.DataTypes.Primitives;
+using FunFair.Labs.ScalingEthereum.Logic.Faucet;
+using FunFair.Labs.ScalingEthereum.Logic.Faucet.Models;
 using FunFair.Labs.ScalingEthereum.Logic.Games;
 using FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers;
 using FunFair.Labs.ScalingEthereum.Logic.Players;
@@ -28,10 +33,12 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
     public sealed class AuthenticatedHub : HubBase
     {
         private readonly IEthereumBlockStatus _ethereumBlockStatus;
+        private readonly IFaucetManager _faucetManager;
         private readonly IGameRoundDataManager _gameRoundDataManager;
         private readonly IGameRoundTimeCalculator _gameRoundTimeCalculator;
         private readonly IPlayerCountManager _playerCountManager;
         private readonly IRateLimiter _rateLimiter;
+        private readonly IRemoteIpAddressRetriever _remoteIpAddressRetriever;
         private readonly IStartRoundGameHistoryBuilder _startRoundGameHistoryBuilder;
 
         /// <summary>
@@ -46,6 +53,8 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
         /// <param name="gameRoundTimeCalculator">Game round time calculator.</param>
         /// <param name="startRoundGameHistoryBuilder">Game Round history builder.</param>
         /// <param name="ethereumBlockStatus">Ethereum block status.</param>
+        /// <param name="faucetManager">Faucet manager.</param>
+        /// <param name="remoteIpAddressRetriever">Retriever of IP Address.</param>
         /// <param name="rateLimiter">Rate limiter</param>
         /// <param name="logger">Logger</param>
         public AuthenticatedHub(IEthereumNetworkRegistry ethereumNetworkRegistry,
@@ -57,6 +66,8 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
                                 IGameRoundTimeCalculator gameRoundTimeCalculator,
                                 IStartRoundGameHistoryBuilder startRoundGameHistoryBuilder,
                                 IEthereumBlockStatus ethereumBlockStatus,
+                                IFaucetManager faucetManager,
+                                IRemoteIpAddressRetriever remoteIpAddressRetriever,
                                 IRateLimiter rateLimiter,
                                 ILogger<AuthenticatedHub> logger)
             : base(ethereumNetworkRegistry: ethereumNetworkRegistry, groupNameGenerator: groupNameGenerator, environment: environment, subscriptionManager: subscriptionManager, logger: logger)
@@ -66,6 +77,8 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
             this._gameRoundTimeCalculator = gameRoundTimeCalculator ?? throw new ArgumentNullException(nameof(gameRoundTimeCalculator));
             this._startRoundGameHistoryBuilder = startRoundGameHistoryBuilder ?? throw new ArgumentNullException(nameof(startRoundGameHistoryBuilder));
             this._ethereumBlockStatus = ethereumBlockStatus ?? throw new ArgumentNullException(nameof(ethereumBlockStatus));
+            this._faucetManager = faucetManager ?? throw new ArgumentNullException(nameof(faucetManager));
+            this._remoteIpAddressRetriever = remoteIpAddressRetriever;
             this._rateLimiter = rateLimiter ?? throw new ArgumentNullException(nameof(rateLimiter));
         }
 
@@ -81,13 +94,12 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
         {
             EthereumNetwork network = this.VerifyNetwork(networkName);
 
-            UserAccountId userAccountId = this.JwtUser()
-                                              .Id;
+            JwtUser user = this.JwtUser();
+            UserAccountId userAccountId = user.Id;
 
             string connectionId = this.Context.ConnectionId;
             this.Logger.LogInformation($"Client {connectionId} subscribing to network {network.Name}");
 
-            // temporary for dummy data
             await this.SubscribeNetworkAsync(connectionId: this.Context.ConnectionId, network: network);
 
             this.Logger.LogInformation($"Client {connectionId} subscribed to network {network.Name} and user account id {userAccountId}");
@@ -96,10 +108,17 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
 
             await this.Clients.Caller.PlayersOnline(playerCount);
 
+            INetworkBlockHeader? networkBlockHeader = this._ethereumBlockStatus.GetLatestBlockRetrievedOnNetwork(network);
+
+            await this.PublishGameStateAsync(network: network, networkBlockHeader: networkBlockHeader);
+            await this.IssueFundsFromFaucetAsync(network: network, user: user, networkBlockHeader: networkBlockHeader);
+        }
+
+        private async Task PublishGameStateAsync(EthereumNetwork network, INetworkBlockHeader? networkBlockHeader)
+        {
             IReadOnlyList<GameRound> games = await this._gameRoundDataManager.GetAllRunningAsync(network);
 
             bool anyPublished = false;
-            INetworkBlockHeader? networkBlockHeader = this._ethereumBlockStatus.GetLatestBlockRetrievedOnNetwork(network);
 
             if (networkBlockHeader != null)
             {
@@ -137,6 +156,28 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
                 else
                 {
                     await this.Clients.Caller.NoGamesAvailable();
+                }
+            }
+        }
+
+        private async Task IssueFundsFromFaucetAsync(EthereumNetwork network, JwtUser user, INetworkBlockHeader? networkBlockHeader)
+        {
+            if (networkBlockHeader != null)
+            {
+                try
+                {
+                    IPAddress ipAddress = this._remoteIpAddressRetriever.Get(this.Context.GetHttpContext());
+
+                    FaucetDrip drip = await this._faucetManager.OpenAsync(ipAddress: ipAddress,
+                                                                          new NetworkAccount(network: network, address: user.AccountAddress),
+                                                                          networkBlockHeader: networkBlockHeader,
+                                                                          cancellationToken: CancellationToken.None);
+
+                    await this.Clients.Caller.FaucetDrip(nativeCurrencyAmount: drip.EthAmount, tokenAmount: drip.TokenAmount, transactionHash: drip.Transaction.TransactionHash);
+                }
+                catch
+                {
+                    // TODO: Log
                 }
             }
         }
