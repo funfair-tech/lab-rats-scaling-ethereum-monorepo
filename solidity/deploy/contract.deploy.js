@@ -1,45 +1,29 @@
-const deployingNetworksContext = [
-  {
-    name: 'KOVAN',
-    chainId: '42',
-    // WE NEED A FIXED ADDRESS FOR THE TOKENS
-    // ONCE DEPLOYED PUT IT IN HERE AND THE
-    // DEPLOYMENT SCRIPT WILL HANDLE IT FOR YOU
-    labRatsContractAddress: '0x64f5361a555A43776f71A06C58dD7bCD7E184983',
-  },
-  {
-    name: 'OPTIMISMKOVAN',
-    chainId: '69',
-    // WE NEED A FIXED ADDRESS FOR THE TOKENS
-    // ONCE DEPLOYED PUT IT IN HERE AND THE
-    // DEPLOYMENT SCRIPT WILL HANDLE IT FOR YOU
-    labRatsContractAddress: '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2',
-    // THIS SHOULD ONLY BE REDEPLOYED IF CODE HAS CHANGED
-    // IF YOU WANT TO REDEPLOY IT PUT THIS AS UNDEFINED
-    faucetContractAddress: '0x4697d0CB9E40699237d0f40F3EE211527a5619fF',
-  },
-];
+const deployingNetworkContext = {
+  name: 'OPTIMISMKOVAN',
+  chainId: '69',
+  // WE NEED A FIXED ADDRESS FOR THE TOKENS
+  // ONLY CHANGE THIS IF YOU CHANGED THE LOGIC OF THE CONTRACT
+  labRatsContractAddress: '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2',
+  // WE NEED A FIXED ADDRESS FOR THE FAUCET
+  // ONLY CHANGE THIS IF YOU CHANGED THE LOGIC OF THE CONTRACT
+  faucetContractAddress: '0x4697d0CB9E40699237d0f40F3EE211527a5619fF',
+};
 
 // Just a standard hardhat-deploy deployment definition file!
 const func = async (hre) => {
-  const { deployments, getNamedAccounts, getChainId } = hre;
+  const { deployments, getNamedAccounts } = hre;
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  const chainId = await hre.getChainId();
-  const deployingNetworkContext = deployingNetworksContext.find(
-    (d) => d.chainId === chainId
-  );
-
   const labRatsContractAddress = await deployLabRatsErc667Contract(
-    deployingNetworkContext,
     deploy,
     deployer,
     hre
   );
 
-  await deployFaucetContract(
-    deployingNetworkContext,
+  await deployFaucetContract(labRatsContractAddress, deploy, deployer, hre);
+
+  await deployMultiplayerGamesManagerContract(
     labRatsContractAddress,
     deploy,
     deployer,
@@ -57,12 +41,7 @@ const buildUpDeployOptions = (args, deployer, hre) => {
   };
 };
 
-const deployLabRatsErc667Contract = async (
-  deployingNetworkContext,
-  deploy,
-  deployer,
-  hre
-) => {
+const deployLabRatsErc667Contract = async (deploy, deployer, hre) => {
   if (
     deployingNetworkContext &&
     deployingNetworkContext.labRatsContractAddress
@@ -83,7 +62,6 @@ const deployLabRatsErc667Contract = async (
 };
 
 const deployFaucetContract = async (
-  deployingNetworkContext,
   labRatContractAddress,
   deploy,
   deployer,
@@ -105,6 +83,33 @@ const deployFaucetContract = async (
   );
 
   return faucetResult.address;
+};
+
+const deployMultiplayerGamesManagerContract = async (
+  labRatContractAddress,
+  deploy,
+  deployer,
+  hre
+) => {
+  const multiplayerGamesManagerResult = await deploy(
+    'MultiplayerGamesManager',
+    buildUpDeployOptions(
+      [
+        labRatContractAddress,
+        [
+          '0x16485F14e561214E2DFfBffDD5757059E8c74CA3',
+          '0x1F9fcF0A1390C60b88f68e2912eA5f2673413C49',
+        ],
+      ],
+      deployer,
+      hre
+    )
+  );
+
+  console.log('MultiplayerGamesManager ABI:');
+  console.log(JSON.stringify(multiplayerGamesManagerResult.abi, null, 2));
+
+  return multiplayerGamesManagerResult.address;
 };
 
 func.tags = ['deploy-all'];
