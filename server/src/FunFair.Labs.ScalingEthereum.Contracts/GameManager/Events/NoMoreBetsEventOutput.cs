@@ -7,7 +7,7 @@ using FunFair.Labs.ScalingEthereum.DataTypes.Primitives;
 namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
 {
     /// <summary>
-    ///     Event parameters for <see cref="NoMoreBetsEventOutput" />
+    ///     Event parameters for <see cref="NoMoreBetsEvent" />
     /// </summary>
     [DebuggerDisplay("Game Round Id {" + nameof(GameRoundId) + "}")]
     public sealed class NoMoreBetsEventOutput : EventOutput, IGameRoundEventOutput
