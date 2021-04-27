@@ -83,7 +83,7 @@ contract MultiplayerGamesManager is Ownable() {
         }
 
         for(uint i = 0; i < _permittedGames.length; i++) {
-            setGameDefinitionPermission(_permittedGames[i], true);
+            permittedGameDefinitions[_permittedGames[i]] = true;
         }
 
         emit Constructor(_gameToken);
