@@ -14,11 +14,13 @@ using FunFair.Ethereum.Calls;
 using FunFair.Ethereum.Confirmations;
 using FunFair.Ethereum.Confirmations.Interfaces;
 using FunFair.Ethereum.Confirmations.Services;
+using FunFair.Ethereum.Contracts;
 using FunFair.Ethereum.Crypto;
 using FunFair.Ethereum.Crypto.Native;
 using FunFair.Ethereum.DataTypes.Primitives;
 using FunFair.Ethereum.Events;
 using FunFair.Ethereum.Events.Data.Interfaces;
+using FunFair.Ethereum.Events.Interfaces;
 using FunFair.Ethereum.Events.Service;
 using FunFair.Ethereum.GasPrices;
 using FunFair.Ethereum.GasPrices.Interfaces;
@@ -29,7 +31,10 @@ using FunFair.Ethereum.Transactions.Interfaces;
 using FunFair.Ethereum.Transactions.Service;
 using FunFair.Ethereum.Transactions.Services;
 using FunFair.Ethereum.Wallet;
+using FunFair.Labs.ScalingEthereum.Contracts;
+using FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events;
 using FunFair.Labs.ScalingEthereum.Contracts.Networks;
+using FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers;
 using FunFair.Labs.ScalingEthereum.Server.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -176,15 +181,14 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
         [SuppressMessage(category: "Microsoft.Usage", checkId: "CA1801:ReviewUnusedParameters", Justification = "Interface defined for when swagger is enabled.")]
         public static void ConfigureEventProcessing(IServiceProvider serviceProvider)
         {
-            // TODO: Implement any event handlers we need
-#if FALSE
             IContractInfoRegistry registry = serviceProvider.GetRequiredService<IContractInfoRegistry>();
             IContractEventWatcherProcessor processor = serviceProvider.GetRequiredService<IContractEventWatcherProcessor>();
 
             IContractInfo contractInfo = registry.FindContractInfo(WellKnownContracts.GameManager);
 
-            processor.RegisterEventHandler<CreateProgressivePotEventHandler, CreateProgressivePotEvent, CreateProgressivePotEventOutput>(contractInfo);
-#endif
+            processor.RegisterEventHandler<StartGameRoundEventHandler, StartGameRoundEvent, StartGameRoundEventOutput>(contractInfo);
+            processor.RegisterEventHandler<NoMoreBetsEventHandler, NoMoreBetsEvent, NoMoreBetsEventOutput>(contractInfo);
+            processor.RegisterEventHandler<EndGameRoundEventHandler, EndGameRoundEvent, EndGameRoundEventOutput>(contractInfo);
         }
 
         public static void ConfigureGasPriceRecommendationWatcher(IServiceProvider serviceProvider)
