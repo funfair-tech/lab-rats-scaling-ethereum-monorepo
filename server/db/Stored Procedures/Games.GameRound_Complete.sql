@@ -9,8 +9,7 @@ CREATE PROCEDURE [Games].[GameRound_Complete] (
     @BlockNumber INT,
     @TransactionHash CHAR(66),
     @WinAmounts [Games].[WinAmount] READONLY,
-    @HouseWinLoss BIGINT,
-    @ProgressiveWinLoss BIGINT,
+    @ProgressiveWinLoss VARCHAR(66),
     @GameResult VARBINARY(MAX),
     @History VARBINARY(MAX)
     )
@@ -25,7 +24,6 @@ BEGIN
     SET [Status] = 'COMPLETED',
         [DateUpdated] = SYSUTCDATETIME(),
         [DateClosed] = SYSUTCDATETIME(),
-        [HouseWinLoss] = @HouseWinLoss,
         [ProgressiveWinLoss] = @ProgressiveWinLoss,
         [GameResult] = @GameResult,
         [History] = @History
