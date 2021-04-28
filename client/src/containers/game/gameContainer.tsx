@@ -22,6 +22,12 @@ export const GameContainer: FunctionComponent<Props> = (props) => {
     }
   }, [gameInstance, props.game]);
 
+  useEffect(() => {
+    if(!!props.user.address) {
+      gameInstance.setAddress(props.user.address);
+    }
+  }, [props.user.address]);
+
   return (
     <div>
         <Canvas />
@@ -32,6 +38,7 @@ export const GameContainer: FunctionComponent<Props> = (props) => {
 const mapStateToProps = (state: RootState) => {
   return {
     game: state.game,
+    user: state.user,
   };
 };
 

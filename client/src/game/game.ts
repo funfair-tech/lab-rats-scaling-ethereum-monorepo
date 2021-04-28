@@ -19,6 +19,11 @@ export class Game {
     // TODO: ...
   }
 
+  public setAddress(address: string): void {
+    console.log('Game: user address -', address);
+    //TODO: ...
+  }
+
   public report(): string {
     return 'Canvas ready for duty';
   }

@@ -23,6 +23,34 @@ class MessageService {
     store.dispatch(setPlayersOnline(playerCount));
   };
 
+  private handleGameStarting = (roundId: string, potId: string, transactionhash: string): void => {
+    console.log(`GameRoundStarting: ${roundId} ${potId} ${transactionhash}`);
+
+  };
+
+  private handleGameStarted = (
+    gameRoundId: string,
+    progressivePotId: string,
+    timeLeftInSeconds: number,
+    startRoundBlockNumber: number,
+    interRoundPause: number,
+  ): void => {
+    console.log(
+      `GameRoundStarted: ${gameRoundId} ${progressivePotId} ${timeLeftInSeconds} ${startRoundBlockNumber} ${interRoundPause}`,
+    );
+  };
+
+  private handleGameEnding = (gameId: string, potId: string, transactionHash: string, entropyReveal: string) => {
+    console.log(
+      `GameEnding: GameId: ${gameId} PotId: ${potId} TransactionHash: ${transactionHash} EntropyReveal: ${entropyReveal}`,
+    );
+  };
+
+  private handleGameEnded = (gameId: string, potId: string, blockNumber: number, interGameDelay: number) => {
+    console.log(`GameEnded: ${gameId} ${potId} ${blockNumber} ${interGameDelay}`);
+  };
+
+
   public async connectToServer(authenticate: boolean, networkName: string): Promise<void> {
     var options = {};
     const connectionUrl = apiRequest.buildEndpoint('hub/authenticated');
@@ -41,6 +69,10 @@ class MessageService {
       .build();
 
     this.connection.on('PlayersOnline', this.handlePlayersOnline);
+    this.connection.on('GameRoundStarting', this.handleGameStarting);
+    this.connection.on('GameRoundStarted', this.handleGameStarted);
+    this.connection.on('GameRoundEnding', this.handleGameEnding);
+    this.connection.on('GameRoundEnded', this.handleGameEnded);
 
     this.connection.onclose(function () {
       console.log('signalr disconnected');

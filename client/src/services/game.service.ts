@@ -3,6 +3,8 @@ import ConnectionTest from '../contracts/connectionTest.json';
 import { IConnectionTest } from '../contracts/connetionTest';
 import { LabRatsToken } from '../contracts/LabRatsToken';
 import LabRatsTokenABI from '../contracts/labRatsToken.json';
+import { MultiplayerGamesManager } from '../contracts/MultiplayerGamesManager';
+import MultiplayerGamesManagerABI from '../contracts/multiplayerGamesManager.json';
 import { Bet } from '../model/bet';
 import { BlockHeader } from '../model/blockHeader';
 import { RoundResult } from '../model/roundResult';
@@ -14,6 +16,7 @@ import { ethers } from './ether.service';
 class GameService {
   private testAddress = '0xf4Ca8a4a571Fbac6DB7e7824A1F97CC68058FB7d';
   private GAME_ADDRESS = '0xFc35436FecCeC70Ad223dC88B2eba647846F3170';
+  private GAME_MANAGER_ADDRESS = '0xe3f2Fa6a3F16837d012e1493F50BD29db0BdADe4';
   private TOKEN_ADDRESS = '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2';
 
   public async callTest() {
@@ -170,11 +173,9 @@ class GameService {
   }
 
   public async testForRoundResult(blockHeader: BlockHeader) {
-    const eventName = 'MessageSet';
+    const eventName = 'StartGameRound';
     // TODO: isInBloom ... [contract, eventName, roundId]
-    const abi = ConnectionTest;
-    const address = this.testAddress;
-    const contract = await ethers.getContract<IConnectionTest>(abi, address);
+    const contract = await ethers.getContract<MultiplayerGamesManager>(MultiplayerGamesManagerABI, this.GAME_MANAGER_ADDRESS);
     const events: Event[] = await (contract as any).queryFilter(
       eventName,
       blockHeader.blockHash
