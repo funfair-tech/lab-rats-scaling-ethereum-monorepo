@@ -13,6 +13,7 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT [GameRoundId],
+        [GameManagerContract],
         [GameContract],
         [Network],
         [CreatedByAccount],
