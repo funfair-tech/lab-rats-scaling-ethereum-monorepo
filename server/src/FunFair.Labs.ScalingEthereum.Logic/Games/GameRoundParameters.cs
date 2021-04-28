@@ -26,6 +26,6 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games
         /// <summary>
         ///     Length of time before a round timeout can occur.
         /// </summary>
-        public static TimeSpan RoundTimeoutDuration { get; } = RoundDuration * 5;
+        public static TimeSpan RoundTimeoutDuration { get; } = (RoundDuration + BettingCloseDuration) * 5;
     }
 }
