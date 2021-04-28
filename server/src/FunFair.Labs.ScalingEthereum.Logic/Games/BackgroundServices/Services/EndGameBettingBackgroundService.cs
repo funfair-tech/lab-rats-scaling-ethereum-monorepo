@@ -36,7 +36,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
                    latestBlockRetriever: latestBlockRetriever,
                    processUnchangedBlocks: false,
                    dateTimeSource: dateTimeSource,
-                   sweepInterval: TimeSpan.FromSeconds(30),
+                   sweepInterval: TimeSpan.FromSeconds(1),
                    blockTriggeredService: new BackgroundService(endGameBettingService),
                    logger: logger)
         {
