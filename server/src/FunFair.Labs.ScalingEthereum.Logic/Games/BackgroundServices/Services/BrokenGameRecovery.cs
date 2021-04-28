@@ -100,9 +100,8 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
             foreach (GameRound game in brokenGames)
             {
                 this._logger.LogInformation($"{game.Network.Name}: {game.GameRoundId}");
-#if FALSE
+
                 await this.FixGameAsync(blockHeader: blockHeader, game: game, cancellationToken: cancellationToken);
-#endif
             }
         }
 
