@@ -90,6 +90,9 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
         /// </summary>
         public byte[] History { get; }
 
+        /// <summary>
+        ///     The persistent game data id.
+        /// </summary>
         public byte[] PersistentGameDataId { get; }
 
         /// <inheritdoc />

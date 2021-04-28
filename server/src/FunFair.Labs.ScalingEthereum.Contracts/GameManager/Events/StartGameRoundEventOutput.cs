@@ -26,6 +26,9 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
             this.PersistentGameDataId = persistentGameDataId ?? throw new ArgumentNullException(nameof(persistentGameDataId));
         }
 
+        /// <summary>
+        ///     The persistent game data id.
+        /// </summary>
         public byte[] PersistentGameDataId { get; }
 
         /// <inheritdoc />

@@ -16,11 +16,20 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
         ///     Constructor.
         /// </summary>
         /// <param name="gameRoundId">Game round id.</param>
+        /// <param name="persistentGameDataId">The persistent game data id.</param>
         public NoMoreBetsEventOutput([EventOutputParameter(ethereumDataType: "bytes32", order: 1, indexed: true)]
-                                     GameRoundId gameRoundId)
+                                     GameRoundId gameRoundId,
+                                     [EventOutputParameter(ethereumDataType: "bytes32", order: 2, indexed: true)]
+                                     byte[] persistentGameDataId)
         {
             this.GameRoundId = gameRoundId ?? throw new ArgumentNullException(nameof(gameRoundId));
+            this.PersistentGameDataId = persistentGameDataId ?? throw new ArgumentNullException(nameof(persistentGameDataId));
         }
+
+        /// <summary>
+        ///     The persistent game data id.
+        /// </summary>
+        public byte[] PersistentGameDataId { get; }
 
         /// <inheritdoc />
         public GameRoundId GameRoundId { get; }
