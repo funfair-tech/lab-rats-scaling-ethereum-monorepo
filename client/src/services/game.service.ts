@@ -39,29 +39,68 @@ class GameService {
       throw new Error('Error placing bet. Round id not found');
     }
 
+    // const encoded = ethers.encode(
+    //   {
+    //     TokenTransferData: {
+    //       roundID: 'bytes32',
+    //       bets: [
+    //         {
+    //           playerAddress: 'address',
+    //           betAmount: 'uint256',
+    //           betData: 'uint8',
+    //         },
+    //       ],
+    //     },
+    //   },
+    //   {
+    //     roundID: bet.roundId,
+    //     bets: [
+    //       {
+    //         playerAddress: bet.address,
+    //         betAmount: bet.amount,
+    //         betData: bet.data,
+    //       },
+    //     ],
+    //   },
+    // );
+
     const encoded = ethers.encode(
-      {
-        TokenTransferData: {
-          roundID: 'bytes32',
+      [
+        // {
+        //     baseType: "bytes",
+        //     name: "_data",
+        //     type: "bytes",
+        //     indexed: false,
+        //     components: [],
+          
+        // },
+        {
+          // TokenTransferData: {
+            roundID: 'bytes32',
+            bets: [
+              {
+                playerAddress: 'address',
+                betAmount: 'uint256',
+                betData: 'bytes',
+              },
+            ],
+          // },
+        }
+      ],
+      [
+        {
+          roundID: bet.roundId,
           bets: [
             {
-              playerAddress: 'address',
-              betAmount: 'uint256',
-              betData: 'bytes',
+              playerAddress: bet.address,
+              betAmount: bet.amount,
+              betData: bet.data,
             },
           ],
         },
-      },
-      {
-        roundID: bet.roundId,
-        bets: [
-          {
-            playerAddress: bet.address,
-            betAmount: bet.amount,
-            betData: bet.data,
-          },
-        ],
-      },
+      ]
+
+      
     );
 
     const contract = await ethers.getContract<LabRatsToken>(LabRatsTokenABI, this.testAddress);

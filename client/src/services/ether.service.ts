@@ -1,3 +1,4 @@
+import { ParamType } from '@ethersproject/abi';
 import { TransactionReceipt, Web3Provider } from '@ethersproject/providers';
 import window from '@funfair-tech/wallet-sdk/window';
 import { BigNumber, Contract, ContractInterface, utils } from 'ethers';
@@ -50,8 +51,10 @@ class EtherService {
     return utils.formatBytes32String(value);
   }
 
-  public encode(types: any, parameter: any): string {
-    return utils.defaultAbiCoder.encode(types, parameter);
+  public encode(types: ParamType[], parameters: any[]): string {
+    // const paramTypes: ParamType[] = types.map(type => utils.ParamType.from( type ));
+    // const paramTypes: ParamType[] = types.map(type => utils.ParamType.from( type ));
+    return utils.defaultAbiCoder.encode(types, parameters);
   }
 }
 
