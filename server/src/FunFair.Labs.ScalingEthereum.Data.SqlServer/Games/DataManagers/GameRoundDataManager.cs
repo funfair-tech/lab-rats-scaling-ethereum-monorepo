@@ -89,8 +89,10 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
 
         /// <inheritdoc />
         public Task SaveStartRoundAsync(GameRoundId gameRoundId,
+                                        EthereumNetwork network,
                                         AccountAddress createdByAccount,
-                                        NetworkContract gameContract,
+                                        ContractAddress gameManagerContract,
+                                        ContractAddress gameContract,
                                         Seed seedCommit,
                                         Seed seedReveal,
                                         TimeSpan roundDuration,
@@ -102,9 +104,10 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
                                                new
                                                {
                                                    GameRoundId = gameRoundId,
-                                                   GameContract = gameContract.Address,
+                                                   GameManagerContract = gameManagerContract,
+                                                   GameContract = gameContract,
                                                    CreatedByAccount = createdByAccount,
-                                                   Network = gameContract.Network.Name,
+                                                   Network = network.Name,
                                                    BlockNumberCreated = blockNumberCreated,
                                                    SeedCommit = seedCommit,
                                                    SeedReveal = seedReveal,

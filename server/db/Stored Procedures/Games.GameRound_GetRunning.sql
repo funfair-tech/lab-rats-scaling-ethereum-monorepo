@@ -4,7 +4,9 @@ GO
 SET ANSI_NULLS ON
 GO
 
-CREATE PROCEDURE [Games].[GameRound_GetRunning]
+CREATE PROCEDURE [Games].[GameRound_GetRunning](
+    @GameManagerContract CHAR(42)
+)
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -25,7 +27,8 @@ BEGIN
         [DateStarted],
         [DateClosed]
     FROM [Games].[GameRound]
-    WHERE [Status] IN ('STARTED', 'BETTING_STOPPING', 'BETTING_OVER');
+    WHERE [GameManagerContract] = @GameManagerContract
+        AND [Status] IN ('STARTED', 'BETTING_STOPPING', 'BETTING_OVER');
 END
 GO
 

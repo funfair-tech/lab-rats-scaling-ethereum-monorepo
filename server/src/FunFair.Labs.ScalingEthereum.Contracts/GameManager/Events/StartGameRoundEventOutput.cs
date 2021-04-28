@@ -17,7 +17,9 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
         /// </summary>
         /// <param name="gameRoundId">Game round id.</param>
         public StartGameRoundEventOutput([EventOutputParameter(ethereumDataType: "bytes32", order: 1, indexed: true)]
-                                         GameRoundId gameRoundId)
+                                         GameRoundId gameRoundId
+        [EventOutputParameter(ethereumDataType: "bytes32", order: 1, indexed: true)]
+        GameRoundId gameRoundId)
         {
             this.GameRoundId = gameRoundId ?? throw new ArgumentNullException(nameof(gameRoundId));
         }

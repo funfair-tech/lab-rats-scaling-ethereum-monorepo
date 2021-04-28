@@ -1,6 +1,7 @@
 CREATE TABLE [Games].[GameRound] (
     [Network] [varchar](50) COLLATE Latin1_General_CI_AS NOT NULL,
     [GameRoundId] [char](66) COLLATE Latin1_General_CI_AS NOT NULL,
+    [GameManagerContract] [char](42) COLLATE Latin1_General_CI_AS NOT NULL,
     [GameContract] [char](42) COLLATE Latin1_General_CI_AS NOT NULL,
     [CreatedByAccount] [char](42) COLLATE Latin1_General_CI_AS NOT NULL,
     [Status] [varchar](20) COLLATE Latin1_General_CI_AS NOT NULL,
