@@ -2,11 +2,13 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FunFair.Ethereum.Client.Interfaces.Exceptions;
+using FunFair.Ethereum.Contracts;
 using FunFair.Ethereum.Crypto.Interfaces;
 using FunFair.Ethereum.DataTypes;
 using FunFair.Ethereum.DataTypes.Primitives;
 using FunFair.Ethereum.Transactions.Data.Interfaces.Models;
 using FunFair.Ethereum.Wallet.Interfaces;
+using FunFair.Labs.ScalingEthereum.Contracts;
 using FunFair.Labs.ScalingEthereum.Contracts.GameManager.Transactions;
 using FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound;
 using FunFair.Labs.ScalingEthereum.DataTypes.Primitives;
@@ -21,6 +23,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
     /// </summary>
     public sealed class GameManager : IGameManager
     {
+        private readonly IContractInfo _gameManager;
         private readonly IGameRoundDataManager _gameRoundDataManager;
         private readonly IGameStatisticsPublisher _gameStatisticsPublisher;
         private readonly IHasher _hasher;
@@ -36,6 +39,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
         /// <param name="randomSource">Random source</param>
         /// <param name="transactionService">Transaction service</param>
         /// <param name="hasher">Hasher</param>
+        /// <param name="contractInfoRegistry">Contract info registry.</param>
         /// <param name="gameStatisticsPublisher">The game stats publisher</param>
         /// <param name="lowBalanceWatcher">Low balance watcher</param>
         /// <param name="logger">Logger</param>
@@ -43,6 +47,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
                            IRandomSource randomSource,
                            ITransactionService transactionService,
                            IHasher hasher,
+                           IContractInfoRegistry contractInfoRegistry,
                            IGameStatisticsPublisher gameStatisticsPublisher,
                            ILowBalanceWatcher lowBalanceWatcher,
                            ILogger<GameManager> logger)
@@ -54,6 +59,8 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
             this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this._gameStatisticsPublisher = gameStatisticsPublisher ?? throw new ArgumentNullException(nameof(gameStatisticsPublisher));
             this._lowBalanceWatcher = lowBalanceWatcher ?? throw new ArgumentNullException(nameof(lowBalanceWatcher));
+
+            this._gameManager = contractInfoRegistry.FindContractInfo(WellKnownContracts.GameManager);
         }
 
         /// <inheritdoc />
@@ -61,8 +68,13 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
         {
             if (!this._lowBalanceWatcher.DoesAccountHaveEnoughBalance(account))
             {
-                this._logger.LogWarning($"{account.Network.Name}: To create new game round there was no enough {account.Network.NativeCurrency} for house address {account.Address}");
+                this._logger.LogWarning($"{account.Network.Name}: There was no enough {account.Network.NativeCurrency} for house address {account.Address} to create a game");
 
+                return;
+            }
+
+            if (!this._gameManager.Addresses.TryGetValue(key: account.Network, out ContractAddress? gameManagerContract))
+            {
                 return;
             }
 
@@ -83,7 +95,9 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
 
             await this._gameRoundDataManager.SaveStartRoundAsync(gameRoundId: gameRoundId,
                                                                  createdByAccount: account.Address,
-                                                                 new NetworkContract(network: account.Network, contractAddress: gameContract),
+                                                                 network: account.Network,
+                                                                 gameContract: gameContract,
+                                                                 gameManagerContract: gameManagerContract,
                                                                  seedCommit: seedCommit,
                                                                  seedReveal: seedReveal,
                                                                  roundDuration: GameRoundParameters.RoundDuration,
@@ -172,9 +186,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
 
             await this._gameRoundDataManager.BeginCompleteAsync(gameRoundId: gameRoundId, blockNumberCreated: networkBlockHeader.Number, transactionHash: pendingTransaction.TransactionHash);
 
-            await this._gameStatisticsPublisher.GameRoundBettingEndingAsync(network: account.Network,
-                                                                            gameRoundId: gameRoundId,
-                                                                            transactionHash: pendingTransaction.TransactionHash);
+            await this._gameStatisticsPublisher.GameRoundBettingEndingAsync(network: account.Network, gameRoundId: gameRoundId, transactionHash: pendingTransaction.TransactionHash);
         }
 
         /// <inheritdoc />
@@ -184,7 +196,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
 
             try
             {
-                StartGameRoundInput input = new(roundId: game.GameRoundId, gameAddress: game.GameContract.Address, entropyCommit: game.SeedCommit);
+                StartGameRoundInput input = new(roundId: game.GameRoundId, gameAddress: game.GameContract, entropyCommit: game.SeedCommit);
 
                 pendingTransaction = await this._transactionService.SubmitAsync(account: account,
                                                                                 transactionContext: new TransactionContext(contextType: @"GAMEROUND", game.GameRoundId.ToString()),

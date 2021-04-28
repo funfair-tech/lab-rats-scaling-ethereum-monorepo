@@ -64,16 +64,17 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
             }
 
             GameRound newRoundState =
-                new(gameRoundId: gameRound.GameRoundId, createdByAccount: gameRound.CreatedByAccount, gameContract: gameRound.GameContract, seedCommit: gameRound.SeedCommit, seedReveal:
-                    gameRound.SeedReveal, status: GameRoundStatus.STARTED, roundDuration: gameRound.RoundDuration, roundTimeoutDuration: gameRound.RoundTimeoutDuration, dateCreated:
-                    gameRound.DateCreated, dateUpdated: networkBlockHeader.Timestamp, dateStarted: networkBlockHeader.Timestamp, dateClosed: null, blockNumberCreated: networkBlockHeader.Number);
+                new(gameRoundId: gameRound.GameRoundId, network: gameRound.Network, gameManagerContract: gameRound.GameManagerContract, createdByAccount: gameRound.CreatedByAccount, gameContract:
+                    gameRound.GameContract, seedCommit: gameRound.SeedCommit, seedReveal: gameRound.SeedReveal, status: GameRoundStatus.STARTED, roundDuration: gameRound.RoundDuration,
+                    roundTimeoutDuration: gameRound.RoundTimeoutDuration, dateCreated: gameRound.DateCreated, dateUpdated: networkBlockHeader.Timestamp, dateStarted: networkBlockHeader.Timestamp,
+                    dateClosed: null, blockNumberCreated: networkBlockHeader.Number);
 
             await this.GameRoundDataManager.ActivateAsync(activationTime: newRoundState.DateStarted!.Value,
                                                           gameRoundId: newRoundState.GameRoundId,
                                                           blockNumberCreated: newRoundState.BlockNumberCreated,
                                                           transactionHash: transactionHash);
 
-            await this._gameStatisticsPublisher.GameRoundStartedAsync(network: newRoundState.GameContract.Network,
+            await this._gameStatisticsPublisher.GameRoundStartedAsync(network: newRoundState.Network,
                                                                       gameRoundId: newRoundState.GameRoundId,
                                                                       this._gameRoundTimeCalculator.CalculateTimeLeft(gameRound: newRoundState),
                                                                       blockNumber: newRoundState.BlockNumberCreated);

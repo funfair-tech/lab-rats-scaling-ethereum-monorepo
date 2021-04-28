@@ -43,7 +43,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
 
             DateTime gameWillEnd = gameRound.DateStarted.Value.AddSeconds(gameRound.RoundDuration.TotalSeconds);
 
-            DateTime currentAmortizedTime = this.GetCurrentTime(gameRound.GameContract.Network);
+            DateTime currentAmortizedTime = this.GetCurrentTime(gameRound.Network);
 
             return (int) (gameWillEnd - currentAmortizedTime).TotalSeconds;
         }
@@ -56,7 +56,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
                 return 0;
             }
 
-            DateTime currentAmortizedTime = this.GetCurrentTime(gameRound.GameContract.Network);
+            DateTime currentAmortizedTime = this.GetCurrentTime(gameRound.Network);
             DateTime nextStartTime = gameRound.DateClosed.Value + GameRoundParameters.InterGameDelay;
 
             return (int) (nextStartTime - currentAmortizedTime).TotalSeconds;

@@ -23,7 +23,9 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         ///     Save new game round
         /// </summary>
         /// <param name="gameRoundId">The game round</param>
+        /// <param name="network">The network the game is being played on.</param>
         /// <param name="createdByAccount">The account that created the pot.</param>
+        /// <param name="gameManagerContract">The game manager contract.</param>
         /// <param name="gameContract">The network contract</param>
         /// <param name="seedCommit">The seed commit</param>
         /// <param name="seedReveal">The seed reveal</param>
@@ -32,8 +34,10 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         /// <param name="blockNumberCreated">Block number</param>
         /// <param name="transactionHash">The transaction that submitted the start round.</param>
         Task SaveStartRoundAsync(GameRoundId gameRoundId,
+                                 EthereumNetwork network,
                                  AccountAddress createdByAccount,
-                                 NetworkContract gameContract,
+                                 ContractAddress gameManagerContract,
+                                 ContractAddress gameContract,
                                  Seed seedCommit,
                                  Seed seedReveal,
                                  TimeSpan roundDuration,
@@ -123,17 +127,12 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         Task<GameRound?> GetLastCompletedForNetworkAsync(EthereumNetwork network);
 
         /// <summary>
-        ///     Gets all the running games.
-        /// </summary>
-        /// <returns>Collection of games.</returns>
-        Task<IReadOnlyList<GameRound>> GetAllRunningAsync();
-
-        /// <summary>
         ///     If we can we start a game for a progressive pot
         /// </summary>
+        /// <param name="gameManagerContract">The game manager contract being used to start a game.</param>
         /// <param name="interGameDelay">Inter game delay.</param>
         /// <returns>Collection of games.</returns>
-        Task<bool> CanStartAGameAsync(int interGameDelay);
+        Task<bool> CanStartAGameAsync(ContractAddress gameManagerContract, int interGameDelay);
 
         /// <summary>
         ///     Gets all the running games for the network.

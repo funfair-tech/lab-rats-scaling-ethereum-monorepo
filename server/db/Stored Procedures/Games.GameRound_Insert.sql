@@ -6,6 +6,7 @@ GO
 
 CREATE PROCEDURE [Games].[GameRound_Insert] (
     @GameRoundId CHAR(66),
+    @GameManagerContract CHAR(42),
     @GameContract CHAR(42),
     @Network VARCHAR(50),
     @CreatedByAccount [char](42),
@@ -22,6 +23,7 @@ BEGIN
 
     INSERT INTO [Games].[GameRound] (
         [GameRoundId],
+        [GameManagerContract],
         [GameContract],
         [CreatedByAccount],
         [Network],
@@ -43,6 +45,7 @@ BEGIN
     INTO [Games].[GameRoundBlockHistory]([GameRoundId], [Status], [ChangeDate], [BlockNumber], [TransactionHash])
     VALUES (
         @GameRoundId,
+        @GameManagerContract,
         @GameContract,
         @CreatedByAccount,
         @Network,

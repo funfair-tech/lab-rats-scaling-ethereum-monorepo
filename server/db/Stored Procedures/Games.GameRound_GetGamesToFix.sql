@@ -16,6 +16,7 @@ BEGIN
     DECLARE @closeGameTimeout INT = 1;
 
     SELECT G.[GameRoundId],
+        G.[GameManagerContract],
         G.[GameContract],
         G.[Network],
         G.[CreatedByAccount],

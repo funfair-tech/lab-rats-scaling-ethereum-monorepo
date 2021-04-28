@@ -17,6 +17,8 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         /// </summary>
         /// <param name="gameRoundId">The game round id</param>
         /// <param name="createdByAccount">The account that created the game.</param>
+        /// <param name="network">The network.</param>
+        /// <param name="gameManagerContract">The game manager contract.</param>
         /// <param name="gameContract">The game network contract</param>
         /// <param name="seedCommit">The commit seed</param>
         /// <param name="seedReveal">The reveal seed</param>
@@ -30,7 +32,9 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         /// <param name="blockNumberCreated">The block number the round was activated.</param>
         public GameRound(GameRoundId gameRoundId,
                          AccountAddress createdByAccount,
-                         NetworkContract gameContract,
+                         EthereumNetwork network,
+                         ContractAddress gameManagerContract,
+                         ContractAddress gameContract,
                          Seed seedCommit,
                          Seed seedReveal,
                          GameRoundStatus status,
@@ -44,6 +48,8 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         {
             this.GameRoundId = gameRoundId ?? throw new ArgumentNullException(nameof(gameRoundId));
             this.CreatedByAccount = createdByAccount ?? throw new ArgumentNullException(nameof(createdByAccount));
+            this.Network = network ?? throw new ArgumentNullException(nameof(network));
+            this.GameManagerContract = gameManagerContract ?? throw new ArgumentNullException(nameof(gameManagerContract));
             this.GameContract = gameContract ?? throw new ArgumentNullException(nameof(gameContract));
             this.SeedCommit = seedCommit ?? throw new ArgumentNullException(nameof(seedCommit));
             this.SeedReveal = seedReveal ?? throw new ArgumentNullException(nameof(seedReveal));
@@ -65,7 +71,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         /// <summary>
         ///     The game network contract
         /// </summary>
-        public NetworkContract GameContract { get; }
+        public ContractAddress GameContract { get; }
 
         /// <summary>
         ///     The commit seed
@@ -116,6 +122,10 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         ///     The account that created the game.
         /// </summary>
         public AccountAddress CreatedByAccount { get; }
+
+        public EthereumNetwork Network { get; }
+
+        public ContractAddress GameManagerContract { get; }
 
         /// <summary>
         ///     The date/time the game was started.
