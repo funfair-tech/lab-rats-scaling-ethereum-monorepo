@@ -4,9 +4,7 @@ GO
 SET ANSI_NULLS ON
 GO
 
-CREATE PROCEDURE [Games].[GameRound_GetRunning](
-    @GameManagerContract CHAR(42)
-)
+CREATE PROCEDURE [Games].[GameRound_GetRunning] (@GameManagerContract CHAR(42))
 AS
 BEGIN
     SET NOCOUNT ON;
