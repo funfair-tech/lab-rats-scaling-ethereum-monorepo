@@ -85,10 +85,7 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub.Publishers
 
             IEnumerable<IHub> hubs = this.GetAllHubs(network: network, includeLocalGroups: false, includeGlobalGroups: true);
 
-            return Task.WhenAll(hubs.Select(hub => hub.GameRoundEnded(roundId: gameRoundId,
-                                                                      blockNumber: blockNumber,
-                                                                      (int) GameRoundParameters.InterGameDelay.TotalSeconds,
-                                                                      startBlockNumber: startBlockNumber)));
+            return Task.WhenAll(hubs.Select(hub => hub.BettingEnded(roundId: gameRoundId, blockNumber: blockNumber)));
         }
 
         /// <inheritdoc />
