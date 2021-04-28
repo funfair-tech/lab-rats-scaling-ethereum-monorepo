@@ -59,24 +59,22 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
                 if (gameRoundLock == null)
                 {
                     // something else has the game round locked
-                    this._logger.LogInformation($"{gameRound.GameContract.Network.Name}: could not get lock for {gameRound.GameRoundId}");
+                    this._logger.LogInformation($"{gameRound.Network.Name}: could not get lock for {gameRound.GameRoundId}");
 
                     return;
                 }
 
                 try
                 {
-                    INetworkSigningAccount signingAccount = this._ethereumAccountManager.GetAccount(new NetworkAccount(network: gameRound.GameContract.Network, address: gameRound.CreatedByAccount));
+                    INetworkSigningAccount signingAccount = this._ethereumAccountManager.GetAccount(new NetworkAccount(network: gameRound.Network, address: gameRound.CreatedByAccount));
 
-                    this._logger.LogInformation($"{gameRound.GameContract.Network.Name}: End betting using game round: {gameRound.GameRoundId}");
+                    this._logger.LogInformation($"{gameRound.Network.Name}: End betting using game round: {gameRound.GameRoundId}");
 
                     await this._gameManager.EndGameBettingAsync(account: signingAccount, gameRoundId: gameRound.GameRoundId, networkBlockHeader: blockHeader, cancellationToken: cancellationToken);
                 }
                 catch (Exception exception)
                 {
-                    this._logger.LogError(new EventId(exception.HResult),
-                                          exception: exception,
-                                          $"{gameRound.GameContract.Network.Name}: Failed to end game betting {gameRound.GameRoundId}: {exception.Message}");
+                    this._logger.LogError(new EventId(exception.HResult), exception: exception, $"{gameRound.Network.Name}: Failed to end game betting {gameRound.GameRoundId}: {exception.Message}");
                 }
             }
         }

@@ -189,15 +189,9 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
         }
 
         /// <inheritdoc />
-        public Task<IReadOnlyList<GameRound>> GetAllRunningAsync()
+        public Task<bool> CanStartAGameAsync(ContractAddress gameManagerContract, int interGameDelay)
         {
-            return this._database.QueryAsync(builder: this._gameRoundBuilder, storedProcedure: @"Games.GameRound_GetRunning");
-        }
-
-        /// <inheritdoc />
-        public Task<bool> CanStartAGameAsync(int interGameDelay)
-        {
-            return this._database.QuerySingleAsync<object, bool>(storedProcedure: @"Games.GameRound_CanStartAGame", new {InterGameDelay = interGameDelay});
+            return this._database.QuerySingleAsync<object, bool>(storedProcedure: @"Games.GameRound_CanStartAGame", new {GameManagerContract = gameManagerContract, InterGameDelay = interGameDelay});
         }
 
         /// <inheritdoc />

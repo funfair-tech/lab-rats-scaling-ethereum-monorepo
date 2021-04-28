@@ -6,7 +6,6 @@ GO
 
 CREATE PROCEDURE [Games].[GameRound_GetAllForClosing] (
     @Network VARCHAR(50),
-    @GameManagerContract CHAR(42),
     @DateTimeOnNetwork DATETIME2
     )
 AS
@@ -30,7 +29,6 @@ BEGIN
         [DateClosed]
     FROM Games.GameRound
     WHERE [Network] = @Network
-        AND [GameManagerContract] = @GameManagerContract
         AND [Status] = 'STARTED'
         AND [ScheduledDateForClosing] < @DateTimeOnNetwork
 END

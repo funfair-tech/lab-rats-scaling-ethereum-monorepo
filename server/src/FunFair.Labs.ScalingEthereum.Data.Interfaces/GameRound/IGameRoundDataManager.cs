@@ -127,17 +127,12 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         Task<GameRound?> GetLastCompletedForNetworkAsync(EthereumNetwork network);
 
         /// <summary>
-        ///     Gets all the running games.
-        /// </summary>
-        /// <returns>Collection of games.</returns>
-        Task<IReadOnlyList<GameRound>> GetAllRunningAsync();
-
-        /// <summary>
         ///     If we can we start a game for a progressive pot
         /// </summary>
+        /// <param name="gameManagerContract">The game manager contract being used to start a game.</param>
         /// <param name="interGameDelay">Inter game delay.</param>
         /// <returns>Collection of games.</returns>
-        Task<bool> CanStartAGameAsync(int interGameDelay);
+        Task<bool> CanStartAGameAsync(ContractAddress gameManagerContract, int interGameDelay);
 
         /// <summary>
         ///     Gets all the running games for the network.

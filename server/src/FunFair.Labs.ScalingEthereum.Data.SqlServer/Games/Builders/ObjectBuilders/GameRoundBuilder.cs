@@ -4,7 +4,6 @@ using FunFair.Common.Data.Extensions;
 using FunFair.Common.Extensions;
 using FunFair.Ethereum.DataTypes;
 using FunFair.Ethereum.DataTypes.Exceptions;
-using FunFair.Ethereum.DataTypes.Primitives;
 using FunFair.Ethereum.Networks.Interfaces;
 using FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound;
 using FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.Builders.ObjectBuilders.Entities;
@@ -42,11 +41,11 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.Builders.ObjectBuild
 
             string status = source.Status ?? source.DataError(x => x.Status);
 
-            ContractAddress gameContract = source.GameContract ?? source.DataError(x => x.GameContract);
-
             return new GameRound(createdByAccount: source.CreatedByAccount ?? source.DataError(x => x.CreatedByAccount),
                                  gameRoundId: source.GameRoundId ?? source.DataError(x => x.GameRoundId),
-                                 gameContract: new NetworkContract(network: network, contractAddress: gameContract),
+                                 network: network,
+                                 gameManagerContract: source.GameManagerContract ?? source.DataError(x => x.GameManagerContract),
+                                 gameContract: source.GameContract ?? source.DataError(x => x.GameContract),
                                  seedCommit: source.SeedCommit ?? source.DataError(x => x.SeedCommit),
                                  seedReveal: source.SeedReveal ?? source.DataError(x => x.SeedReveal),
                                  status: status.ToEnum<GameRoundStatus>(),

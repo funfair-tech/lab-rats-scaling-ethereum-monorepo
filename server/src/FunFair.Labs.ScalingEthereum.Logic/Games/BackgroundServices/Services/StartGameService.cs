@@ -119,7 +119,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
                     return;
                 }
 
-                bool canGameBeStarted = await this._gameRoundDataManager.CanStartAGameAsync((int) GameRoundParameters.InterGameDelay.TotalSeconds);
+                bool canGameBeStarted = await this._gameRoundDataManager.CanStartAGameAsync(gameManagerContract: gameManagerContractAddress, (int) GameRoundParameters.InterGameDelay.TotalSeconds);
 
                 if (!canGameBeStarted)
                 {

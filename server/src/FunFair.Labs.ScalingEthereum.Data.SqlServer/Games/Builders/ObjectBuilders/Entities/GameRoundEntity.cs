@@ -82,5 +82,10 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.Builders.ObjectBuild
         ///     The date/time the game was activated.
         /// </summary>
         public DateTime? DateStarted { get; init; }
+
+        /// <summary>
+        ///     The Game manager contract
+        /// </summary>
+        public ContractAddress? GameManagerContract { get; init; }
     }
 }

@@ -216,8 +216,7 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub
 
         private async Task<IReadOnlyList<string>> GetGameHistoryAsync(GameRound game)
         {
-            IReadOnlyList<GameHistory> history = await this._gameRoundDataManager.GetHistoryAsync(gameContractAddress: game.GameContract.Address,
-                                                                                                  maxHistoryItems: NotificationConfiguration.MaxHistoryItems);
+            IReadOnlyList<GameHistory> history = await this._gameRoundDataManager.GetHistoryAsync(gameContractAddress: game.GameContract, maxHistoryItems: NotificationConfiguration.MaxHistoryItems);
 
             return this._startRoundGameHistoryBuilder.Build(history);
         }

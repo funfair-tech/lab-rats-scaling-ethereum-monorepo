@@ -196,7 +196,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
 
             try
             {
-                StartGameRoundInput input = new(roundId: game.GameRoundId, gameAddress: game.GameContract.Address, entropyCommit: game.SeedCommit);
+                StartGameRoundInput input = new(roundId: game.GameRoundId, gameAddress: game.GameContract, entropyCommit: game.SeedCommit);
 
                 pendingTransaction = await this._transactionService.SubmitAsync(account: account,
                                                                                 transactionContext: new TransactionContext(contextType: @"GAMEROUND", game.GameRoundId.ToString()),
