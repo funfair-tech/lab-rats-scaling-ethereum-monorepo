@@ -29,7 +29,7 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
                                        GameRoundId gameRoundId,
                                        [EventOutputParameter(ethereumDataType: "bytes32", order: 2, indexed: true)]
                                        byte[] persistentGameDataId,
-                                       [EventOutputParameter(ethereumDataType: "bytes32", order: 3, indexed: true)]
+                                       [EventOutputParameter(ethereumDataType: "bytes32", order: 3, indexed: false)]
                                        Seed entropyReveal,
                                        [EventOutputParameter(ethereumDataType: "address[]", order: 4, indexed: false)]
                                        AccountAddress[] players,
