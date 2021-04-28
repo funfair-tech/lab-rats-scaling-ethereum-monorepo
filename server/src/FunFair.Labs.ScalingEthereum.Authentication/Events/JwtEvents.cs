@@ -29,38 +29,57 @@ namespace FunFair.Labs.ScalingEthereum.Authentication.Events
         {
             if (context.HttpContext.Request.Headers.ContainsKey(WellKnownHeaders.TokenHeader))
             {
-                string token = context.HttpContext.Request.Headers[WellKnownHeaders.TokenHeader];
+                return ExtractTokenFromHeaderAsync(context);
+            }
 
-                if (token.StartsWith(value: BEARER, comparisonType: StringComparison.OrdinalIgnoreCase))
-                {
-                    context.Token = token.Substring(BEARER.Length)
-                                         .Trim();
-                }
-                else
-                {
-                    AuthenticateResult.NoResult();
-                }
-            }
-            else
+            if (context.Request.Path.StartsWithSegments(other: "/hub/authenticated", comparisonType: StringComparison.OrdinalIgnoreCase))
             {
-                if (context.Request.Path.StartsWithSegments(other: "/hub/authenticated", comparisonType: StringComparison.OrdinalIgnoreCase))
-                {
-                    if (!context.HttpContext.Request.Query.TryGetValue(key: "access_token", out StringValues token))
-                    {
-                        AuthenticateResult.NoResult();
-                    }
-                    else
-                    {
-                        context.Token = token;
-                    }
-                }
-                else
-                {
-                    AuthenticateResult.NoResult();
-                }
+                return ExtractTokenFromAccessTokenParameterAsync(context);
             }
+
+            return NotAuthenticatedAsync();
+        }
+
+        private static Task NotAuthenticatedAsync()
+        {
+            AuthenticateResult.NoResult();
 
             return Task.CompletedTask;
+        }
+
+        private static Task ExtractTokenFromAccessTokenParameterAsync(MessageReceivedContext context)
+        {
+            if (!context.HttpContext.Request.Query.TryGetValue(key: "access_token", out StringValues token))
+            {
+                return NotAuthenticatedAsync();
+            }
+
+            return AuthenticatedAsync(context: context, token: token);
+        }
+
+        private static Task AuthenticatedAsync(MessageReceivedContext context, StringValues token)
+        {
+            context.Token = token;
+
+            return Task.CompletedTask;
+        }
+
+        private static Task ExtractTokenFromHeaderAsync(MessageReceivedContext context)
+        {
+            string token = context.HttpContext.Request.Headers[WellKnownHeaders.TokenHeader];
+
+            if (token.StartsWith(value: BEARER, comparisonType: StringComparison.OrdinalIgnoreCase))
+            {
+                return AuthenticatedAsync(context: context, ExtractBearerToken(token));
+            }
+
+            return NotAuthenticatedAsync();
+        }
+
+        private static string ExtractBearerToken(string token)
+        {
+            return token.Substring(BEARER.Length)
+                        .Trim();
         }
 
         public override Task AuthenticationFailed(AuthenticationFailedContext context)
