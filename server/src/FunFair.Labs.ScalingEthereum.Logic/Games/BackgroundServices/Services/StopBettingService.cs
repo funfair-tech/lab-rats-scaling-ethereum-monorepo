@@ -14,9 +14,9 @@ using Microsoft.Extensions.Logging;
 namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
 {
     /// <summary>
-    ///     Background block service for <see cref="IEndGameBackgroundService" />
+    ///     Background block service for <see cref="IEndGameBettingBackgroundService" />
     /// </summary>
-    public sealed class StopBettingService : IEndGameService
+    public sealed class StopBettingService : IEndGameBettingService
     {
         private readonly IDateTimeSource _dateTimeSource;
         private readonly IEthereumAccountManager _ethereumAccountManager;
@@ -76,13 +76,13 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
                 {
                     INetworkSigningAccount signingAccount = this._ethereumAccountManager.GetAccount(new NetworkAccount(network: gameRound.Network, address: gameRound.CreatedByAccount));
 
-                    this._logger.LogInformation($"{gameRound.Network.Name}: End using game round: {gameRound.GameRoundId}");
+                    this._logger.LogInformation($"{gameRound.Network.Name}: End betting using game round: {gameRound.GameRoundId}");
 
                     await this._gameManager.StopBettingAsync(account: signingAccount, gameRoundId: gameRound.GameRoundId, networkBlockHeader: blockHeader, cancellationToken: cancellationToken);
                 }
                 catch (Exception exception)
                 {
-                    this._logger.LogError(new EventId(exception.HResult), exception: exception, $"{gameRound.Network.Name}: Failed to end game {gameRound.GameRoundId}: {exception.Message}");
+                    this._logger.LogError(new EventId(exception.HResult), exception: exception, $"{gameRound.Network.Name}: Failed to end game betting {gameRound.GameRoundId}: {exception.Message}");
                 }
             }
         }

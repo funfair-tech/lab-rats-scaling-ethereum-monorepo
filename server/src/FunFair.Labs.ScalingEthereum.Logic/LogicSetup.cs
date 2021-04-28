@@ -80,8 +80,8 @@ namespace FunFair.Labs.ScalingEthereum.Logic
             services.AddSingleton<ITransactionService, TransactionService>();
 
             services.AddSingleton<IStartGameService, StartGameService>();
-            services.AddSingleton<IEndGameBettingService, EndGameBettingService>();
-            services.AddSingleton<IEndGameService, StopBettingService>();
+            services.AddSingleton<IEndGameBettingService, StopBettingService>();
+            services.AddSingleton<IEndGameService, EndGameService>();
             services.AddSingleton<IBrokenGameRecovery, BrokenGameRecovery>();
             services.AddSingleton<IStartRoundGameHistoryBuilder, StartRoundGameHistoryBuilder>();
             services.AddSingleton<IGameRoundTimeCalculator, GameRoundTimeCalculator>();

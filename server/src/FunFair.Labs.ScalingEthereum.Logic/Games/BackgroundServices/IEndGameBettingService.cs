@@ -14,6 +14,6 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices
         /// </summary>
         /// <param name="blockHeader">The latest block header for the network.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task EndGameBettingAsync(INetworkBlockHeader blockHeader, CancellationToken cancellationToken);
+        Task StopBettingAsync(INetworkBlockHeader blockHeader, CancellationToken cancellationToken);
     }
 }

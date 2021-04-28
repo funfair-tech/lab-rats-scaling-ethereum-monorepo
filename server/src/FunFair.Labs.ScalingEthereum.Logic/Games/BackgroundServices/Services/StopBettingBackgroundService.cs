@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
 {
     /// <summary>
-    ///     End game service
+    ///     Stop betting service
     /// </summary>
     public sealed class StopBettingBackgroundService : BlockTriggeredBackgroundService, IEndGameBettingBackgroundService
     {
@@ -58,7 +58,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
                     return Task.CompletedTask;
                 }
 
-                return this._endGameBettingService.EndGameBettingAsync(blockHeader: blockHeader, cancellationToken: cancellationToken);
+                return this._endGameBettingService.StopBettingAsync(blockHeader: blockHeader, cancellationToken: cancellationToken);
             }
 
             public Task ProcessNetworkForBlockRemovalAsync(INetworkBlockHeader blockHeader, INetworkBlockHeader newBlockHeader, CancellationToken cancellationToken)
