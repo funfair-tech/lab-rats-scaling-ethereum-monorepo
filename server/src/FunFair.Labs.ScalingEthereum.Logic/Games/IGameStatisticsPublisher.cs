@@ -51,7 +51,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games
         /// <param name="network">The network the game round is ending on</param>
         /// <param name="gameRoundId">The game round id</param>
         /// <param name="transactionHash">The hash of the transaction ending the game</param>
-        Task GameRoundBettingEndingAsync(EthereumNetwork network, GameRoundId gameRoundId, TransactionHash transactionHash);
+        Task BettingEndingAsync(EthereumNetwork network, GameRoundId gameRoundId, TransactionHash transactionHash);
 
         /// <summary>
         ///     Game round betting has ended
@@ -60,7 +60,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games
         /// <param name="gameRoundId">The game round id</param>
         /// <param name="blockNumber">The block number the game round was ended in</param>
         /// <param name="startBlockNumber">The block number the game round was started in</param>
-        Task GameRoundBettingEndedAsync(EthereumNetwork network, GameRoundId gameRoundId, BlockNumber blockNumber, BlockNumber startBlockNumber);
+        Task BettingEndedAsync(EthereumNetwork network, GameRoundId gameRoundId, BlockNumber blockNumber, BlockNumber startBlockNumber);
 
         /// <summary>
         ///     Game round broken

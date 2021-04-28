@@ -63,10 +63,10 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
 
             await this.GameRoundDataManager.MarkAsBettingCompleteAsync(gameRoundId: gameRound.GameRoundId, blockNumber: networkBlockHeader.Number, transactionHash: transactionHash);
 
-            await this._gameStatisticsPublisher.GameRoundBettingEndedAsync(network: networkBlockHeader.Network,
-                                                                           gameRoundId: gameRound.GameRoundId,
-                                                                           blockNumber: networkBlockHeader.Number,
-                                                                           startBlockNumber: gameRound.BlockNumberCreated);
+            await this._gameStatisticsPublisher.BettingEndedAsync(network: networkBlockHeader.Network,
+                                                                  gameRoundId: gameRound.GameRoundId,
+                                                                  blockNumber: networkBlockHeader.Number,
+                                                                  startBlockNumber: gameRound.BlockNumberCreated);
 
             return true;
         }

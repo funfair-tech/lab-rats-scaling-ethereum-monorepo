@@ -201,15 +201,15 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
         }
 
         /// <inheritdoc />
-        public Task<GameRound?> GetLastCompletedForNetworkAsync(EthereumNetwork network)
-        {
-            return this._database.QuerySingleOrDefaultAsync(builder: this._gameRoundBuilder, storedProcedure: @"Games.GameRound_GetLastCompletedForNetwork", new {Network = network.Name});
-        }
-
-        /// <inheritdoc />
         public Task MarkAsBrokenAsync(GameRoundId gameRoundId, BlockNumber closingBlockNumber, string exceptionMessage)
         {
             return this._database.ExecuteAsync(storedProcedure: @"Games.GameRound_MarkAsBroken", new {GameRoundId = gameRoundId, BlockNumber = closingBlockNumber, Reason = exceptionMessage});
+        }
+
+        /// <inheritdoc />
+        public Task<GameRound?> GetLastCompletedForNetworkAsync(EthereumNetwork network)
+        {
+            return this._database.QuerySingleOrDefaultAsync(builder: this._gameRoundBuilder, storedProcedure: @"Games.GameRound_GetLastCompletedForNetwork", new {Network = network.Name});
         }
 
         private static WinAmountEntity Convert(WinAmount winAmount)

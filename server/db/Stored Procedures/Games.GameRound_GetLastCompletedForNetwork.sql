@@ -5,8 +5,7 @@ SET ANSI_NULLS ON
 GO
 
 CREATE PROCEDURE [Games].[GameRound_GetLastCompletedForNetwork] (
-    @Network VARCHAR(50),
-    @GameManagerContract CHAR(42)
+    @Network VARCHAR(50)
     )
 AS
 BEGIN
@@ -30,7 +29,6 @@ BEGIN
         [DateClosed]
     FROM [Games].[GameRound]
     WHERE Network = @Network
-        AND [GameManagerContract] = @GameManagerContract
         AND [Status] IN ('COMPLETED')
     ORDER BY [DateClosed] DESC
 END

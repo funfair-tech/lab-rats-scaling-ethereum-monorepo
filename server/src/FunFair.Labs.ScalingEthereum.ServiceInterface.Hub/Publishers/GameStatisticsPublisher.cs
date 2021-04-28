@@ -69,7 +69,7 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub.Publishers
         }
 
         /// <inheritdoc />
-        public Task GameRoundBettingEndingAsync(EthereumNetwork network, GameRoundId gameRoundId, TransactionHash transactionHash)
+        public Task BettingEndingAsync(EthereumNetwork network, GameRoundId gameRoundId, TransactionHash transactionHash)
         {
             this._logger.LogInformation($"{network.Name}: Game {gameRoundId} betting ending. Txn hash {transactionHash}");
 
@@ -79,7 +79,7 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterface.Hub.Publishers
         }
 
         /// <inheritdoc />
-        public Task GameRoundBettingEndedAsync(EthereumNetwork network, GameRoundId gameRoundId, BlockNumber blockNumber, BlockNumber startBlockNumber)
+        public Task BettingEndedAsync(EthereumNetwork network, GameRoundId gameRoundId, BlockNumber blockNumber, BlockNumber startBlockNumber)
         {
             this._logger.LogInformation($"{network.Name}: Game {gameRoundId} betting ended. Block number {blockNumber}");
 
