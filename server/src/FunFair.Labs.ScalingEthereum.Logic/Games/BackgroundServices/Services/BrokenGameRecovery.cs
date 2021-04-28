@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FunFair.Common.Extensions;
+using FunFair.Common.Interfaces;
 using FunFair.Ethereum.Abi.Encoder.Interfaces;
 using FunFair.Ethereum.Client.Interfaces;
 using FunFair.Ethereum.Confirmations.Interfaces;
@@ -32,6 +33,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
     {
         private readonly IConfirmationsReadinessChecker _confirmationsReadinessChecker;
         private readonly IContractInfo _contractInfo;
+        private readonly IDateTimeSource _dateTimeSource;
         private readonly IEthereumAccountManager _ethereumAccountManager;
         private readonly IEventDataManager _eventDataManager;
         private readonly IEventDecoder _eventDecoder;
@@ -55,6 +57,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
         /// <param name="eventDataManager">Event data manager.</param>
         /// <param name="eventDecoder">Event Decoder.</param>
         /// <param name="confirmationsReadinessChecker">Confirmations readiness checker.</param>
+        /// <param name="dateTimeSource">Source of time.</param>
         /// <param name="logger">Logging.</param>
         public BrokenGameRecovery(IGameRoundDataManager gameRoundDataManager,
                                   IGameManager gameManager,
@@ -66,6 +69,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
                                   IEventDataManager eventDataManager,
                                   IEventDecoder eventDecoder,
                                   IConfirmationsReadinessChecker confirmationsReadinessChecker,
+                                  IDateTimeSource dateTimeSource,
                                   ILogger<BrokenGameRecovery> logger)
         {
             this._gameRoundDataManager = gameRoundDataManager ?? throw new ArgumentNullException(nameof(gameRoundDataManager));
@@ -77,6 +81,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
             this._eventDataManager = eventDataManager ?? throw new ArgumentNullException(nameof(eventDataManager));
             this._eventDecoder = eventDecoder ?? throw new ArgumentNullException(nameof(eventDecoder));
             this._confirmationsReadinessChecker = confirmationsReadinessChecker ?? throw new ArgumentNullException(nameof(confirmationsReadinessChecker));
+            this._dateTimeSource = dateTimeSource ?? throw new ArgumentNullException(nameof(dateTimeSource));
             this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             this._contractInfo = contractInfoRegistry.FindContractInfo(WellKnownContracts.GameManager);
@@ -85,7 +90,10 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
         /// <inheritdoc />
         public async Task RecoverAsync(INetworkBlockHeader blockHeader, CancellationToken cancellationToken)
         {
-            IReadOnlyList<GameRound> brokenGames = await this._gameRoundDataManager.GetGamesToFixAsync(network: blockHeader.Network, dateTimeOnNetwork: blockHeader.Timestamp);
+            // n.b. can't use the network time as blocks are not regular
+            DateTime now = this._dateTimeSource.UtcNow();
+
+            IReadOnlyList<GameRound> brokenGames = await this._gameRoundDataManager.GetGamesToFixAsync(network: blockHeader.Network, dateTimeOnNetwork: now);
 
             this._logger.LogInformation($"{blockHeader.Network.Name}: Found {brokenGames.Count} games that need fixing");
 
