@@ -175,7 +175,9 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
             {
                 this._logger.LogError(new EventId(exception.HResult), exception: exception, $"{account.Network.Name}: Failed to stop betting for game {gameRoundId}: {exception.Message}");
 
+#if BROKEN
                 await this._gameRoundDataManager.MarkAsBrokenAsync(gameRoundId: gameRoundId, closingBlockNumber: networkBlockHeader.Number, exceptionMessage: exception.Message);
+#endif
 
                 await this._gameStatisticsPublisher.GameRoundBrokenAsync(network: account.Network, gameRoundId: gameRoundId);
 
