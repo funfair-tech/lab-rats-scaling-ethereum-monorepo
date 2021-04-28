@@ -66,7 +66,6 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
 
             this.Logger.LogInformation($"{networkBlockHeader.Network.Name}: {eventData.GameRoundId}. Progressive Win/Loss: {eventData.ProgressivePotWinLoss}");
 
-            // TODO: Remove houseWinLoss
             await this.GameRoundDataManager.SaveEndRoundAsync(gameRoundId: gameRound.GameRoundId,
                                                               blockNumberCreated: networkBlockHeader.Number,
                                                               transactionHash: transactionHash,

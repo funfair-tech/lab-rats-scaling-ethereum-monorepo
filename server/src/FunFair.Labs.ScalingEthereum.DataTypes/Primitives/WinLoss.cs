@@ -49,7 +49,7 @@ namespace FunFair.Labs.ScalingEthereum.DataTypes.Primitives
         ///     Constructor.
         /// </summary>
         /// <param name="bytes">The bytes to create the string from.</param>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Standard constructor")]
         public WinLoss(byte[] bytes)
             : this(
                 new ReadOnlyHexIntegerValue<BigInteger, BigIntegerByteExtractionStrategy, NoConversionStrategy, Maximum32ByteBoundsCheckedValidationStrategy,
@@ -61,7 +61,7 @@ namespace FunFair.Labs.ScalingEthereum.DataTypes.Primitives
         ///     Constructor.
         /// </summary>
         /// <param name="bytes">The bytes to create the string from.</param>
-        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "TODO: Review")]
+        [SuppressMessage(category: "ReSharper", checkId: "UnusedMember.Global", Justification = "Standard constructor")]
         public WinLoss(in ReadOnlySpan<byte> bytes)
             : this(
                 new ReadOnlyHexIntegerValue<BigInteger, BigIntegerByteExtractionStrategy, NoConversionStrategy, Maximum32ByteBoundsCheckedValidationStrategy,
