@@ -100,6 +100,74 @@ class GameService {
     console.log('handlePlay receipt: ', receipt);
     // TODO: dispatch confirmation to store
   }
+  
+  
+  public async handlePlayWithAbiCoder(bet: Bet) {
+
+    if (!bet.roundId) {
+      store.dispatch(setUserError('Invalid round ID'));
+      throw new Error('Error placing bet. Round id not found');
+    }
+
+    const encoded = ethers.encode(
+      [
+        {
+            name: 'TokenTransferData',
+            indexed: false,
+            type: 'tuple',
+            components: [
+              {
+                name: 'roundID',
+                indexed: false,
+                type: 'bytes32',
+              },
+              {
+                name: 'bets',
+                indexed: false,
+                type: 'tuple[]',
+                components: [
+                  {
+                    name: 'playerAddress',
+                    indexed: false,
+                    type: 'address',
+                  },
+                  {
+                    name: 'betAmount',
+                    indexed: false,
+                    type: 'uint256',
+                  },
+                  {
+                    name: 'betData',
+                    indexed: false,
+                    type: 'bytes',
+                  }
+                ]
+              }
+            ]
+        }
+      ],
+      [
+        {
+          playerAddress: bet.address,
+          betAmount: hexlify(bet.amount),
+          betData: hexlify(bet.data),
+        },
+      ]
+    );
+
+    const contract = await ethers.getContract<LabRatsToken>(
+      LabRatsTokenABI,
+      this.testAddress
+    );
+    const transactionResponse = await contract.transferAndCall(
+      this.GAME_ADDRESS,
+      bet.amount.toString(),
+      encoded
+    );
+    const receipt = await transactionResponse.wait(1);
+    console.log('handlePlay receipt: ', receipt);
+    // TODO: dispatch confirmation to store
+  }
 
   public async testForRoundResult(blockHeader: BlockHeader) {
     const eventName = 'MessageSet';

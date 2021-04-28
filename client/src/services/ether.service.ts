@@ -51,10 +51,10 @@ class EtherService {
     return utils.formatBytes32String(value);
   }
 
-  public encode(types: ParamType[], parameters: any[]): string {
+  public encode(types: any[], parameters: any[]): string {
     // const paramTypes: ParamType[] = types.map(type => utils.ParamType.from( type ));
-    // const paramTypes: ParamType[] = types.map(type => utils.ParamType.from( type ));
-    return utils.defaultAbiCoder.encode(types, parameters);
+    const paramTypes: ParamType[] = types.map(type => utils.ParamType.from( type ));
+    return utils.defaultAbiCoder.encode(paramTypes, parameters);
   }
 }
 
