@@ -62,7 +62,7 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
 
         private static Logger CreateLogger(ExecutionEnvironment environment, string version, string tenant)
         {
-            const string processName = @"FunFair.Labs.MultiPlayer.Server";
+            const string processName = @"FunFair.Labs.ScalingEthereum.Server";
 
             LoggerConfiguration configuration = new LoggerConfiguration().MinimumLevel.ControlledBy(_loggingLevelSwitch)
                                                                          .Enrich.FromLogContext()
@@ -73,7 +73,7 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
                                                                          .Enrich.WithProperty(name: @"ServerVersion", value: version)
                                                                          .Enrich.WithProperty(name: @"ProcessName", value: processName)
                                                                          .Enrich.WithProperty(name: @"Tenant", value: tenant)
-                                                                         .WriteTo.Console();
+                                                                         .WriteTo.Console(LogEventLevel.Information);
 
             if (!environment.IsLocalOrTest())
             {
