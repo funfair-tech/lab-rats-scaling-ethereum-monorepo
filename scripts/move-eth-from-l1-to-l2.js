@@ -13,11 +13,9 @@ async function main() {
   const l1RpcProvider = new JsonRpcProvider(
     'https://kovan.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'
   );
-  // const l2RpcProvider = new JsonRpcProvider('https://kovan.optimism.io');
 
   const key = process.env.YOUR_PRIVATE_KEY;
   const l1Wallet = new Wallet(key, l1RpcProvider);
-  // const l2Wallet = new Wallet(key, l2RpcProvider);
 
   const contract = new Contract(KOVAN_CONTRACT_ADDRESS, ABI, l1Wallet);
   // we use this one so you can change address if you want
