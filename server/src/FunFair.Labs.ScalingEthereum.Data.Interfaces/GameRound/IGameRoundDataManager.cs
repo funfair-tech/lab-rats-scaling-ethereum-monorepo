@@ -71,7 +71,6 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         /// <param name="blockNumberCreated">Block number</param>
         /// <param name="transactionHash">The transaction that submitted the start round.</param>
         /// <param name="winAmounts">Win amounts</param>
-        /// <param name="houseWinLoss">House win loss</param>
         /// <param name="progressivePotWinLoss">Progressive pot win loss</param>
         /// <param name="gameResult">Game result</param>
         /// <param name="history">The history data to record.</param>
@@ -79,7 +78,6 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
                                BlockNumber blockNumberCreated,
                                TransactionHash transactionHash,
                                WinAmount[] winAmounts,
-                               WinLoss houseWinLoss,
                                WinLoss progressivePotWinLoss,
                                byte[] gameResult,
                                byte[] history);

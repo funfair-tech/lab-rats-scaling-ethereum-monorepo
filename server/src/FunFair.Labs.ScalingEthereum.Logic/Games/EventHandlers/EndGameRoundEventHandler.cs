@@ -71,7 +71,6 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
                                                               blockNumberCreated: networkBlockHeader.Number,
                                                               transactionHash: transactionHash,
                                                               winAmounts: winAmounts,
-                                                              houseWinLoss: WinLoss.Zero,
                                                               progressivePotWinLoss: eventData.ProgressivePotWinLoss,
                                                               gameResult: eventData.GameResult,
                                                               history: eventData.History);

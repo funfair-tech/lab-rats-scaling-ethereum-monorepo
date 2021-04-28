@@ -137,7 +137,6 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
                                       BlockNumber blockNumberCreated,
                                       TransactionHash transactionHash,
                                       WinAmount[] winAmounts,
-                                      WinLoss houseWinLoss,
                                       WinLoss progressivePotWinLoss,
                                       byte[] gameResult,
                                       byte[] history)
@@ -149,8 +148,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
                                                    BlockNumber = blockNumberCreated,
                                                    TransactionHash = transactionHash,
                                                    WinAmounts = this._winAmountTableBuilder.Build(winAmounts.Select(Convert)),
-                                                   HouseWinLoss = houseWinLoss,
-                                                   ProgressivePotWinLoss = progressivePotWinLoss,
+                                                   ProgressiveWinLoss = progressivePotWinLoss,
                                                    GameResult = gameResult,
                                                    History = history
                                                });

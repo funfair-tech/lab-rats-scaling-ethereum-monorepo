@@ -18,8 +18,7 @@ CREATE TABLE [Games].[GameRound] (
     [DateCreated] [datetime2] NOT NULL,
     [DateUpdated] [datetime2] NOT NULL,
     [DateClosed] [datetime2] NULL,
-    [HouseWinLoss] [bigint] NULL,
-    [ProgressiveWinLoss] [bigint] NULL,
+    [ProgressiveWinLoss] [varchar](66) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
     [GameResult] [varbinary](max) NULL,
     [History] [varbinary](max) NULL
     ) ON [PRIMARY]
