@@ -3,6 +3,7 @@ import { ASSETPACK, FontAssetType } from './assetPack';
 import { Logic_BetType } from './logic/logic_defines';
 import { MULTITRADER } from './multiTrader';
 import { ButtonSpriteStateConfig, UIButtonSprite } from './objects/uiButtonSprite';
+import { UIPlayerData, UIPlayerDisplayMode, UIPlayerList } from './objects/uiPlayerList';
 
 /**
  * Main UI Scene component, containing the orthographic camera and webGL UI components
@@ -15,6 +16,7 @@ export class MultiTraderUI extends FFEngine.Component {
     private betUI!: FFEngine.THREE.Object3D;
     private betHigh!: UIButtonSprite;
     private betLow!: UIButtonSprite;
+    private playerList!: UIPlayerList;
 
     /**
      * Creates the WebGL UI Scene and main component and registers it with the engine
@@ -63,9 +65,21 @@ export class MultiTraderUI extends FFEngine.Component {
 
     }
 
+    /**
+     * Show/hide betting UI
+     */
     public ShowBetUI(visible: boolean): void {
         if (this.betUI) {
             this.betUI.visible = visible;
+        }
+    }
+
+    /**
+     * Show/hide the player list
+     */
+     public SetPlayerList(visible: boolean): void {
+        if (this.playerList) {
+            this.playerList.GetContainer().visible = visible;
         }
     }
 
@@ -126,6 +140,27 @@ export class MultiTraderUI extends FFEngine.Component {
         FFEngine.instance.CreateChildObjectWithComponent(this.betLow.GetContainer(), FFEngine.BitmapString, { text: 'Low', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 40, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 0, 0]});
 
         this.ShowBetUI(false);
+
+        //create player list
+        anchor = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.UIAnchor);
+        anchor.SetCamera(this.camera);
+        anchor.SetAnchors(FFEngine.UIAnchorType.MAX, FFEngine.UIAnchorType.MAX);
+        this.playerList = FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), UIPlayerList);
+        this.playerList.SetWidth(480);
+        this.playerList.GetContainer().position.set(-380, -200, 0);
+        this.playerList.SetBackground(undefined, new FFEngine.THREE.Color(0xaaaaaa), 0.4);
+        this.playerList.SetFont(ASSETPACK.GetFontAsset(FontAssetType.STANDARD));
+        this.playerList.SetLeftTitle('Player');
+        this.playerList.SetRightTitle('Win');
+        this.playerList.SetDisplayMode(UIPlayerDisplayMode.WIN);
+        this.SetPlayerList(true);
+
+        //add some test players
+        this.playerList.SetPlayer(0, new UIPlayerData('0x0000', '0x0000', true));
+        this.playerList.SetPlayer(1, new UIPlayerData('0x0000', '0x0001', true));
+        this.playerList.SetPlayer(2, new UIPlayerData('0x0000', '0x0002', true));
+        this.playerList.SetPlayer(3, new UIPlayerData('0x0000', '0x0003', true));
+        this.playerList.SetPlayer(4, new UIPlayerData('0x0000', '0x0004', true));
     }
 
 }
