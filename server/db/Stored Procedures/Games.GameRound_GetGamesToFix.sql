@@ -26,6 +26,7 @@ BEGIN
         G.[SeedCommit],
         G.[SeedReveal],
         G.[RoundDuration],
+        G.[BettingCloseDuration],
         G.[RoundTimeoutDuration],
         G.[DateCreated],
         G.[DateUpdated],

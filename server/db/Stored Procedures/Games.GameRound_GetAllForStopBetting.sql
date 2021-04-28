@@ -23,6 +23,7 @@ BEGIN
         [SeedCommit],
         [SeedReveal],
         [RoundDuration],
+        [BettingCloseDuration],
         [RoundTimeoutDuration],
         [DateCreated],
         [DateUpdated],
