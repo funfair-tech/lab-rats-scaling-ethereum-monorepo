@@ -14,8 +14,7 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT [GameRoundId],
-        [GameManagerContract]
-        [GameContract],
+        [GameManagerContract] [GameContract],
         [Network],
         [CreatedByAccount],
         [BlockNumberCreated],
