@@ -6,6 +6,7 @@ GO
 
 CREATE PROCEDURE [Games].[GameRound_GetAllForClosingBetting] (
     @Network VARCHAR(50),
+    @GameManagerContract,
     @DateTimeOnNetwork DATETIME2
     )
 AS
@@ -13,6 +14,7 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT [GameRoundId],
+        [GameManagerContract]
         [GameContract],
         [Network],
         [CreatedByAccount],
@@ -29,6 +31,7 @@ BEGIN
         [DateClosed]
     FROM Games.GameRound
     WHERE [Network] = @Network
+        AND [GameManagerContract] = @GameManagerContract
         AND [Status] = 'BETTING_OVER'
         AND [ScheduledDateForClosing] < @DateTimeOnNetwork
 END

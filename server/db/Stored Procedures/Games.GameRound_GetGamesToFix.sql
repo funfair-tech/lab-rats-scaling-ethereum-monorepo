@@ -6,6 +6,7 @@ GO
 
 CREATE PROCEDURE [Games].[GameRound_GetGamesToFix] (
     @Network VARCHAR(50),
+    @GameManagerContract CHAR(42),
     @DateTimeOnNetwork DATETIME2
     )
 AS
@@ -16,6 +17,7 @@ BEGIN
     DECLARE @closeGameTimeout INT = 1;
 
     SELECT G.[GameRoundId],
+        G.[GameManagerContract],
         G.[GameContract],
         G.[Network],
         G.[CreatedByAccount],
@@ -32,6 +34,7 @@ BEGIN
         G.[DateClosed]
     FROM Games.GameRound G
     WHERE G.[Network] = @Network
+        AND [GameManagerContract] = @GameManagerContract
         AND (
             (
                 G.STATUS = 'STARTING'
