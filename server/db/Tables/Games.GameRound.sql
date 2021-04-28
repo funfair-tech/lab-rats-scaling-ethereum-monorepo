@@ -8,7 +8,7 @@ CREATE TABLE [Games].[GameRound] (
     [BlockNumberCreated] [int] NOT NULL,
     [BlockNumberStarted] [int] NULL,
     [DateStarted] [datetime2] NULL,
-    [ScheduledDateForCloseBets] AS (dateadd(second, [BettingCloseDuration], [DateStarted])) PERSISTED,
+    [ScheduledDateForCloseBets] AS (dateadd(second, [RoundDuration], [DateStarted])) PERSISTED,
     [ScheduledDateForClosing] AS (dateadd(second, [BettingCloseDuration] + [RoundDuration], [DateStarted])) PERSISTED,
     [SeedCommit] [char](66) COLLATE Latin1_General_CI_AS NOT NULL,
     [SeedReveal] [char](66) COLLATE Latin1_General_CI_AS NOT NULL,
