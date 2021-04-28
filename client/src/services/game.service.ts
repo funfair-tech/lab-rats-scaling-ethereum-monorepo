@@ -1,6 +1,4 @@
 import { hexlify, Interface } from 'ethers/lib/utils';
-import ConnectionTest from '../contracts/connectionTest.json';
-import { IConnectionTest } from '../contracts/connetionTest';
 import { LabRatsToken } from '../contracts/LabRatsToken';
 import LabRatsTokenABI from '../contracts/labRatsToken.json';
 import { MultiplayerGamesManager } from '../contracts/MultiplayerGamesManager';
@@ -8,37 +6,23 @@ import MultiplayerGamesManagerABI from '../contracts/multiplayerGamesManager.jso
 import { Bet } from '../model/bet';
 import { BlockHeader } from '../model/blockHeader';
 import { RoundResult } from '../model/roundResult';
-import { setResult } from '../store/actions/game.actions';
+import { setResult, setRoundId } from '../store/actions/game.actions';
 import { setUserError } from '../store/actions/user.actions';
 import store from '../store/store';
 import { ethers } from './ether.service';
 
 class GameService {
-  private testAddress = '0xf4Ca8a4a571Fbac6DB7e7824A1F97CC68058FB7d';
-  private GAME_ADDRESS = '0xFc35436FecCeC70Ad223dC88B2eba647846F3170';
+  // private GAME_ADDRESS = '0xBB5Da74b1bAEFD5a928aB63387e698803A8Cc0B9';
   private GAME_MANAGER_ADDRESS = '0xe3f2Fa6a3F16837d012e1493F50BD29db0BdADe4';
   private TOKEN_ADDRESS = '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2';
 
-  public async callTest() {
-    const contract = await ethers.getContract<IConnectionTest>(
-      ConnectionTest,
-      this.testAddress
-    );
-    const message: string = await contract.getMessage();
-    console.log('test: getMessage ', message);
-  }
-
-  public async sendTest() {
-    const contract = await ethers.getContract<IConnectionTest>(
-      ConnectionTest,
-      this.testAddress
-    );
-    const transactionResponse = await contract.setMessage('bar');
-    const receipt = await transactionResponse.wait(1);
-    console.log('test transaction confirmed: ', receipt.status);
-  }
-
   public async handlePlay(bet: Bet) {
+
+    //TODO: move to game.ts
+    const state = store.getState();
+    bet.roundId = state.game.roundId as string;
+    bet.address = state.user.address as string;
+
     if (!bet.roundId) {
       store.dispatch(setUserError('Invalid round ID'));
       throw new Error('Error placing bet. Round id not found');
@@ -92,10 +76,10 @@ class GameService {
 
     const contract = await ethers.getContract<LabRatsToken>(
       LabRatsTokenABI,
-      this.testAddress
+      this.TOKEN_ADDRESS
     );
     const transactionResponse = await contract.transferAndCall(
-      this.GAME_ADDRESS,
+      this.TOKEN_ADDRESS,
       bet.amount.toString(),
       calldata
     );
@@ -105,8 +89,15 @@ class GameService {
   }
   
   
+
+
   public async handlePlayWithAbiCoder(bet: Bet) {
 
+    //TODO: move to game.ts
+    const state = store.getState();
+    bet.roundId = state.game.roundId as string;
+    bet.address = state.user.address as string;
+    
     if (!bet.roundId) {
       store.dispatch(setUserError('Invalid round ID'));
       throw new Error('Error placing bet. Round id not found');
@@ -160,10 +151,10 @@ class GameService {
 
     const contract = await ethers.getContract<LabRatsToken>(
       LabRatsTokenABI,
-      this.testAddress
+      this.TOKEN_ADDRESS
     );
     const transactionResponse = await contract.transferAndCall(
-      this.GAME_ADDRESS,
+      this.TOKEN_ADDRESS,
       bet.amount.toString(),
       encoded
     );
@@ -172,8 +163,24 @@ class GameService {
     // TODO: dispatch confirmation to store
   }
 
-  public async testForRoundResult(blockHeader: BlockHeader) {
+  public async testForRoundStart(blockHeader: BlockHeader) {
     const eventName = 'StartGameRound';
+    // TODO: isInBloom ... [contract, eventName, roundId]
+    const contract = await ethers.getContract<MultiplayerGamesManager>(MultiplayerGamesManagerABI, this.GAME_MANAGER_ADDRESS);
+    const events: Event[] = await (contract as any).queryFilter(
+      eventName,
+      blockHeader.blockHash
+    );
+
+    events.forEach((event: Event) => {
+      // const result: RoundResult = { test: event };
+      //@ts-ignore
+      store.dispatch(setRoundId(event._roundID));
+    });
+  }
+
+  public async testForRoundResult(blockHeader: BlockHeader) {
+    const eventName = 'EndGameRound';
     // TODO: isInBloom ... [contract, eventName, roundId]
     const contract = await ethers.getContract<MultiplayerGamesManager>(MultiplayerGamesManagerABI, this.GAME_MANAGER_ADDRESS);
     const events: Event[] = await (contract as any).queryFilter(

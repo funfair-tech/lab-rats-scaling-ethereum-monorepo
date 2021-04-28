@@ -1,4 +1,4 @@
 export enum MessageId {
-  PLAY = 'PLAY',
+  BET = 'BET',
   ERROR = 'ERROR',
 }

@@ -18,6 +18,7 @@ export const Faucet: FunctionComponent<Props> = (props) => {
       !props.user.loading &&
       !!props.user.address &&
       !!props.network.id &&
+      tokenBalance &&
       tokenBalance < 100
     ) {
       openFaucet();

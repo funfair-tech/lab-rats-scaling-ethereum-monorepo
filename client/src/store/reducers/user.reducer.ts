@@ -12,8 +12,8 @@ import {
 export interface User {
   error: string|null;
   authenticated: boolean;
-  ethBalance: number;
-  tokenBalance: number;
+  ethBalance: number|null;
+  tokenBalance: number|null;
   address: string;
   loading: boolean;
 }
@@ -21,8 +21,8 @@ export interface User {
 const initialState: User = {
   error: null,
   authenticated: false,
-  ethBalance: 0,
-  tokenBalance: 0,
+  ethBalance: null,
+  tokenBalance: null,
   address: '',
   loading: true,
 };

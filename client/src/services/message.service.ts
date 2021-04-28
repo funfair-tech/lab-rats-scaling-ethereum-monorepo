@@ -1,10 +1,10 @@
 import * as signalR from '@microsoft/signalr';
 import window from '@funfair-tech/wallet-sdk/window';
 import { apiRequest } from './api-request.service';
-import { Bet } from '../model/bet';
+import { Bet, SafeBet } from '../model/bet';
 import { MessageId } from '../model/messageId';
 import store from '../store/store';
-import { setPlayersOnline } from '../store/actions/game.actions';
+import { addBet, setCanPlay, setPlayersOnline, setRoundId } from '../store/actions/game.actions';
 
 class MessageService {
   private connection: signalR.HubConnection | undefined;
@@ -38,6 +38,15 @@ class MessageService {
     console.log(
       `GameRoundStarted: ${gameRoundId} ${progressivePotId} ${timeLeftInSeconds} ${startRoundBlockNumber} ${interRoundPause}`,
     );
+    store.dispatch(setRoundId(gameRoundId));
+    store.dispatch(setCanPlay(true));
+  };
+
+  private handleBettingEnding = (): void => {
+    console.log(
+      `BettingEnding: `,
+    );
+    store.dispatch(setCanPlay(false));
   };
 
   private handleGameEnding = (gameId: string, potId: string, transactionHash: string, entropyReveal: string) => {
@@ -48,6 +57,20 @@ class MessageService {
 
   private handleGameEnded = (gameId: string, potId: string, blockNumber: number, interGameDelay: number) => {
     console.log(`GameEnded: ${gameId} ${potId} ${blockNumber} ${interGameDelay}`);
+  };
+
+  private handleBroadcast = (address: string, message: string): void => {
+    try {
+      const decoded = JSON.parse(message);
+      switch (decoded.action) {
+        case MessageId.BET:
+          const bet: Bet = new SafeBet(decoded.roundID, address, decoded.betAmount, decoded.betData, false);
+          store.dispatch(addBet(bet));
+          break;
+      }
+    } catch (error) {
+      console.error(`Error parsing broadcast message ${error}`);
+    }
   };
 
 
@@ -71,8 +94,10 @@ class MessageService {
     this.connection.on('PlayersOnline', this.handlePlayersOnline);
     this.connection.on('GameRoundStarting', this.handleGameStarting);
     this.connection.on('GameRoundStarted', this.handleGameStarted);
+    this.connection.on('BettingEnding', this.handleBettingEnding);
     this.connection.on('GameRoundEnding', this.handleGameEnding);
     this.connection.on('GameRoundEnded', this.handleGameEnded);
+    this.connection.on('NewMessage', this.handleBroadcast);
 
     this.connection.onclose(function () {
       console.log('signalr disconnected');
@@ -98,12 +123,11 @@ class MessageService {
 
   public async play(bet: Bet): Promise<void> {
     const toSend = JSON.stringify({
-      action: MessageId.PLAY,
+      action: MessageId.BET,
     });
     this.connection!.invoke('SendMessage', toSend).catch((err) => {
       return console.error(err.toString());
     });
-    console.log('Sending to server: ', toSend);
   }
 }
 
