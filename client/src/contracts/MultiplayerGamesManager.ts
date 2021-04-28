@@ -100,10 +100,18 @@ export type MultiplayerGamesManagerMethodNames =
   | 'startGameRoundSplit'
   | 'transferOwnership'
   | 'withdrawERC20Tokens';
+export interface ConfigResponse {
+  roundID: string;
+  0: string;
+  gameAddress: string;
+  1: string;
+  entropyCommit: string;
+  2: string;
+  persistentGameDataID: string;
+  3: string;
+}
 export interface GameRoundsResponse {
-  //@ts-ignore
   config: ConfigResponse;
-  //@ts-ignore
   0: ConfigResponse;
   state: number;
   1: number;
