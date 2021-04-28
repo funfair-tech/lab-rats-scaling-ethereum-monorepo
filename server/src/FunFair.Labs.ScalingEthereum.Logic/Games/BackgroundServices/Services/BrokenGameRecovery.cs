@@ -97,9 +97,12 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
 
             this._logger.LogInformation($"{blockHeader.Network.Name}: Found {brokenGames.Count} games that need fixing");
 
-            foreach (var game in brokenGames)
+            foreach (GameRound game in brokenGames)
             {
+                this._logger.LogInformation($"{game.Network.Name}: {game.GameRoundId}");
+#if FALSE
                 await this.FixGameAsync(blockHeader: blockHeader, game: game, cancellationToken: cancellationToken);
+#endif
             }
         }
 
