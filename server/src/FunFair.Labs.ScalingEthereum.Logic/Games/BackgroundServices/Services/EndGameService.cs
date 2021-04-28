@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FunFair.Common.Interfaces;
 using FunFair.Common.ObjectLocking;
 using FunFair.Ethereum.DataTypes;
 using FunFair.Ethereum.Wallet.Interfaces;
@@ -17,6 +18,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
     /// </summary>
     public sealed class EndGameService : IEndGameService
     {
+        private readonly IDateTimeSource _dateTimeSource;
         private readonly IEthereumAccountManager _ethereumAccountManager;
         private readonly IGameManager _gameManager;
         private readonly IGameRoundDataManager _gameRoundDataManager;
@@ -30,24 +32,30 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
         /// <param name="gameRoundDataManager">Game round data manager.</param>
         /// <param name="gameManager">Game Manager.</param>
         /// <param name="gameRoundLockManager">Game round lock manager.</param>
+        /// <param name="dateTimeSource">Source of time.</param>
         /// <param name="logger">Logging.</param>
         public EndGameService(IEthereumAccountManager ethereumAccountManager,
                               IGameRoundDataManager gameRoundDataManager,
                               IGameManager gameManager,
                               IObjectLockManager<GameRoundId> gameRoundLockManager,
+                              IDateTimeSource dateTimeSource,
                               ILogger<EndGameService> logger)
         {
             this._ethereumAccountManager = ethereumAccountManager ?? throw new ArgumentNullException(nameof(ethereumAccountManager));
             this._gameRoundDataManager = gameRoundDataManager ?? throw new ArgumentNullException(nameof(gameRoundDataManager));
             this._gameManager = gameManager ?? throw new ArgumentNullException(nameof(gameManager));
             this._gameRoundLockManager = gameRoundLockManager ?? throw new ArgumentNullException(nameof(gameRoundLockManager));
+            this._dateTimeSource = dateTimeSource ?? throw new ArgumentNullException(nameof(dateTimeSource));
             this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <inheritdoc />
         public async Task EndGamesAsync(INetworkBlockHeader blockHeader, CancellationToken cancellationToken)
         {
-            IReadOnlyList<GameRound> gameRoundsToClose = await this._gameRoundDataManager.GetAllForClosingAsync(network: blockHeader.Network, dateTimeOnNetwork: blockHeader.Timestamp);
+            // n.b. can't use the network time as blocks are not regular
+            DateTime now = this._dateTimeSource.UtcNow();
+
+            IReadOnlyList<GameRound> gameRoundsToClose = await this._gameRoundDataManager.GetAllForClosingAsync(network: blockHeader.Network, dateTimeOnNetwork: now);
 
             await Task.WhenAll(gameRoundsToClose.Select(gameRound => this.EndGameAsync(gameRound: gameRound, blockHeader: blockHeader, cancellationToken: cancellationToken)));
         }
