@@ -14,6 +14,7 @@ CREATE PROCEDURE [Games].[GameRound_Insert] (
     @SeedCommit CHAR(66),
     @SeedReveal CHAR(66),
     @RoundDuration INT,
+    @BettingCloseDuration INT,
     @RoundTimeoutDuration INT,
     @TransactionHash CHAR(66)
     )
@@ -32,6 +33,7 @@ BEGIN
         [SeedCommit],
         [SeedReveal],
         [RoundDuration],
+        [BettingCloseDuration],
         [RoundTimeoutDuration],
         [DateCreated],
         [DateUpdated],
@@ -54,6 +56,7 @@ BEGIN
         @SeedCommit,
         @SeedReveal,
         @RoundDuration,
+        @BettingCloseDuration,
         @RoundTimeoutDuration,
         SYSUTCDATETIME(),
         SYSUTCDATETIME(),
