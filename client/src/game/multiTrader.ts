@@ -12,6 +12,8 @@ import { Logic_BetType, Logic_Configuration, Logic_RoundState } from './logic/lo
  */
 export class MultiTrader extends FFEngine.Component {
 
+    private static playerAddress: string = '0x00000000';
+
     private startupFinished: boolean = false;
     private gamePhase: Logic_RoundState = Logic_RoundState.NOTSTARTED;
 
@@ -77,12 +79,17 @@ export class MultiTrader extends FFEngine.Component {
     }
 
     /**
+     * Sets the local player's account address
+     */
+    public static SetPlayerAddress(address: string): void {
+        MultiTrader.playerAddress = address;
+    }
+
+    /**
      * Sends a bet to the logic
      */
     public InitiatePlayerBet(betType: Logic_BetType): void {
-
-        //todo: get a local players address
-        let betResponse = LOGIC.PlaceBetForLocalPlayer('0x0000', betType);
+        let betResponse = LOGIC.PlaceBetForLocalPlayer(MultiTrader.playerAddress, betType);
         console.log('bet response: ' + betResponse);
     }
 

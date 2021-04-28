@@ -21,7 +21,7 @@ export class Game {
 
   public setAddress(address: string): void {
     console.log('Game: user address -', address);
-    //TODO: ...
+    MultiTrader.SetPlayerAddress(address);
   }
 
   public report(): string {

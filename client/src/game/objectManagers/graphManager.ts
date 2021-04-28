@@ -7,8 +7,8 @@ import { GraphCell } from '../objects/graphCell';
  */
 export class GraphManager extends FFEngine.Component {
 
-    private static CELL_WIDTH: number = 3;
-    private static CELL_HEIGHT: number = 1.5;
+    private static readonly CELL_WIDTH: number = 3;
+    private static readonly CELL_HEIGHT: number = 1.5;
 
     private graphLine!: GraphLine;
 
