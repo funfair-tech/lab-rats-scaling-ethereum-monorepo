@@ -55,47 +55,58 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
         /// <inheritdoc />
         public async Task<bool> HandleAsync(EventMiningContext eventMiningContext, NetworkEventLog<TEvent> eventOutput)
         {
-            this.Logger.LogInformation($"{eventOutput.Network.Name}: Event {this.GetType().Name} Game {eventOutput.Event.GameRoundId}");
-
-            CancellationToken cancellationToken = CancellationToken.None;
-
-            await using (IObjectLock<GameRoundId>? gameRoundLock = await this._gameRoundLockManager.TakeLockAsync(eventOutput.Event.GameRoundId))
+            try
             {
-                if (gameRoundLock == null)
+                this.Logger.LogInformation($"{eventOutput.Network.Name}: Event {this.GetType().Name} Game {eventOutput.Event.GameRoundId}");
+
+                CancellationToken cancellationToken = CancellationToken.None;
+
+                await using (IObjectLock<GameRoundId>? gameRoundLock = await this._gameRoundLockManager.TakeLockAsync(eventOutput.Event.GameRoundId))
                 {
-                    this.Logger.LogWarning(
-                        $"{eventOutput.Network.Name}: Event {this.GetType().Name} Game {eventOutput.Event.GameRoundId} - Could not acquire lock, for event in block {eventMiningContext.NetworkBlockHeader.Number.Value} ({eventMiningContext.NetworkBlockHeader.Hash}). Transaction will need retrying... TX: {eventMiningContext.TransactionHash}.");
+                    if (gameRoundLock == null)
+                    {
+                        this.Logger.LogWarning(
+                            $"{eventOutput.Network.Name}: Event {this.GetType().Name} Game {eventOutput.Event.GameRoundId} - Could not acquire lock, for event in block {eventMiningContext.NetworkBlockHeader.Number.Value} ({eventMiningContext.NetworkBlockHeader.Hash}). Transaction will need retrying... TX: {eventMiningContext.TransactionHash}.");
 
-                    return false;
+                        return false;
+                    }
+
+                    GameRound? gameRound = await this.GameRoundDataManager.GetAsync(eventOutput.Event.GameRoundId);
+
+                    if (gameRound == null)
+                    {
+                        // Game doesn't exist
+                        return true;
+                    }
+
+                    if (gameRound.Status == GameRoundStatus.COMPLETED)
+                    {
+                        // Game already completed - don't need to do anything here.
+                        return true;
+                    }
+
+                    bool result = await this.ProcessEventUnderLockAsync(gameRound: gameRound,
+                                                                        eventData: eventOutput.Event,
+                                                                        transactionHash: eventMiningContext.TransactionHash,
+                                                                        networkBlockHeader: eventMiningContext.NetworkBlockHeader,
+                                                                        cancellationToken: cancellationToken);
+
+                    if (!result)
+                    {
+                        this.Logger.LogWarning(
+                            $"{eventOutput.Network.Name}: Event {this.GetType().Name} Game {eventOutput.Event.GameRoundId} - Event Handler Returned False: Incomplete, for event in block {eventMiningContext.NetworkBlockHeader.Number.Value} ({eventMiningContext.NetworkBlockHeader.Hash}). Transaction will need retrying... TX: {eventMiningContext.TransactionHash}.");
+                    }
+
+                    return result;
                 }
+            }
+            catch (Exception exception)
+            {
+                this.Logger.LogWarning(new EventId(exception.HResult),
+                                       exception: exception,
+                                       $"{eventOutput.Network.Name}: Event {this.GetType().Name} Game {eventOutput.Event.GameRoundId} - Event Handler failed to process, for event in block {eventMiningContext.NetworkBlockHeader.Number.Value} ({eventMiningContext.NetworkBlockHeader.Hash}). Transaction will need retrying... TX: {eventMiningContext.TransactionHash}.");
 
-                GameRound? gameRound = await this.GameRoundDataManager.GetAsync(eventOutput.Event.GameRoundId);
-
-                if (gameRound == null)
-                {
-                    // Game doesn't exist
-                    return true;
-                }
-
-                if (gameRound.Status == GameRoundStatus.COMPLETED)
-                {
-                    // Game already completed - don't need to do anything here.
-                    return true;
-                }
-
-                bool result = await this.ProcessEventUnderLockAsync(gameRound: gameRound,
-                                                                    eventData: eventOutput.Event,
-                                                                    transactionHash: eventMiningContext.TransactionHash,
-                                                                    networkBlockHeader: eventMiningContext.NetworkBlockHeader,
-                                                                    cancellationToken: cancellationToken);
-
-                if (!result)
-                {
-                    this.Logger.LogWarning(
-                        $"{eventOutput.Network.Name}: Event {this.GetType().Name} Game {eventOutput.Event.GameRoundId} - Event Handler Returned False: Incomplete, for event in block {eventMiningContext.NetworkBlockHeader.Number.Value} ({eventMiningContext.NetworkBlockHeader.Hash}). Transaction will need retrying... TX: {eventMiningContext.TransactionHash}.");
-                }
-
-                return result;
+                return false;
             }
         }
 
