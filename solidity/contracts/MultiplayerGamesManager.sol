@@ -64,7 +64,7 @@ contract MultiplayerGamesManager is Ownable() {
     
     event StartGameRoundIds(bytes32 indexed _roundID, bytes32 indexed _persistentGameDataID);
     event StartGameRound(bytes32 indexed _roundID, bytes32 indexed _persistentGameDataID, GameRoundConfig _config);
-    event NoMoreBets(bytes32 indexed _roundID);    
+    event NoMoreBets(bytes32 indexed _roundID, bytes32 indexed _persistentGameDataID);    
     event EndGameRound(bytes32 indexed _roundID,  bytes32 indexed _persistentGameDataID, bytes32 entropyReveal, address[] _playerAddresses, uint256[] _winAmounts, int256 _persistentGameDataPotWinLoss, bytes _gameResult, bytes _historyToRecord);    
     
     event Bet(bytes32 indexed _roundID, IMultiplayerGameDefinition.Bet _bet);
@@ -186,7 +186,7 @@ contract MultiplayerGamesManager is Ownable() {
         uint256 totalDeclaredBet = 0;
 
         for (uint256 i = 0; i < tokenTransferData.bets.length; i++) {
-            require(tokenTransferData.bets[i].playerAddress == _from, "Incorrect player address encoded in bet"); //! TODO.  hm.. think.. could reconstruct this.
+            require(tokenTransferData.bets[i].playerAddress == _from, "Incorrect player address encoded in bet");
             bet(tokenTransferData.roundID, tokenTransferData.bets[i]);
             totalDeclaredBet += tokenTransferData.bets[i].betAmount;
         }
@@ -205,7 +205,7 @@ contract MultiplayerGamesManager is Ownable() {
 
         gameRounds[_roundID].state = GameRoundState.NoMoreBets;
 
-        emit NoMoreBets(_roundID);
+        emit NoMoreBets(_roundID, gameRounds[_roundID].config.persistentGameDataID);
     }
     
     //************************************************************************************************
