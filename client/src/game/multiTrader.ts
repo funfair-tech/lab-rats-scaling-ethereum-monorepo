@@ -5,7 +5,7 @@ import { EnvironmentManager, ENVIRONMENT_MANAGER } from './objectManagers/enviro
 
 import { LOGIC, Logic } from './logic/logic';
 import { LOGIC_TESTCODE } from './logic/logic_testcode';
-import { Logic_Configuration, Logic_RoundState } from './logic/logic_defines';
+import { Logic_BetType, Logic_Configuration, Logic_RoundState } from './logic/logic_defines';
 
 /**
  * Main game scene for the multiplayer trader game
@@ -76,6 +76,16 @@ export class MultiTrader extends FFEngine.Component {
         FFEngine.instance.SetPlatformOptions(options);
     }
 
+    /**
+     * Sends a bet to the logic
+     */
+    public InitiatePlayerBet(betType: Logic_BetType): void {
+
+        //todo: get a local players address
+        let betResponse = LOGIC.PlaceBetForLocalPlayer('0x0000', betType);
+        console.log('bet response: ' + betResponse);
+    }
+
     private UpdateLoadingPhase(): void {
         if (FFEngine.instance.assetLoader.IsLoadingPhaseActive()) {
             let assetLoadCoef = FFEngine.instance.assetLoader.GetAssetLoadingCoef();
@@ -106,7 +116,9 @@ export class MultiTrader extends FFEngine.Component {
             switch (this.gamePhase) {
                 default: break;
                 case Logic_RoundState.NOTSTARTED: break;
-                case Logic_RoundState.ACCEPTINGBETS: break;
+                case Logic_RoundState.ACCEPTINGBETS: 
+                    GLUI.ShowBetUI(false);
+                break;
                 case Logic_RoundState.CLOSEDFORBETS: break;
                 case Logic_RoundState.COMPLETE: break;
             }
@@ -119,7 +131,9 @@ export class MultiTrader extends FFEngine.Component {
             switch (this.gamePhase) {
                 default: break;
                 case Logic_RoundState.NOTSTARTED: break;
-                case Logic_RoundState.ACCEPTINGBETS: break;
+                case Logic_RoundState.ACCEPTINGBETS: 
+                    GLUI.ShowBetUI(true);
+                break;
                 case Logic_RoundState.CLOSEDFORBETS: break;
                 case Logic_RoundState.COMPLETE: break;
             }
