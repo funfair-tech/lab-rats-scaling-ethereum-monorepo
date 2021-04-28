@@ -31,7 +31,7 @@ BEGIN
     FROM Games.GameRound
     WHERE [Network] = @Network
         AND [Status] = 'STARTED'
-        AND [ScheduledDateForClosing] < @DateTimeOnNetwork
+        AND [ScheduledDateForCloseBets] < @DateTimeOnNetwork
 END
 GO
 
