@@ -21,7 +21,6 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
         /// <param name="entropyReveal">Entropy Reveal.</param>
         /// <param name="players">Player addresses.</param>
         /// <param name="winAmounts">Win amounts.</param>
-        /// <param name="houseWinLoss">House Win/Loss.</param>
         /// <param name="progressivePotWinLoss">Progressive Pot Win/Loss.</param>
         /// <param name="gameResult">Game Result (encoded).</param>
         /// <param name="historyToRecord">History to record (encoded).</param>
@@ -36,12 +35,10 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
                                        [EventOutputParameter(ethereumDataType: "uint256[]", order: 5, indexed: false)]
                                        DataTypes.Primitives.Token[] winAmounts,
                                        [EventOutputParameter(ethereumDataType: "int256", order: 6, indexed: false)]
-                                       WinLoss houseWinLoss,
-                                       [EventOutputParameter(ethereumDataType: "int256", order: 7, indexed: false)]
                                        WinLoss progressivePotWinLoss,
-                                       [EventOutputParameter(ethereumDataType: "bytes", order: 8, indexed: false)]
+                                       [EventOutputParameter(ethereumDataType: "bytes", order: 7, indexed: false)]
                                        byte[] gameResult,
-                                       [EventOutputParameter(ethereumDataType: "bytes", order: 9, indexed: false)]
+                                       [EventOutputParameter(ethereumDataType: "bytes", order: 8, indexed: false)]
                                        byte[] historyToRecord)
         {
             this.GameRoundId = gameRoundId ?? throw new ArgumentNullException(nameof(gameRoundId));
@@ -49,7 +46,6 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
             this.EntropyReveal = entropyReveal ?? throw new ArgumentNullException(nameof(entropyReveal));
             this.Players = players ?? throw new ArgumentNullException(nameof(players));
             this.WinAmounts = winAmounts ?? throw new ArgumentNullException(nameof(winAmounts));
-            this.HouseWinLoss = houseWinLoss ?? throw new ArgumentNullException(nameof(houseWinLoss));
             this.ProgressivePotWinLoss = progressivePotWinLoss ?? throw new ArgumentNullException(nameof(progressivePotWinLoss));
             this.GameResult = gameResult ?? throw new ArgumentNullException(nameof(gameResult));
             this.History = historyToRecord ?? throw new ArgumentNullException(nameof(historyToRecord));
@@ -69,11 +65,6 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
         ///     Win amounts.
         /// </summary>
         public DataTypes.Primitives.Token[] WinAmounts { get; }
-
-        /// <summary>
-        ///     House Win/Loss.
-        /// </summary>
-        public WinLoss HouseWinLoss { get; }
 
         /// <summary>
         ///     Progressive Pot Win/Loss.

@@ -64,13 +64,14 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.EventHandlers
                                      .Players.Zip(second: eventData.WinAmounts, resultSelector: (accountAddress, winAmount) => new WinAmount {AccountAddress = accountAddress, Amount = winAmount})
                                      .ToArray();
 
-            this.Logger.LogInformation($"{networkBlockHeader.Network.Name}: {eventData.GameRoundId}. House Win: {eventData.HouseWinLoss}");
+            this.Logger.LogInformation($"{networkBlockHeader.Network.Name}: {eventData.GameRoundId}. Progressive Win/Loss: {eventData.ProgressivePotWinLoss}");
 
+            // TODO: Remove houseWinLoss
             await this.GameRoundDataManager.SaveEndRoundAsync(gameRoundId: gameRound.GameRoundId,
                                                               blockNumberCreated: networkBlockHeader.Number,
                                                               transactionHash: transactionHash,
                                                               winAmounts: winAmounts,
-                                                              houseWinLoss: eventData.HouseWinLoss,
+                                                              houseWinLoss: WinLoss.Zero,
                                                               progressivePotWinLoss: eventData.ProgressivePotWinLoss,
                                                               gameResult: eventData.GameResult,
                                                               history: eventData.History);
