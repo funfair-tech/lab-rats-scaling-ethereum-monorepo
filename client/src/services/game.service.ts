@@ -67,7 +67,7 @@ class GameService {
             ],
             indexed: false,
             name: '_bet',
-            type: 'tuple',
+            type: 'tuple[]',
           },
         ],
         name: 'bet',
@@ -78,11 +78,13 @@ class GameService {
 
     const calldata = abi.encodeFunctionData('bet', [
       bet.roundId,
-      {
-        playerAddress: bet.address,
-        betAmount: hexlify(bet.amount),
-        betData: hexlify(bet.data),
-      },
+      [
+        {
+          playerAddress: bet.address,
+          betAmount: hexlify(bet.amount),
+          betData: hexlify(bet.data),
+        },
+      ],
     ]);
 
     const contract = await ethers.getContract<LabRatsToken>(
