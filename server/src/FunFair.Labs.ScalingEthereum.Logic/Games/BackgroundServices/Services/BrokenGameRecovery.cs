@@ -105,9 +105,25 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
 
         private Task FixGameAsync(INetworkBlockHeader blockHeader, GameRound game, CancellationToken cancellationToken)
         {
+            if (!this._contractInfo.Addresses.TryGetValue(key: blockHeader.Network, out ContractAddress? gameManagerContractAddress))
+            {
+                this._logger.LogWarning($"{blockHeader.Network.Name}: {game.GameRoundId} - No game contract.");
+
+                return Task.CompletedTask;
+            }
+
+            if (gameManagerContractAddress != game.GameManagerContract)
+            {
+                this._logger.LogWarning($"{blockHeader.Network.Name}: {game.GameRoundId} - Unknown contract address - using {game.GameManagerContract}, Current: {gameManagerContractAddress}");
+
+                return Task.CompletedTask;
+            }
+
             switch (game.Status)
             {
                 case GameRoundStatus.PENDING: return this.FixPendingGameAsync(blockHeader: blockHeader, game: game, cancellationToken: cancellationToken);
+
+                case GameRoundStatus.BETTING_STOPPING: return this.FixBettingStoppingGameAsync(blockHeader: blockHeader, game: game, cancellationToken: cancellationToken);
 
                 case GameRoundStatus.COMPLETING: return this.FixCompletingGameAsync(blockHeader: blockHeader, game: game, cancellationToken: cancellationToken);
 
@@ -115,6 +131,30 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
                     this._logger.LogWarning($"{blockHeader.Network.Name}: {game.GameRoundId} - in unexpected state: {game.Status.GetName()}");
 
                     return Task.CompletedTask;
+            }
+        }
+
+        private async Task FixBettingStoppingGameAsync(INetworkBlockHeader blockHeader, GameRound game, CancellationToken cancellationToken)
+        {
+            this._logger.LogWarning($"{blockHeader.Network.Name}: {game.GameRoundId} - Needs fixing? to become complete");
+
+            bool handled = await this.AttemptToResolveEventAsync<NoMoreBetsEventHandler, NoMoreBetsEvent, NoMoreBetsEventOutput>(
+                blockHeader: blockHeader,
+                gameRoundId: game.GameRoundId,
+                cancellationToken: cancellationToken);
+
+            if (!handled)
+            {
+                try
+                {
+                    INetworkSigningAccount account = this._ethereumAccountManager.GetAccount(new NetworkAccount(network: blockHeader.Network, address: game.CreatedByAccount));
+
+                    await this._gameManager.CloseBettingBettingAsync(account: account, gameRoundId: game.GameRoundId, networkBlockHeader: blockHeader, cancellationToken: cancellationToken);
+                }
+                catch
+                {
+                    await this._gameRoundDataManager.MarkAsBrokenAsync(gameRoundId: game.GameRoundId, closingBlockNumber: blockHeader.Number, exceptionMessage: "Did not complete");
+                }
             }
         }
 

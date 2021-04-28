@@ -47,6 +47,6 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games
         /// <param name="gameRoundId">The game round to stop betting for.</param>
         /// <param name="networkBlockHeader">The block at the time of submitting the transaction.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        Task EndGameBettingAsync(INetworkSigningAccount account, GameRoundId gameRoundId, INetworkBlockHeader networkBlockHeader, CancellationToken cancellationToken);
+        Task CloseBettingBettingAsync(INetworkSigningAccount account, GameRoundId gameRoundId, INetworkBlockHeader networkBlockHeader, CancellationToken cancellationToken);
     }
 }

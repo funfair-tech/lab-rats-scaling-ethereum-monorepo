@@ -151,7 +151,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
         }
 
         /// <inheritdoc />
-        public async Task EndGameBettingAsync(INetworkSigningAccount account, GameRoundId gameRoundId, INetworkBlockHeader networkBlockHeader, CancellationToken cancellationToken)
+        public async Task CloseBettingBettingAsync(INetworkSigningAccount account, GameRoundId gameRoundId, INetworkBlockHeader networkBlockHeader, CancellationToken cancellationToken)
         {
             GameRound? game = await this._gameRoundDataManager.GetAsync(gameRoundId);
 

@@ -78,7 +78,10 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
 
                     this._logger.LogInformation($"{gameRound.Network.Name}: End betting using game round: {gameRound.GameRoundId}");
 
-                    await this._gameManager.EndGameBettingAsync(account: signingAccount, gameRoundId: gameRound.GameRoundId, networkBlockHeader: blockHeader, cancellationToken: cancellationToken);
+                    await this._gameManager.CloseBettingBettingAsync(account: signingAccount,
+                                                                     gameRoundId: gameRound.GameRoundId,
+                                                                     networkBlockHeader: blockHeader,
+                                                                     cancellationToken: cancellationToken);
                 }
                 catch (Exception exception)
                 {
