@@ -96,6 +96,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
                                         Seed seedCommit,
                                         Seed seedReveal,
                                         TimeSpan roundDuration,
+                                        TimeSpan bettingCloseDuration,
                                         TimeSpan roundTimeoutDuration,
                                         BlockNumber blockNumberCreated,
                                         TransactionHash transactionHash)
@@ -111,6 +112,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
                                                    BlockNumberCreated = blockNumberCreated,
                                                    SeedCommit = seedCommit,
                                                    SeedReveal = seedReveal,
+                                                   BettingCloseDuration = bettingCloseDuration.TotalSeconds,
                                                    RoundDuration = roundDuration.TotalSeconds,
                                                    RoundTimeoutDuration = roundTimeoutDuration.TotalSeconds,
                                                    TransactionHash = transactionHash

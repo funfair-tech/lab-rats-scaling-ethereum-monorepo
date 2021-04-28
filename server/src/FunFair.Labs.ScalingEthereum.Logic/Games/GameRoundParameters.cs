@@ -13,6 +13,11 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games
         public static TimeSpan RoundDuration { get; } = TimeSpan.FromSeconds(value: 20);
 
         /// <summary>
+        ///     Length of the betting close period.
+        /// </summary>
+        public static TimeSpan BettingCloseDuration { get; } = TimeSpan.FromSeconds(value: 5);
+
+        /// <summary>
         ///     The amount of time to wait between rounds, so the client has time to display
         ///     the exciting results animation!
         /// </summary>

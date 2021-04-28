@@ -30,6 +30,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         /// <param name="seedCommit">The seed commit</param>
         /// <param name="seedReveal">The seed reveal</param>
         /// <param name="roundDuration">The round duration</param>
+        /// <param name="bettingCloseDuration">Duration of how long the betting close period.</param>
         /// <param name="roundTimeoutDuration">The round timeout duration</param>
         /// <param name="blockNumberCreated">Block number</param>
         /// <param name="transactionHash">The transaction that submitted the start round.</param>
@@ -41,6 +42,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
                                  Seed seedCommit,
                                  Seed seedReveal,
                                  TimeSpan roundDuration,
+                                 TimeSpan bettingCloseDuration,
                                  TimeSpan roundTimeoutDuration,
                                  BlockNumber blockNumberCreated,
                                  TransactionHash transactionHash);

@@ -50,6 +50,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.Builders.ObjectBuild
                                  seedReveal: source.SeedReveal ?? source.DataError(x => x.SeedReveal),
                                  status: status.ToEnum<GameRoundStatus>(),
                                  roundDuration: TimeSpan.FromSeconds(source.RoundDuration),
+                                 bettingCloseDuration: TimeSpan.FromSeconds(source.BettingCloseDuration),
                                  roundTimeoutDuration: TimeSpan.FromSeconds(source.RoundTimeoutDuration),
                                  dateCreated: source.DateCreated,
                                  dateUpdated: source.DateUpdated,

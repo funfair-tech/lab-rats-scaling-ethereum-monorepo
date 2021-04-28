@@ -87,5 +87,10 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.Builders.ObjectBuild
         ///     The Game manager contract
         /// </summary>
         public ContractAddress? GameManagerContract { get; init; }
+
+        /// <summary>
+        ///     Duration of how long the betting close period is in seconds.
+        /// </summary>
+        public int BettingCloseDuration { get; init; }
     }
 }

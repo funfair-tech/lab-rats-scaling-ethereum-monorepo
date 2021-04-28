@@ -24,6 +24,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         /// <param name="seedReveal">The reveal seed</param>
         /// <param name="status">Status of game round</param>
         /// <param name="roundDuration">Round duration in seconds.</param>
+        /// <param name="bettingCloseDuration">Duration of how long the betting close period is in seconds.</param>
         /// <param name="roundTimeoutDuration">Round timeout duration in seconds.</param>
         /// <param name="dateCreated">The date/time the round was created (transaction submitted)</param>
         /// <param name="dateUpdated">The date/time the round last updated</param>
@@ -39,6 +40,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
                          Seed seedReveal,
                          GameRoundStatus status,
                          TimeSpan roundDuration,
+                         TimeSpan bettingCloseDuration,
                          TimeSpan roundTimeoutDuration,
                          DateTime dateCreated,
                          DateTime dateUpdated,
@@ -55,6 +57,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
             this.SeedReveal = seedReveal ?? throw new ArgumentNullException(nameof(seedReveal));
             this.Status = status;
             this.RoundDuration = roundDuration;
+            this.BettingCloseDuration = bettingCloseDuration;
             this.RoundTimeoutDuration = roundTimeoutDuration;
             this.DateCreated = dateCreated;
             this.DateUpdated = dateUpdated;
@@ -92,6 +95,11 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         ///     The round duration
         /// </summary>
         public TimeSpan RoundDuration { get; }
+
+        /// <summary>
+        ///     Duration of how long the betting close period is in seconds.
+        /// </summary>
+        public TimeSpan BettingCloseDuration { get; }
 
         /// <summary>
         ///     The round timeout duration

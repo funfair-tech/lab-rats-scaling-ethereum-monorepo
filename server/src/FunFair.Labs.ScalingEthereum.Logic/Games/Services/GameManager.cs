@@ -101,6 +101,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
                                                                  seedCommit: seedCommit,
                                                                  seedReveal: seedReveal,
                                                                  roundDuration: GameRoundParameters.RoundDuration,
+                                                                 bettingCloseDuration: GameRoundParameters.BettingCloseDuration,
                                                                  roundTimeoutDuration: GameRoundParameters.RoundTimeoutDuration,
                                                                  blockNumberCreated: networkBlockHeader.Number,
                                                                  transactionHash: pendingTransaction.TransactionHash);
