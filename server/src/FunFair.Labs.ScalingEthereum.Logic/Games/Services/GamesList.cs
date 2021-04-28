@@ -11,7 +11,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
     /// </summary>
     public sealed class GamesList : IGamesList
     {
-        private static ContractAddress RatTrace { get; } = new("0x1804365F80251b3c38185Eb7756B26D069D5A437");
+        private static ContractAddress RatTrace { get; } = new("0x85229bF3128003C0de892db2EA74804cC39e15C0");
 
         /// <inheritdoc />
         public IReadOnlyList<ContractAddress> GetGamesForNetwork(EthereumNetwork network)
