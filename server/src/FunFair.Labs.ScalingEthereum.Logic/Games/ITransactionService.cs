@@ -20,7 +20,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games
         /// <param name="transactionContext">The transaction context</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <typeparam name="TTransactionInput">Type of transaction</typeparam>
-        /// <returns></returns>
+        /// <returns>The transaction that was created.</returns>
         Task<PendingTransaction> SubmitAsync<TTransactionInput>(INetworkSigningAccount account, TTransactionInput input, TransactionContext transactionContext, CancellationToken cancellationToken)
             where TTransactionInput : TransactionParameters;
     }
