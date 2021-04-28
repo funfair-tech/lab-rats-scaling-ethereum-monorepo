@@ -117,7 +117,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.Interfaces.GameRound
         /// <param name="network">The network</param>
         /// <param name="dateTimeOnNetwork">The time according to the network.</param>
         /// <returns>Collection of games where betting can be closed on the network.</returns>
-        Task<IReadOnlyList<GameRound>> GetAllForClosingBettingAsync(EthereumNetwork network, DateTime dateTimeOnNetwork);
+        Task<IReadOnlyList<GameRound>> GetAllForStoppingBettingAsync(EthereumNetwork network, DateTime dateTimeOnNetwork);
 
         /// <summary>
         ///     Get the last game round that was completed on the network

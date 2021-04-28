@@ -58,7 +58,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
                     return Task.CompletedTask;
                 }
 
-                return this._endGameService.EndGamesAsync(blockHeader: blockHeader, cancellationToken: cancellationToken);
+                return this._endGameService.StopBettingAsync(blockHeader: blockHeader, cancellationToken: cancellationToken);
             }
 
             public Task ProcessNetworkForBlockRemovalAsync(INetworkBlockHeader blockHeader, INetworkBlockHeader newBlockHeader, CancellationToken cancellationToken)

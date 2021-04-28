@@ -14,7 +14,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
     /// <summary>
     ///     End game service
     /// </summary>
-    public sealed class EndGameBettingBackgroundService : BlockTriggeredBackgroundService, IEndGameBettingBackgroundService
+    public sealed class StopBettingBackgroundService : BlockTriggeredBackgroundService, IEndGameBettingBackgroundService
     {
         /// <summary>
         ///     Constructor.
@@ -25,12 +25,12 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
         /// <param name="dateTimeSource">Source of time</param>
         /// <param name="endGameBettingService">Game betting ending.</param>
         /// <param name="logger">Logging</param>
-        public EndGameBettingBackgroundService(IEthereumNetworkConfigurationManager ethereumNetworkConfigurationManager,
-                                               IEthereumBlockStatus ethereumBlockStatus,
-                                               IEthereumLatestBlockRetriever latestBlockRetriever,
-                                               IDateTimeSource dateTimeSource,
-                                               IEndGameBettingService endGameBettingService,
-                                               ILogger<EndGameBettingBackgroundService> logger)
+        public StopBettingBackgroundService(IEthereumNetworkConfigurationManager ethereumNetworkConfigurationManager,
+                                            IEthereumBlockStatus ethereumBlockStatus,
+                                            IEthereumLatestBlockRetriever latestBlockRetriever,
+                                            IDateTimeSource dateTimeSource,
+                                            IEndGameBettingService endGameBettingService,
+                                            ILogger<StopBettingBackgroundService> logger)
             : base(ethereumNetworkConfigurationManager: ethereumNetworkConfigurationManager,
                    ethereumBlockStatus: ethereumBlockStatus,
                    latestBlockRetriever: latestBlockRetriever,

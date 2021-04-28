@@ -16,14 +16,14 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
     /// <summary>
     ///     Background block service for <see cref="IEndGameBackgroundService" />
     /// </summary>
-    public sealed class EndGameService : IEndGameService
+    public sealed class StopBettingService : IEndGameService
     {
         private readonly IDateTimeSource _dateTimeSource;
         private readonly IEthereumAccountManager _ethereumAccountManager;
         private readonly IGameManager _gameManager;
         private readonly IGameRoundDataManager _gameRoundDataManager;
         private readonly IObjectLockManager<GameRoundId> _gameRoundLockManager;
-        private readonly ILogger<EndGameService> _logger;
+        private readonly ILogger<StopBettingService> _logger;
 
         /// <summary>
         ///     Constructor.
@@ -34,12 +34,12 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
         /// <param name="gameRoundLockManager">Game round lock manager.</param>
         /// <param name="dateTimeSource">Source of time.</param>
         /// <param name="logger">Logging.</param>
-        public EndGameService(IEthereumAccountManager ethereumAccountManager,
-                              IGameRoundDataManager gameRoundDataManager,
-                              IGameManager gameManager,
-                              IObjectLockManager<GameRoundId> gameRoundLockManager,
-                              IDateTimeSource dateTimeSource,
-                              ILogger<EndGameService> logger)
+        public StopBettingService(IEthereumAccountManager ethereumAccountManager,
+                                  IGameRoundDataManager gameRoundDataManager,
+                                  IGameManager gameManager,
+                                  IObjectLockManager<GameRoundId> gameRoundLockManager,
+                                  IDateTimeSource dateTimeSource,
+                                  ILogger<StopBettingService> logger)
         {
             this._ethereumAccountManager = ethereumAccountManager ?? throw new ArgumentNullException(nameof(ethereumAccountManager));
             this._gameRoundDataManager = gameRoundDataManager ?? throw new ArgumentNullException(nameof(gameRoundDataManager));
@@ -50,17 +50,17 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
         }
 
         /// <inheritdoc />
-        public async Task EndGamesAsync(INetworkBlockHeader blockHeader, CancellationToken cancellationToken)
+        public async Task StopBettingAsync(INetworkBlockHeader blockHeader, CancellationToken cancellationToken)
         {
             // n.b. can't use the network time as blocks are not regular
             DateTime now = this._dateTimeSource.UtcNow();
 
-            IReadOnlyList<GameRound> gameRoundsToClose = await this._gameRoundDataManager.GetAllForClosingAsync(network: blockHeader.Network, dateTimeOnNetwork: now);
+            IReadOnlyList<GameRound> gameRoundsToClose = await this._gameRoundDataManager.GetAllForStoppingBettingAsync(network: blockHeader.Network, dateTimeOnNetwork: now);
 
-            await Task.WhenAll(gameRoundsToClose.Select(gameRound => this.EndGameAsync(gameRound: gameRound, blockHeader: blockHeader, cancellationToken: cancellationToken)));
+            await Task.WhenAll(gameRoundsToClose.Select(gameRound => this.StopBettingOnGameAsync(gameRound: gameRound, blockHeader: blockHeader, cancellationToken: cancellationToken)));
         }
 
-        private async Task EndGameAsync(INetworkBlockHeader blockHeader, GameRound gameRound, CancellationToken cancellationToken)
+        private async Task StopBettingOnGameAsync(INetworkBlockHeader blockHeader, GameRound gameRound, CancellationToken cancellationToken)
         {
             await using (IObjectLock<GameRoundId>? gameRoundLock = await this._gameRoundLockManager.TakeLockAsync(gameRound.GameRoundId))
             {
@@ -78,7 +78,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
 
                     this._logger.LogInformation($"{gameRound.Network.Name}: End using game round: {gameRound.GameRoundId}");
 
-                    await this._gameManager.EndGameAsync(account: signingAccount, gameRoundId: gameRound.GameRoundId, networkBlockHeader: blockHeader, cancellationToken: cancellationToken);
+                    await this._gameManager.StopBettingAsync(account: signingAccount, gameRoundId: gameRound.GameRoundId, networkBlockHeader: blockHeader, cancellationToken: cancellationToken);
                 }
                 catch (Exception exception)
                 {

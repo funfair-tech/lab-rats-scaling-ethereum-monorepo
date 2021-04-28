@@ -151,7 +151,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
         }
 
         /// <inheritdoc />
-        public async Task CloseBettingBettingAsync(INetworkSigningAccount account, GameRoundId gameRoundId, INetworkBlockHeader networkBlockHeader, CancellationToken cancellationToken)
+        public async Task StopBettingAsync(INetworkSigningAccount account, GameRoundId gameRoundId, INetworkBlockHeader networkBlockHeader, CancellationToken cancellationToken)
         {
             GameRound? game = await this._gameRoundDataManager.GetAsync(gameRoundId);
 
@@ -164,7 +164,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
 
             try
             {
-                EndGameRoundInput input = new(roundId: gameRoundId, entropyReveal: game.SeedReveal);
+                StopBettingInput input = new(roundId: gameRoundId);
 
                 pendingTransaction = await this._transactionService.SubmitAsync(account: account,
                                                                                 transactionContext: new TransactionContext(contextType: @"GAMEROUND", gameRoundId.ToString()),
@@ -173,7 +173,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
             }
             catch (TransactionWillAlwaysFailException exception)
             {
-                this._logger.LogError(new EventId(exception.HResult), exception: exception, $"{account.Network.Name}: Failed to end betting for game {gameRoundId}: {exception.Message}");
+                this._logger.LogError(new EventId(exception.HResult), exception: exception, $"{account.Network.Name}: Failed to stop betting for game {gameRoundId}: {exception.Message}");
 
                 await this._gameRoundDataManager.MarkAsBrokenAsync(gameRoundId: gameRoundId, closingBlockNumber: networkBlockHeader.Number, exceptionMessage: exception.Message);
 
@@ -182,7 +182,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.Services
                 return;
             }
 
-            this._logger.LogInformation($"{account.Network.Name}: Ending betting for game {gameRoundId}: tx {pendingTransaction.TransactionHash}");
+            this._logger.LogInformation($"{account.Network.Name}: Stop betting for game {gameRoundId}: tx {pendingTransaction.TransactionHash}");
 
             await this._gameRoundDataManager.BeginCompleteAsync(gameRoundId: gameRoundId, blockNumberCreated: networkBlockHeader.Number, transactionHash: pendingTransaction.TransactionHash);
 

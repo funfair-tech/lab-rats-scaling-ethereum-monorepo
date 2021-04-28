@@ -7,16 +7,16 @@ using FunFair.Labs.ScalingEthereum.DataTypes.Primitives;
 namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Transactions
 {
     /// <summary>
-    ///     Input parameters for <seealso cref="CloseGameRoundForNewBets" />.
+    ///     Input parameters for <seealso cref="StopBetting" />.
     /// </summary>
     [DebuggerDisplay("{" + nameof(RoundId) + "}")]
-    public sealed class CloseGameRoundForNewBetsInput : TransactionParameters
+    public sealed class StopBettingInput : TransactionParameters
     {
         /// <summary>
         ///     Constructor.
         /// </summary>
         /// <param name="roundId">Round Id.</param>
-        public CloseGameRoundForNewBetsInput(GameRoundId roundId)
+        public StopBettingInput(GameRoundId roundId)
         {
             this.RoundId = roundId ?? throw new ArgumentNullException(nameof(roundId));
         }

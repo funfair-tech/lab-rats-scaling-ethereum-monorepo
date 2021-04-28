@@ -55,7 +55,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
             // n.b. can't use the network time as blocks are not regular
             DateTime now = this._dateTimeSource.UtcNow();
 
-            IReadOnlyList<GameRound> gameRoundsToClose = await this._gameRoundDataManager.GetAllForClosingBettingAsync(network: blockHeader.Network, dateTimeOnNetwork: now);
+            IReadOnlyList<GameRound> gameRoundsToClose = await this._gameRoundDataManager.GetAllForStoppingBettingAsync(network: blockHeader.Network, dateTimeOnNetwork: now);
 
             await Task.WhenAll(gameRoundsToClose.Select(gameRound => this.EndGameBettingAsync(gameRound: gameRound, blockHeader: blockHeader, cancellationToken: cancellationToken)));
         }
@@ -78,10 +78,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
 
                     this._logger.LogInformation($"{gameRound.Network.Name}: End betting using game round: {gameRound.GameRoundId}");
 
-                    await this._gameManager.CloseBettingBettingAsync(account: signingAccount,
-                                                                     gameRoundId: gameRound.GameRoundId,
-                                                                     networkBlockHeader: blockHeader,
-                                                                     cancellationToken: cancellationToken);
+                    await this._gameManager.StopBettingAsync(account: signingAccount, gameRoundId: gameRound.GameRoundId, networkBlockHeader: blockHeader, cancellationToken: cancellationToken);
                 }
                 catch (Exception exception)
                 {

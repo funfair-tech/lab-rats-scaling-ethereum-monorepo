@@ -181,7 +181,7 @@ namespace FunFair.Labs.ScalingEthereum.Data.SqlServer.Games.DataManagers
         }
 
         /// <inheritdoc />
-        public Task<IReadOnlyList<GameRound>> GetAllForClosingBettingAsync(EthereumNetwork network, DateTime dateTimeOnNetwork)
+        public Task<IReadOnlyList<GameRound>> GetAllForStoppingBettingAsync(EthereumNetwork network, DateTime dateTimeOnNetwork)
         {
             return this._database.QueryAsync(builder: this._gameRoundBuilder,
                                              storedProcedure: @"Games.GameRound_GetAllForClosingBetting",

@@ -149,7 +149,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games.BackgroundServices.Services
                 {
                     INetworkSigningAccount account = this._ethereumAccountManager.GetAccount(new NetworkAccount(network: blockHeader.Network, address: game.CreatedByAccount));
 
-                    await this._gameManager.CloseBettingBettingAsync(account: account, gameRoundId: game.GameRoundId, networkBlockHeader: blockHeader, cancellationToken: cancellationToken);
+                    await this._gameManager.StopBettingAsync(account: account, gameRoundId: game.GameRoundId, networkBlockHeader: blockHeader, cancellationToken: cancellationToken);
                 }
                 catch
                 {

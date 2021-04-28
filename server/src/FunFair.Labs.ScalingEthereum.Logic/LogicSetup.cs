@@ -81,13 +81,13 @@ namespace FunFair.Labs.ScalingEthereum.Logic
 
             services.AddSingleton<IStartGameService, StartGameService>();
             services.AddSingleton<IEndGameBettingService, EndGameBettingService>();
-            services.AddSingleton<IEndGameService, EndGameService>();
+            services.AddSingleton<IEndGameService, StopBettingService>();
             services.AddSingleton<IBrokenGameRecovery, BrokenGameRecovery>();
             services.AddSingleton<IStartRoundGameHistoryBuilder, StartRoundGameHistoryBuilder>();
             services.AddSingleton<IGameRoundTimeCalculator, GameRoundTimeCalculator>();
 
             services.AddHostedSingletonService<IStartGameBackgroundService, StartGameBackgroundService>();
-            services.AddHostedSingletonService<IEndGameBettingBackgroundService, EndGameBettingBackgroundService>();
+            services.AddHostedSingletonService<IEndGameBettingBackgroundService, StopBettingBackgroundService>();
             services.AddHostedSingletonService<IEndGameBackgroundService, EndGameBackgroundService>();
             services.AddHostedSingletonService<IBrokenGameRecoveryService, BrokenGameRecoveryService>();
         }

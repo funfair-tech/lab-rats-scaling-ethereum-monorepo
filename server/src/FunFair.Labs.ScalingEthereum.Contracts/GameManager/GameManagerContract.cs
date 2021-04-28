@@ -20,7 +20,7 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager
             return ContractInfoBuilder.Create(WellKnownContracts.GameManager)
                                       .Network(network: Layer2EthereumNetworks.OptimismKovan, new ContractAddress("0xe3f2Fa6a3F16837d012e1493F50BD29db0BdADe4"))
                                       .Transaction<StartGameRound>()
-                                      .Transaction<CloseGameRoundForNewBets>()
+                                      .Transaction<StopBetting>()
                                       .Transaction<EndGameRound>()
                                       .Event<StartGameRoundEvent>()
                                       .Event<EndGameRoundEvent>()
