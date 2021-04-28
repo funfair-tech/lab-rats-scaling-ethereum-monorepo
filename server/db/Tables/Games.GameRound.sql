@@ -12,7 +12,7 @@ CREATE TABLE [Games].[GameRound] (
     [ScheduledDateForClosing] AS (dateadd(second, [BettingCloseDuration] + [RoundDuration], [DateStarted])) PERSISTED,
     [SeedCommit] [char](66) COLLATE Latin1_General_CI_AS NOT NULL,
     [SeedReveal] [char](66) COLLATE Latin1_General_CI_AS NOT NULL,
-    [BettingCloseDuration] [int] NOT NULL CONSTRAINT DF_BettingCloseDuration DEFAULT (5),
+    [BettingCloseDuration] [int] NOT NULL CONSTRAINT DF_BettingCloseDuration DEFAULT(5),
     [RoundDuration] [int] NOT NULL,
     [RoundTimeoutDuration] [int] NOT NULL,
     [DateCreated] [datetime2] NOT NULL,
