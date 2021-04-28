@@ -4,7 +4,7 @@ GO
 SET ANSI_NULLS ON
 GO
 
-CREATE PROCEDURE [Games].[GameRound_GetAllForClosingBetting] (
+CREATE PROCEDURE [Games].[GameRound_GetAllForStopBetting] (
     @Network VARCHAR(50),
     @DateTimeOnNetwork DATETIME2
     )
@@ -29,7 +29,7 @@ BEGIN
         [DateClosed]
     FROM Games.GameRound
     WHERE [Network] = @Network
-        AND [Status] = 'BETTING_OVER'
+        AND [Status] = 'STARTED'
         AND [ScheduledDateForClosing] < @DateTimeOnNetwork
 END
 GO

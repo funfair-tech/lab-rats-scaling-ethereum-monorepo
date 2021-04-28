@@ -29,7 +29,7 @@ BEGIN
         [DateClosed]
     FROM Games.GameRound
     WHERE [Network] = @Network
-        AND [Status] = 'STARTED'
+        AND [Status] = 'BETTING_OVER'
         AND [ScheduledDateForClosing] < @DateTimeOnNetwork
 END
 GO
