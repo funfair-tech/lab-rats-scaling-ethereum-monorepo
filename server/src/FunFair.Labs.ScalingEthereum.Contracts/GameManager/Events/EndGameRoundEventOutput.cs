@@ -41,6 +41,18 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
                                        [EventOutputParameter(ethereumDataType: "bytes", order: 8, indexed: false)]
                                        byte[] historyToRecord)
         {
+#if SIGNATURE
+            event EndGameRound(
+                    bytes32 indexed _roundID, ==> 1
+                    bytes32 indexed _persistentGameDataID, ==> 2
+                    bytes32 entropyReveal, ==> 3
+                    address[] _playerAddresses, ==> 4
+                    uint256[] _winAmounts, ==> 5
+                    int256 _persistentGameDataPotWinLoss, ==> 6
+                    bytes _gameResult, ==> 7
+                    bytes _historyToRecord ==> 8
+            );
+#endif
             this.GameRoundId = gameRoundId ?? throw new ArgumentNullException(nameof(gameRoundId));
             this.PersistentGameDataId = persistentGameDataId ?? throw new ArgumentNullException(nameof(persistentGameDataId));
             this.EntropyReveal = entropyReveal ?? throw new ArgumentNullException(nameof(entropyReveal));
