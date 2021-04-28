@@ -26,7 +26,7 @@ export const GameContainer: FunctionComponent<Props> = (props) => {
     if(!!props.user.address) {
       gameInstance.setAddress(props.user.address);
     }
-  }, [props.user.address]);
+  }, [gameInstance, props.user.address]);
 
   return (
     <div>
