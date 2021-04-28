@@ -7,7 +7,7 @@ CREATE TABLE [Games].[BrokenGames] (
     ) ON [PRIMARY]
 GO
 
-ALTER TABLE [Games].[BrokenGames] ADD CONSTRAINT [PK_BrokenGames] PRIMARY KEY CLUSTERED ([BrokenGameId]) ON [PRIMARY]
+ALTER TABLE [Games].[BrokenGames] ADD CONSTRAINT [PK_BrokenGames] PRIMARY KEY CLUSTERED ([BrokenGameId] DESC) ON [PRIMARY]
 GO
 
 
