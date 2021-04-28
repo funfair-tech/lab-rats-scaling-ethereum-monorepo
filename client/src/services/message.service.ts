@@ -4,7 +4,8 @@ import { apiRequest } from './api-request.service';
 import { Bet, SafeBet } from '../model/bet';
 import { MessageId } from '../model/messageId';
 import store from '../store/store';
-import { addBet, setCanPlay, setPlayersOnline, setRoundId } from '../store/actions/game.actions';
+import { addBet, setCanPlay, setPlayersOnline, setRound } from '../store/actions/game.actions';
+import { Round } from '../model/round';
 
 class MessageService {
   private connection: signalR.HubConnection | undefined;
@@ -23,22 +24,27 @@ class MessageService {
     store.dispatch(setPlayersOnline(playerCount));
   };
 
-  private handleGameStarting = (roundId: string, potId: string, transactionhash: string): void => {
-    console.log(`GameRoundStarting: ${roundId} ${potId} ${transactionhash}`);
+  private handleGameStarting = (roundId: string, transactionhash: string): void => {
+    console.log(`GameRoundStarting: ${roundId} ${transactionhash}`);
 
   };
 
   private handleGameStarted = (
     gameRoundId: string,
-    progressivePotId: string,
     timeLeftInSeconds: number,
     startRoundBlockNumber: number,
     interRoundPause: number,
   ): void => {
     console.log(
-      `GameRoundStarted: ${gameRoundId} ${progressivePotId} ${timeLeftInSeconds} ${startRoundBlockNumber} ${interRoundPause}`,
+      `GameRoundStarted: ${gameRoundId} ${timeLeftInSeconds} ${startRoundBlockNumber} ${interRoundPause}`,
     );
-    store.dispatch(setRoundId(gameRoundId));
+    const round: Round = {
+      id: gameRoundId,
+      block: startRoundBlockNumber,
+      time: timeLeftInSeconds,
+      timeToNextRound: interRoundPause
+    }
+    store.dispatch(setRound(round));
     store.dispatch(setCanPlay(true));
   };
 
@@ -49,14 +55,14 @@ class MessageService {
     store.dispatch(setCanPlay(false));
   };
 
-  private handleGameEnding = (gameId: string, potId: string, transactionHash: string, entropyReveal: string) => {
+  private handleGameEnding = (gameId: string, transactionHash: string, entropyReveal: string) => {
     console.log(
-      `GameEnding: GameId: ${gameId} PotId: ${potId} TransactionHash: ${transactionHash} EntropyReveal: ${entropyReveal}`,
+      `GameEnding: GameId: ${gameId}  TransactionHash: ${transactionHash} EntropyReveal: ${entropyReveal}`,
     );
   };
 
-  private handleGameEnded = (gameId: string, potId: string, blockNumber: number, interGameDelay: number) => {
-    console.log(`GameEnded: ${gameId} ${potId} ${blockNumber} ${interGameDelay}`);
+  private handleGameEnded = (gameId: string, blockNumber: number, interGameDelay: number) => {
+    console.log(`GameEnded: ${gameId} ${blockNumber} ${interGameDelay}`);
   };
 
   private handleBroadcast = (address: string, message: string): void => {

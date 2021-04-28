@@ -1,6 +1,7 @@
 import { Bet } from '../../model/bet';
+import { Round } from '../../model/round';
 import { RoundResult } from '../../model/roundResult';
-import { ADD_BET, CLEAR_BETS, CLEAR_GAME_STATE, GameActionTypes, SET_CAN_PLAY, SET_PLAYERS_ONLINE, SET_RESULT, SET_ROUND_ID } from '../types/game.types';
+import { ADD_BET, CLEAR_BETS, CLEAR_GAME_STATE, GameActionTypes, SET_CAN_PLAY, SET_PLAYERS_ONLINE, SET_RESULT, SET_ROUND } from '../types/game.types';
 
 export const setResult = (result: RoundResult): GameActionTypes => {
   return {
@@ -22,10 +23,10 @@ export const setPlayersOnline = (playersOnline: number): GameActionTypes => {
   };
 };
 
-export const setRoundId = (id: string|null): GameActionTypes => {
+export const setRound = (round: Round|null): GameActionTypes => {
   return {
-    type: SET_ROUND_ID,
-    payload: id,
+    type: SET_ROUND,
+    payload: round,
   };
 };
 

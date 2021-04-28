@@ -6,7 +6,7 @@ import MultiplayerGamesManagerABI from '../contracts/multiplayerGamesManager.jso
 import { Bet } from '../model/bet';
 import { BlockHeader } from '../model/blockHeader';
 import { RoundResult } from '../model/roundResult';
-import { setResult, setRoundId } from '../store/actions/game.actions';
+import { setResult } from '../store/actions/game.actions';
 import { setUserError } from '../store/actions/user.actions';
 import store from '../store/store';
 import { ethers } from './ether.service';
@@ -20,7 +20,7 @@ class GameService {
 
     //TODO: move to game.ts
     const state = store.getState();
-    bet.roundId = state.game.roundId as string;
+    bet.roundId = state.game.round?.id as string;
     bet.address = state.user.address as string;
 
     if (!bet.roundId) {
@@ -74,6 +74,12 @@ class GameService {
       ],
     ]);
 
+    console.log('++ sending transferAndCall');
+    console.log('++ address:', this.TOKEN_ADDRESS);
+    console.log('++ amount:', bet.amount.toString());
+    console.log('++ unencoded data:', bet.data);
+    console.log('++ encoded data:', calldata);
+
     const contract = await ethers.getContract<LabRatsToken>(
       LabRatsTokenABI,
       this.TOKEN_ADDRESS
@@ -95,7 +101,7 @@ class GameService {
 
     //TODO: move to game.ts
     const state = store.getState();
-    bet.roundId = state.game.roundId as string;
+    bet.roundId = state.game.round?.id as string;
     bet.address = state.user.address as string;
     
     if (!bet.roundId) {
@@ -142,10 +148,16 @@ class GameService {
       ],
       [
         {
-          playerAddress: bet.address,
-          betAmount: hexlify(bet.amount),
-          betData: hexlify(bet.data),
-        },
+          roundID: bet.roundId,
+          bets: [
+            {
+              playerAddress: bet.address,
+              betAmount: bet.amount,
+              betData: bet.data,
+            },
+          ],
+        }
+
       ]
     );
 
@@ -153,6 +165,12 @@ class GameService {
       LabRatsTokenABI,
       this.TOKEN_ADDRESS
     );
+    console.log('++ sending transferAndCall');
+    console.log('++ address:', this.TOKEN_ADDRESS);
+    console.log('++ amount:', bet.amount.toString());
+    console.log('++ unencoded data:', bet.data);
+    console.log('++ encoded data:', encoded);
+
     const transactionResponse = await contract.transferAndCall(
       this.TOKEN_ADDRESS,
       bet.amount.toString(),

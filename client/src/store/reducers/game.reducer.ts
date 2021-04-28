@@ -1,10 +1,11 @@
 import { Bet } from '../../model/bet';
+import { Round } from '../../model/round';
 import { RoundResult } from '../../model/roundResult';
-import { ADD_BET, CLEAR_BETS, CLEAR_GAME_STATE, GameActionTypes, SET_CAN_PLAY, SET_PLAYERS_ONLINE, SET_RESULT, SET_ROUND_ID } from '../types/game.types';
+import { ADD_BET, CLEAR_BETS, CLEAR_GAME_STATE, GameActionTypes, SET_CAN_PLAY, SET_PLAYERS_ONLINE, SET_RESULT, SET_ROUND } from '../types/game.types';
 
 
 export interface Game {
-  roundId: string|null;
+  round: Round|null;
   bets: Bet[];
   result: RoundResult|null;
   playersOnline: number|null;
@@ -12,7 +13,7 @@ export interface Game {
 }
 
 const initialState: Game = {
-  roundId: null,
+  round: null,
   bets:[],
   result: null,
   playersOnline: null,
@@ -33,10 +34,10 @@ const gameReducer = (state = { ...initialState }, action: GameActionTypes): Game
         ...state,
         playersOnline: action.payload,
       };
-    case SET_ROUND_ID:
+    case SET_ROUND:
       return {
         ...state,
-        roundId: action.payload,
+        round: action.payload,
       };
     case SET_CAN_PLAY:
       return {

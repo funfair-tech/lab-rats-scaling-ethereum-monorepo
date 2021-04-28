@@ -28,12 +28,20 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
       <section>{props.user.tokenBalance}</section>
       {/* <section><Button onClick={()=>{gameService.callTest()}}>test call</Button></section> */}
       {/* <section><Button onClick={()=>{gameService.sendTest()}}>test send</Button></section> */}
-      <section><Button onClick={()=>{gameService.handlePlay({
+      <section><Button disabled={!props.game.canPlay} onClick={()=>{gameService.handlePlay({
         roundId: '',
         address: '',
         amount: 10000000000,
         data: 2
       })}}>play</Button></section>
+
+      <section><Button disabled={!props.game.canPlay} onClick={()=>{gameService.handlePlayWithAbiCoder({
+        roundId: '',
+        address: '',
+        amount: 10000000000,
+        data: 2
+      })}}>PlayWithAbiCoder</Button></section>
+      
       <section>{
         props.user.authenticated ? <Button onClick={logOutOfWallet}>Sign out</Button> :
         <Button onClick={loginToWallet} disabled={props.user.loading}>{props.user.loading ? 'Loading...': 'Sign in'}</Button>
@@ -45,6 +53,7 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
 const mapStateToProps = (state: RootState) => {
   return {
     user: state.user,
+    game: state.game,
   };
 };
 

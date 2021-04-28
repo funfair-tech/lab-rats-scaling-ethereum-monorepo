@@ -15,6 +15,9 @@
 .btn:focus {
   background-color: #650488;
 }
+.btn:disabled {
+  background-color: #aaa;
+}
 
 .btn > * {
   position: relative;
