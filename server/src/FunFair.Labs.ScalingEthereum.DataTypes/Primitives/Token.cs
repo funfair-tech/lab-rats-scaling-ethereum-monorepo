@@ -254,26 +254,26 @@ namespace FunFair.Labs.ScalingEthereum.DataTypes.Primitives
         ///     Attempts to create a new <see cref="Token" /> object from the source text.
         /// </summary>
         /// <param name="source">The source value</param>
-        /// <param name="result">The resulting value..</param>
+        /// <param name="value">The resulting value..</param>
         /// <returns>true, if the value could be converted; otherwise, false.</returns>
-        public static bool TryParse(string? source, [NotNullWhen(returnValue: true)] out Token? result)
+        public static bool TryParse(string? source, [NotNullWhen(returnValue: true)] out Token? value)
         {
             if (string.IsNullOrWhiteSpace(source))
             {
-                result = default;
+                value = default;
 
                 return false;
             }
 
             try
             {
-                result = new Token(source);
+                value = new Token(source);
 
                 return true;
             }
             catch
             {
-                result = default;
+                value = default;
 
                 return false;
             }

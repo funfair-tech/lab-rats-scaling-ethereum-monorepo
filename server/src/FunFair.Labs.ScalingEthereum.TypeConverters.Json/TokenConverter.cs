@@ -12,7 +12,7 @@ namespace FunFair.Labs.ScalingEthereum.TypeConverters.Json
         /// <inheritdoc />
         protected override bool TryParse(string? source, [NotNullWhen(true)] out Token? converted)
         {
-            return Token.TryParse(source: source, result: out converted);
+            return Token.TryParse(source: source, value: out converted);
         }
     }
 }

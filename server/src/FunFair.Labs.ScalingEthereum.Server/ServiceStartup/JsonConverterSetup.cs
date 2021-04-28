@@ -19,6 +19,7 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
             converters.Add(new AccountAddressConverter());
             converters.Add(new BlockNumberConverter());
             converters.Add(new EthereumAmountConverter());
+            converters.Add(new GameRoundIdConverter());
             converters.Add(new HexAddressConverter());
             converters.Add(new SeedConverter());
             converters.Add(new TransactionHashConverter());
