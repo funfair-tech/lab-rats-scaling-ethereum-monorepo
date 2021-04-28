@@ -16,7 +16,7 @@ export class GraphCell extends FFEngine.Component {
 
         this.sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
         this.sprite.SetAlpha(0.4);
-        this.sprite.SetColor(new FFEngine.THREE.Color(0x80ff80));
+        this.sprite.SetColor(new FFEngine.THREE.Color(0xbb20bb));
         this.sprite.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
     }
 
