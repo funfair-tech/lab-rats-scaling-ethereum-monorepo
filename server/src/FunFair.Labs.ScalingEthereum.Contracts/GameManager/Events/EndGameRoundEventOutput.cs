@@ -17,6 +17,7 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
         ///     Constructor.
         /// </summary>
         /// <param name="gameRoundId">Game round id.</param>
+        /// <param name="persistentGameDataId">The persistent game data id.</param>
         /// <param name="entropyReveal">Entropy Reveal.</param>
         /// <param name="players">Player addresses.</param>
         /// <param name="winAmounts">Win amounts.</param>
@@ -27,6 +28,8 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
         public EndGameRoundEventOutput([EventOutputParameter(ethereumDataType: "bytes32", order: 1, indexed: true)]
                                        GameRoundId gameRoundId,
                                        [EventOutputParameter(ethereumDataType: "bytes32", order: 2, indexed: true)]
+                                       byte[] persistentGameDataId,
+                                       [EventOutputParameter(ethereumDataType: "bytes32", order: 3, indexed: true)]
                                        Seed entropyReveal,
                                        [EventOutputParameter(ethereumDataType: "address[]", order: 4, indexed: false)]
                                        AccountAddress[] players,
@@ -42,6 +45,7 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
                                        byte[] historyToRecord)
         {
             this.GameRoundId = gameRoundId ?? throw new ArgumentNullException(nameof(gameRoundId));
+            this.PersistentGameDataId = persistentGameDataId ?? throw new ArgumentNullException(nameof(persistentGameDataId));
             this.EntropyReveal = entropyReveal ?? throw new ArgumentNullException(nameof(entropyReveal));
             this.Players = players ?? throw new ArgumentNullException(nameof(players));
             this.WinAmounts = winAmounts ?? throw new ArgumentNullException(nameof(winAmounts));
@@ -85,6 +89,8 @@ namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events
         ///     History to record (encoded).
         /// </summary>
         public byte[] History { get; }
+
+        public byte[] PersistentGameDataId { get; }
 
         /// <inheritdoc />
         public GameRoundId GameRoundId { get; }
