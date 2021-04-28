@@ -17,7 +17,6 @@ namespace FunFair.Labs.ScalingEthereum.ServiceInterfaces.Controllers
         {
             get
             {
-                // TODO : Look to see if can do something similar to the wallet and throw exception etc.
                 if (this.User?.Identity == null)
                 {
                     return null;

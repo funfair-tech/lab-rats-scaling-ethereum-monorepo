@@ -71,8 +71,6 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
 
             EthereumConfirmationsSetup.Configure(services: services, TransactionConfirmationsPolicy());
 
-            // TODO: Add Multi-Call support here
-
             EnableGasPrices(services);
             EnableBlocks(services);
             EnableBalances(services: services, configuration: configuration);
