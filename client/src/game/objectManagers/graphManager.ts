@@ -1,7 +1,6 @@
 import { FFEngine } from '@funfair/engine';
 import { GraphLine } from '../objects/graphLine';
 import { GraphCell } from '../objects/graphCell';
-import { Logic_BetType } from '../logic/logic_defines';
 import { ENVIRONMENT_MANAGER } from './environmentManager';
 
 /**
