@@ -27,6 +27,10 @@ export class EnvironmentManager extends FFEngine.Component {
 
         //camera interpolator
         this.cameraInterpolator = FFEngine.instance.AddComponent(this.camera, FFEngine.Interpolator);
+
+        //add world fog
+        let worldScene = FFEngine.instance.scenes['WORLD'];
+        worldScene.fog = new FFEngine.THREE.Fog(0x000000, 5, 16);
     }
 
     public OnRendererResize(params: FFEngine.IRendererResizeParams): void {
