@@ -32,16 +32,15 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
         roundId: '0xce8f6e91bb138cb34c51e7e9ef3f9aeda3c2a135968a00d0bc73991dfda0b8c4',
         address: '0xc5daEd808744CF96f9725cc3baF4427a4C8BfF6a',
         amount: 10000000000,
-        data: 2
+        data: '0x02'
       })}}>play</Button></section>
 
       <section><Button disabled={!props.game.canPlay} onClick={()=>{gameService.handlePlayWithAbiCoder({
         roundId: '0xce8f6e91bb138cb34c51e7e9ef3f9aeda3c2a135968a00d0bc73991dfda0b8c4',
         address: '0xc5daEd808744CF96f9725cc3baF4427a4C8BfF6a',
         amount: 10000000000,
-        data: 2
+        data: '0x02'
       })}}>PlayWithAbiCoder</Button></section>
-            <section style={{fontSize: 8}}>{props.game.round?.id}</section>
 
       <section>{
         props.user.authenticated ? <Button onClick={logOutOfWallet}>Sign out</Button> :

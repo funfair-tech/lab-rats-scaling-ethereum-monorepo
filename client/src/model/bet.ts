@@ -2,7 +2,7 @@ export interface Bet {
   roundId: string;
   address: string;
   amount: number;
-  data: number;
+  data: string;
 }
 
 export class SafeBet implements Bet {
@@ -21,7 +21,7 @@ export class SafeBet implements Bet {
       throw new Error('Invalid address');
     }
 
-    if (!/^(0x)?[0-9a-f]{6}$/i.test(data)) {
+    if (!/^(0x)?[0-9a-f]{2}$/i.test(data)) {
       throw new Error('Invalid data');
     }
   }

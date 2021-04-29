@@ -10,6 +10,7 @@ import { setResult } from '../store/actions/game.actions';
 import { setUserError } from '../store/actions/user.actions';
 import store from '../store/store';
 import { ethers } from './ether.service';
+import { messageService } from './message.service';
 
 class GameService {
   // private GAME_ADDRESS = '0xb5F20F66F8a48d70BbBF8ACC18E28907f97ee552';
@@ -107,9 +108,6 @@ class GameService {
     // TODO: dispatch confirmation to store
   }
   
-  
-
-
   public async handlePlayWithAbiCoder(bet: Bet) {
 
     //TODO: move to game.ts
@@ -166,7 +164,7 @@ class GameService {
             {
               playerAddress: bet.address,
               betAmount: hexlify(bet.amount),
-              betData: hexlify(bet.data),
+              betData: bet.data,
             },
           ],
         }
@@ -191,6 +189,9 @@ class GameService {
       bet.amount,
       encoded
     );
+    
+    messageService.broadcastBet(bet);
+
     const receipt = await transactionResponse.wait(1);
     console.log('handlePlay receipt: ', receipt);
     // TODO: dispatch confirmation to store

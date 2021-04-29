@@ -66,11 +66,14 @@ class MessageService {
   };
 
   private handleBroadcast = (address: string, message: string): void => {
+    console.log(`handleBroadcast: ${address} ${message}`);
+
     try {
       const decoded = JSON.parse(message);
       switch (decoded.action) {
         case MessageId.BET:
-          const bet: Bet = new SafeBet(decoded.roundID, address, decoded.betAmount, decoded.betData, false);
+          const decodedBet = decoded as Bet;
+          const bet: Bet = new SafeBet(decodedBet.roundId, decodedBet.address, decodedBet.amount, decodedBet.data, false);
           store.dispatch(addBet(bet));
           break;
       }
@@ -130,6 +133,7 @@ class MessageService {
   public async broadcastBet(bet: Bet): Promise<void> {
     const toSend = JSON.stringify({
       action: MessageId.BET,
+      ...bet,
     });
     this.connection!.invoke('SendMessage', toSend).catch((err) => {
       return console.error(err.toString());
