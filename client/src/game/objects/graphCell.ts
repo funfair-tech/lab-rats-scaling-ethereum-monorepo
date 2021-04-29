@@ -1,4 +1,6 @@
 import { FFEngine } from '@funfair/engine';
+import { Logic_BetType } from '../logic/logic_defines';
+import { ENVIRONMENT_MANAGER } from '../objectManagers/environmentManager';
 
 /**
  * A display object representing a single cell on the graph grid
@@ -6,8 +8,12 @@ import { FFEngine } from '@funfair/engine';
 export class GraphCell extends FFEngine.Component {
 
     private static readonly CELL_BORDER: number = 0.05;
+    private static readonly CELL_IDLE_ALPHA: number = 0.4;
+    private static readonly CELL_ACTIVE_ALPHA: number = 0.8;
 
     private sprite!: FFEngine.Sprite;
+    private coords: FFEngine.THREE.Vector2 = new FFEngine.THREE.Vector2();
+    private betType: Logic_BetType = Logic_BetType.NONE;
 
     public Create(params: any): void {
         super.Create(params);
@@ -15,9 +21,23 @@ export class GraphCell extends FFEngine.Component {
         this.container = new FFEngine.THREE.Object3D();
 
         this.sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
-        this.sprite.SetAlpha(0.4);
         this.sprite.SetColor(new FFEngine.THREE.Color(0xbb20bb));
         this.sprite.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
+        this.SetBetType(Logic_BetType.NONE);
+    }
+
+    public OnMouseUp(params: any): void {
+        if (this.CheckCollision(new FFEngine.THREE.Vector2(params.point.x, params.point.y))) {
+            console.log('CELL CLICKED');
+        }
+    }
+
+    public SetCoordinates(coords: FFEngine.THREE.Vector2): void {
+        this.coords.copy(coords);
+    }
+
+    public GetCoordinates(): FFEngine.THREE.Vector2 {
+        return this.coords;
     }
 
     public SetSize(width: number, height: number): void {
@@ -25,5 +45,25 @@ export class GraphCell extends FFEngine.Component {
             this.sprite.SetSize(width - GraphCell.CELL_BORDER, height - GraphCell.CELL_BORDER);
             this.sprite.GetContainer().position.set(width/2, height/2, 0);
         }
+    }
+
+    public SetBetType(type: Logic_BetType): void {
+        this.betType = type;
+
+        if (this.betType === Logic_BetType.NONE) {
+            this.sprite.SetAlpha(GraphCell.CELL_IDLE_ALPHA);
+        }
+        else {
+            this.sprite.SetAlpha(GraphCell.CELL_ACTIVE_ALPHA);
+        }
+    }
+
+    private CheckCollision(point: FFEngine.THREE.Vector2): boolean {
+        if (this.betType !== Logic_BetType.NONE) {
+            let raycaster = new FFEngine.THREE.Raycaster();
+            raycaster.setFromCamera(point, ENVIRONMENT_MANAGER.GetCamera());
+            return (raycaster.intersectObject(this.sprite.GetContainer(), false).length > 0);
+        }
+        return false;
     }
 }

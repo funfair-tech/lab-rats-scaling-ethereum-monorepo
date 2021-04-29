@@ -46,11 +46,15 @@ export class EnvironmentManager extends FFEngine.Component {
     /**
      * Moves the camera so the provided graph coordinate is centered on the screen
      */
-    public SetCameraToGraphCoordinate(x: number, y: number): void {
-        let camPos = GRID_MANAGER.GridToWorld(x, y);
+    public SetCameraToGraphCoordinate(coord: FFEngine.THREE.Vector2): void {
+        let camPos = GRID_MANAGER.GridToWorld(coord);
         camPos.x += EnvironmentManager.CAM_X_OFFSET;
         camPos.z = EnvironmentManager.CAM_Z;
         this.MoveCamera(camPos);
+    }
+
+    public GetCamera(): FFEngine.THREE.PerspectiveCamera {
+        return this.camera;
     }
 
     private CreateScene(): void {
@@ -66,7 +70,7 @@ export class EnvironmentManager extends FFEngine.Component {
         GRID_MANAGER.AddResult(3);
 
         //test camera
-        this.SetCameraToGraphCoordinate(4, 3);
+        this.SetCameraToGraphCoordinate(new FFEngine.THREE.Vector2(4, 3));
     }
 
     private MoveCamera(targetPosition: FFEngine.THREE.Vector3): void {

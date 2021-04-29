@@ -1,6 +1,7 @@
 import { FFEngine } from '@funfair/engine';
 import { GraphLine } from '../objects/graphLine';
 import { GraphCell } from '../objects/graphCell';
+import { Logic_BetType } from '../logic/logic_defines';
 
 /**
  * Manages the display of the grid of graph cells and line
@@ -11,6 +12,7 @@ export class GraphManager extends FFEngine.Component {
     private static readonly CELL_HEIGHT: number = 1.5;
 
     private graphLine!: GraphLine;
+    private cells: GraphCell[] = [];
 
     public Create(params: any): void {
         super.Create(params);
@@ -43,8 +45,8 @@ export class GraphManager extends FFEngine.Component {
     /**
      * Converts a grid x,y coordinate to world position
      */
-    public GridToWorld(x: number, y: number): FFEngine.THREE.Vector3 {
-        return new FFEngine.THREE.Vector3(x * GraphManager.CELL_WIDTH, y * GraphManager.CELL_HEIGHT, 0);
+    public GridToWorld(coord: FFEngine.THREE.Vector2): FFEngine.THREE.Vector3 {
+        return new FFEngine.THREE.Vector3(coord.x * GraphManager.CELL_WIDTH, coord.y * GraphManager.CELL_HEIGHT, 0);
     }
 
     /**
@@ -56,15 +58,38 @@ export class GraphManager extends FFEngine.Component {
         }
     }
 
+    public GetCellAtCoordinate(coord: FFEngine.THREE.Vector2): GraphCell | undefined {
+        for (let i=0;i<this.cells.length;i++) {
+            if (this.cells[i]) {
+                if (this.cells[i].GetCoordinates().equals(coord)) {
+                    return this.cells[i];
+                }
+            }
+        }
+        return undefined;
+    }
+
     private CreateGrid(): void {
         //test grid cells
         for (let i=-10;i<10;i++) {
             for (let j=-10;j<10;j++) {
                 let cell = FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphCell);
-                cell.GetContainer().position.copy(this.GridToWorld(i, j));
+                cell.GetContainer().position.copy(this.GridToWorld(new FFEngine.THREE.Vector2(i, j)));
                 cell.SetSize(GraphManager.CELL_WIDTH, GraphManager.CELL_HEIGHT);
+                cell.SetCoordinates(new FFEngine.THREE.Vector2(i, j));
+                this.cells.push(cell);
             }
         }
+
+        //test grid bet highlighting
+        let cell = this.GetCellAtCoordinate(new FFEngine.THREE.Vector2(4, 3));
+        cell?.SetBetType(Logic_BetType.HIGHER);
+        cell = this.GetCellAtCoordinate(new FFEngine.THREE.Vector2(4, 4));
+        cell?.SetBetType(Logic_BetType.HIGHER);
+        cell = this.GetCellAtCoordinate(new FFEngine.THREE.Vector2(4, 1));
+        cell?.SetBetType(Logic_BetType.HIGHER);
+        cell = this.GetCellAtCoordinate(new FFEngine.THREE.Vector2(4, 2));
+        cell?.SetBetType(Logic_BetType.HIGHER);
     }
 }
 
