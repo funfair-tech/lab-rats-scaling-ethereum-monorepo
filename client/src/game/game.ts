@@ -3,6 +3,7 @@ import { Bet } from '../model/bet';
 import { MultiTrader } from './multiTrader';
 import { RoundResult } from '../model/roundResult';
 import { Round } from '../model/round';
+import { GameEvent } from '../events/gameEvent';
 
 /**
  * Main game entry point, for initing the game engine and loading the game
@@ -12,25 +13,23 @@ export class Game {
   constructor(private play: (bet: Bet) => void) {};
 
   public handleNextRound(round: Round): void {
-    // TODO: ...
-    // anotherGame.getLogic.apiMessgeCall(typeString, round)
     console.log('++ new round ', round);
+    // logic.setState(GameEvent.NEW_ROUND, round);
   }
 
   public handleNoMoreBets(roundId: string): void {
-    // TODO: ...
     console.log('++ no more bets on round ', roundId);
-
+    // logic.setState(GameEvent.NO_MORE_BETS, roundId);
   }
 
   public handleRoundResult(roundResult: RoundResult): void {
-    // TODO: ...
     console.log('++ round result ', roundResult);
+    // logic.setState(GameEvent.RESULT, roundResult);
   }
 
   public handleBets(bets: Bet[]): void {
-    // TODO: ...
     console.log('++ bets  ', bets);
+    // logic.setState(GameEvent.BETS, bets);
   }
 
   public setAddress(address: string): void {
