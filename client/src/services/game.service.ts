@@ -1,7 +1,7 @@
-import { hexlify, Interface, Result } from 'ethers/lib/utils';
+import { hexlify } from 'ethers/lib/utils';
 import { LabRatsToken } from '../contracts/LabRatsToken';
 import LabRatsTokenABI from '../contracts/labRatsToken.json';
-import { MultiplayerGamesManager , MultiplayerGamesManagerEventsContext} from '../contracts/MultiplayerGamesManager';
+import { MultiplayerGamesManager } from '../contracts/MultiplayerGamesManager';
 import MultiplayerGamesManagerABI from '../contracts/multiplayerGamesManager.json';
 import { Bet } from '../model/bet';
 import { BlockHeader } from '../model/blockHeader';
@@ -111,12 +111,17 @@ class GameService {
   //   // TODO: dispatch confirmation to store
   // }
   
-  public async handlePlay(bet: Bet) {
+  // public async handlePlay(bet: Bet) {
+  public async handlePlay(stake: number, action: number) {
 
-    //TODO: move to game.ts
     const state = store.getState();
-    bet.roundId = state.game.round?.id as string;
-    bet.address = state.user.address as string;
+    const bet: Bet = {
+      roundId: state.game.round?.id as string,
+      address: state.user.address as string,
+      amount: stake,
+      data: hexlify(action),
+      confirmed: false,
+    } 
     
     if (!bet.roundId) {
       store.dispatch(setUserError('Invalid round ID'));
@@ -180,12 +185,12 @@ class GameService {
       this.TOKEN_ADDRESS
     );
 
-    console.log('++ sending transferAndCall');
-    console.log('++ roundId:', bet.roundId);
-    console.log('++ address:', this.TOKEN_ADDRESS);
-    console.log('++ amount:', bet.amount.toString());
-    console.log('++ unencoded data:', hexlify(bet.data));
-    console.log('++ encoded data:', encoded);
+    // console.log('++ sending transferAndCall');
+    // console.log('++ roundId:', bet.roundId);
+    // console.log('++ address:', this.TOKEN_ADDRESS);
+    // console.log('++ amount:', bet.amount.toString());
+    // console.log('++ unencoded data:', hexlify(bet.data));
+    // console.log('++ encoded data:', encoded);
 
     const transactionResponse = await contract.transferAndCall(
       this.GAME_MANAGER_ADDRESS,

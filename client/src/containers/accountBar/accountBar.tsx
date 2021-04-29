@@ -12,36 +12,48 @@ interface Props extends ReduxProps {
 }
 
 export const AccountBar: FunctionComponent<Props> = (props) => {
-
   const loginToWallet = () => {
     window.funwallet.sdk.auth.login();
   };
 
-  const logOutOfWallet = async() => {
+  const logOutOfWallet = async () => {
     await window.funwallet.sdk.auth.logout();
     props.clearUserState();
   };
 
-  return <div className='accountBar'>
-    <section className='accountBar__content'>
-      <section>{props.title}</section>
-      <section>{props.user.tokenBalance}</section>
+  return (
+    <div className='accountBar'>
+      <section className='accountBar__content'>
+        <section>{props.title}</section>
+        <section>{props.user.tokenBalance}</section>
 
-      <section><Button disabled={!props.game.canPlay || (!!props.game.round && props.game.round.time < 0)} onClick={()=>{gameService.handlePlay({
-        roundId: '',
-        address: '',
-        amount: 10000000000,
-        data: '0x02',
-        confirmed: false,
-      })}}>play</Button></section>
+        <section>
+          <Button
+            disabled={
+              !props.game.canPlay ||
+              (!!props.game.round && props.game.round.time < 0)
+            }
+            onClick={() => {
+              gameService.handlePlay(10000000000, 2);
+            }}
+          >
+            play
+          </Button>
+        </section>
 
-      <section>{
-        props.user.authenticated ? <Button onClick={logOutOfWallet}>Sign out</Button> :
-        <Button onClick={loginToWallet} disabled={props.user.loading}>{props.user.loading ? 'Loading...': 'Sign in'}</Button>
-      }</section>
-    </section>
-  </div>
-}
+        <section>
+          {props.user.authenticated ? (
+            <Button onClick={logOutOfWallet}>Sign out</Button>
+          ) : (
+            <Button onClick={loginToWallet} disabled={props.user.loading}>
+              {props.user.loading ? 'Loading...' : 'Sign in'}
+            </Button>
+          )}
+        </section>
+      </section>
+    </div>
+  );
+};
 
 const mapStateToProps = (state: RootState) => {
   return {
@@ -55,8 +67,6 @@ const mapDispatchToProps = (dispatch: Function) => {
     clearUserState: () => dispatch(clearUserState()),
   };
 };
-
-
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

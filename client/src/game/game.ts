@@ -10,7 +10,7 @@ import { GameEvent } from '../events/gameEvent';
  */
 export class Game {
 
-  constructor(private play: (bet: Bet) => void) {};
+  constructor(private play: (stake: number, action: number) => void) {};
 
   public handleNextRound(round: Round): void {
     console.log('++ new round ', round);
