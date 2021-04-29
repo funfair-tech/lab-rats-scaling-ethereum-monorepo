@@ -3,6 +3,7 @@ export interface Bet {
   address: string;
   amount: number;
   data: string;
+  confirmed: boolean;
 }
 
 export class SafeBet implements Bet {

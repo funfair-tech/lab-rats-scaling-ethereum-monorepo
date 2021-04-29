@@ -6,7 +6,7 @@ import MultiplayerGamesManagerABI from '../contracts/multiplayerGamesManager.jso
 import { Bet } from '../model/bet';
 import { BlockHeader } from '../model/blockHeader';
 import { RoundResult } from '../model/roundResult';
-import { clearBets, setResult } from '../store/actions/game.actions';
+import { addBet, clearBets, setResult } from '../store/actions/game.actions';
 import { setUserError } from '../store/actions/user.actions';
 import store from '../store/store';
 import { ethers } from './ether.service';
@@ -14,6 +14,7 @@ import { messageService } from './message.service';
 import { isContractAddressInBloom, isInBloom } from 'ethereum-bloom-filters';
 import { Event } from '@ethersproject/contracts';
 import { EndGameRound } from '../events/endGameRound';
+import { BetEvent } from '../events/betEvent';
 class GameService {
   // private GAME_ADDRESS = '0xb5F20F66F8a48d70BbBF8ACC18E28907f97ee552';
   private GAME_MANAGER_ADDRESS = '0x42f9A9bDe939E9f0e082a801D7245005a1066681';//prev'0xe3f2Fa6a3F16837d012e1493F50BD29db0BdADe4';
@@ -215,6 +216,37 @@ class GameService {
   //   });
   // }
 
+  public async testForBetEvents(blockHeader: BlockHeader) {
+    const eventName = 'Bet';
+    const state = store.getState();
+    const contractInBloom = isContractAddressInBloom(blockHeader.bloomFilter, this.GAME_MANAGER_ADDRESS);
+    const roundInBloom = !!state.game.round ? isInBloom(blockHeader.bloomFilter, state.game.round.id) : false;
+    
+    if(!contractInBloom || !roundInBloom) {
+      return;
+    }
+
+    const contract = await ethers.getContract<MultiplayerGamesManager>(MultiplayerGamesManagerABI, this.GAME_MANAGER_ADDRESS);
+    const events: Event[] = await (contract as any).queryFilter(
+      eventName,
+      blockHeader.blockHash
+    );
+
+    events.forEach((event: Event) => {
+      const bet: Bet|null = !!event.args ? {
+        roundId: event.args[BetEvent.ROUND_ID], 
+        address: event.args[BetEvent.DATA]['playerAddress'],
+        amount: event.args[BetEvent.DATA]['betAmount'],
+        data: event.args[BetEvent.DATA]['betData'],
+        confirmed: true,
+      } : null;
+
+      if(bet){
+        store.dispatch(addBet(bet));
+      }
+    });
+  }
+
   public async testForRoundResult(blockHeader: BlockHeader) {
     const eventName = 'EndGameRound';
     const state = store.getState();
@@ -254,6 +286,12 @@ class GameService {
       
     });
   }
+
+  public async readBlockHeader(blockHeader: BlockHeader) {
+    this.testForBetEvents(blockHeader);
+    this.testForRoundResult(blockHeader);
+  }
+
 }
 
 export const gameService = new GameService();

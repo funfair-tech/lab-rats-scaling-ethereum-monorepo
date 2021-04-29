@@ -31,7 +31,8 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
         roundId: '',
         address: '',
         amount: 10000000000,
-        data: '0x02'
+        data: '0x02',
+        confirmed: false,
       })}}>play</Button></section>
 
       <section>{
