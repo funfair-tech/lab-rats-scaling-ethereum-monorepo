@@ -102,6 +102,7 @@ export class Logic_GameState {
 
     //Reporting control
 
+    public serverBlock: string = '0x0';
     public serverNonce: number = 0;
     public localNonce: number = 0;
 }

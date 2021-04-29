@@ -116,7 +116,7 @@ export class Logic_TestCode {
             state.currentPrizePool = state.carryOverPrizePool;
             state.roundState = Logic_RoundState.ACCEPTINGBETS;
 
-            LOGIC_SERVERFEEDQUEUE.SendDummyMessage('STARTROUND', {                
+            LOGIC_SERVERFEEDQUEUE.SendDummyMessage('TESTSTARTROUND', {                
                 nonce: state.nonce,
                 roundID: state.roundID,
                 roundState: state.roundState,
@@ -142,7 +142,7 @@ export class Logic_TestCode {
                 state.nonce++;
                 state.roundState = Logic_RoundState.CLOSEDFORBETS;
 
-                LOGIC_SERVERFEEDQUEUE.SendDummyMessage('CLOSEDFORBETS', {
+                LOGIC_SERVERFEEDQUEUE.SendDummyMessage('TESTCLOSEDFORBETS', {
                     nonce: state.nonce,
                     roundID: state.roundID,
                     roundState: state.roundState
@@ -258,7 +258,7 @@ export class Logic_TestCode {
                 });
 
                 //Report 
-                LOGIC_SERVERFEEDQUEUE.SendDummyMessage('ENDROUND', {
+                LOGIC_SERVERFEEDQUEUE.SendDummyMessage('TESTENDROUND', {
                     nonce: state.nonce,
                     roundID: state.roundID,
                     roundState: state.roundState,
@@ -318,7 +318,7 @@ export class Logic_TestCode {
 
         messageData.nonce = state.nonce;
         messageData.response = response;
-        LOGIC_SERVERFEEDQUEUE.SendDummyMessage('PLACEBET', messageData);
+        LOGIC_SERVERFEEDQUEUE.SendDummyMessage('TESTPLACEBET', messageData);
     }
 
     public NextRoundID(): void {

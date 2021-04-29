@@ -15,7 +15,7 @@ export class Logic {
     protected currentState: Logic_GameState = new Logic_GameState();
     protected reportedState: Logic_GameState = JSON.parse(JSON.stringify(this.currentState));
     protected isLocalMode: boolean = false;
-    protected localPlayerAddress: string = 'tobedone';
+    protected localPlayerAddress: string = '';
 
     static Create(config: Logic_Configuration, localMode: boolean): void {
         Logic_ServerFeedQueue.Create();
@@ -109,14 +109,14 @@ export class Logic {
 
             this.configuration = message.data.configuration;     
             handled = true;
-        } else if (message.type === 'STARTROUND') {
-            handled = this.StartRoundFromFeed(message);
-        } else if (message.type === 'CLOSEDFORBETS') {
-            handled = this.ClosedForBetsFromFeed(message);
-        } else if (message.type === 'ENDROUND') {
-            handled = this.EndRoundFromFeed(message);
-        } else if (message.type === 'PLACEBET') {
-            let betPlaceResponse: Logic_BetResponse = this.PlaceBetFromFeed(message);
+        } else if (message.type === 'TESTSTARTROUND') {
+            handled = this.TESTStartRoundFromFeed(message);
+        } else if (message.type === 'TESTCLOSEDFORBETS') {
+            handled = this.TESTClosedForBetsFromFeed(message);
+        } else if (message.type === 'TESTENDROUND') {
+            handled = this.TESTEndRoundFromFeed(message);
+        } else if (message.type === 'TESTPLACEBET') {
+            let betPlaceResponse: Logic_BetResponse = this.TESTPlaceBetFromFeed(message);
 
             if(betPlaceResponse === Logic_BetResponse.NONE) {
                 handled = false;
@@ -127,7 +127,17 @@ export class Logic {
             } else {
                 handled = true;
             }
-        } 
+        }
+        
+        //Proper handling
+
+        if (message.type === 'LOCALPLAYERADDRESS') {
+            //Note the local player address
+            this.localPlayerAddress = message.data;    
+            handled = true;        
+        } else if (message.type === 'NEW_ROUND') {
+            handled = this.NewRoundFromFeed(message);
+        }
         
         if(handled) {
             this.currentState.localNonce++;
@@ -136,15 +146,24 @@ export class Logic {
         } 
     }
 
-    protected StartRoundFromFeed(message: any): boolean {
+    protected NewRoundFromFeed(message: any): boolean {
+        let state: Logic_GameState = this.currentState;
+        state.serverNonce++;
+        state.roundID = message.data.id;
+        state.serverBlock = message.data.block;
+        state.roundState = Logic_RoundState.ACCEPTINGBETS;
+        state.bets = [];
+        return true;
+    }
+
+    protected TESTStartRoundFromFeed(message: any): boolean {
     
-        if(message.type !== 'STARTROUND') {
+        if(message.type !== 'TESTSTARTROUND') {
             return false;
         }
 
         let state: Logic_GameState = this.currentState;
 
-        state.serverNonce = message.data.nonce;
         state.roundID = message.data.roundID;
         state.roundState = message.data.roundState;
         state.currentPrice = message.data.currentPrice;
@@ -157,9 +176,9 @@ export class Logic {
         return true;
     }
 
-    protected ClosedForBetsFromFeed(message: any): boolean {
+    protected TESTClosedForBetsFromFeed(message: any): boolean {
     
-        if(message.type !== 'CLOSEDFORBETS') {
+        if(message.type !== 'TESTCLOSEDFORBETS') {
             return false;
         }
 
@@ -171,10 +190,10 @@ export class Logic {
         return true;
     }
 
-    protected EndRoundFromFeed(message: any): boolean {
+    protected TESTEndRoundFromFeed(message: any): boolean {
         //Ensure it is correct message type
 
-        if(message.type !== 'ENDROUND') {
+        if(message.type !== 'TESTENDROUND') {
             return false;
         }
 
@@ -200,10 +219,10 @@ export class Logic {
         return true;
     }
 
-    protected PlaceBetFromFeed(message: any): Logic_BetResponse {
+    protected TESTPlaceBetFromFeed(message: any): Logic_BetResponse {
         //Ensure it is correct message type
 
-        if(message.type !== 'PLACEBET') {
+        if(message.type !== 'TESTPLACEBET') {
             return Logic_BetResponse.NONE;
         } 
         
@@ -253,6 +272,7 @@ export class Logic {
     protected UpdateReportedState(): void {
   
         //Report it
+
 
         this.reportedState = JSON.parse(JSON.stringify(this.currentState));
     }
