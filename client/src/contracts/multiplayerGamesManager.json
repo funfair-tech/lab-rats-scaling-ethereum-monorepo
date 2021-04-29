@@ -10,6 +10,11 @@
         "internalType": "address[]",
         "name": "_admins",
         "type": "address[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "_permittedGames",
+        "type": "address[]"
       }
     ],
     "stateMutability": "nonpayable",
@@ -126,6 +131,12 @@
         "indexed": true,
         "internalType": "bytes32",
         "name": "_roundID",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "_persistentGameDataID",
         "type": "bytes32"
       }
     ],
@@ -315,6 +326,25 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "admins",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "",
         "type": "bytes32"
@@ -429,6 +459,30 @@
   {
     "inputs": [],
     "name": "getPersistentGameData",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "_potValue",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_gameData",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_gameDataID",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getPersistentGameDataByID",
     "outputs": [
       {
         "internalType": "uint256",

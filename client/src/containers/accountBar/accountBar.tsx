@@ -26,21 +26,13 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
     <section className='accountBar__content'>
       <section>{props.title}</section>
       <section>{props.user.tokenBalance}</section>
-      {/* <section><Button onClick={()=>{gameService.callTest()}}>test call</Button></section> */}
-      {/* <section><Button onClick={()=>{gameService.sendTest()}}>test send</Button></section> */}
-      <section><Button disabled={!props.game.canPlay} onClick={()=>{gameService.handlePlay({
-        roundId: '0xce8f6e91bb138cb34c51e7e9ef3f9aeda3c2a135968a00d0bc73991dfda0b8c4',
-        address: '0xc5daEd808744CF96f9725cc3baF4427a4C8BfF6a',
+
+      <section><Button disabled={!props.game.canPlay} onClick={()=>{gameService.handlePlayWithAbiCoder({
+        roundId: '',
+        address: '',
         amount: 10000000000,
         data: '0x02'
       })}}>play</Button></section>
-
-      <section><Button disabled={!props.game.canPlay} onClick={()=>{gameService.handlePlayWithAbiCoder({
-        roundId: '0xce8f6e91bb138cb34c51e7e9ef3f9aeda3c2a135968a00d0bc73991dfda0b8c4',
-        address: '0xc5daEd808744CF96f9725cc3baF4427a4C8BfF6a',
-        amount: 10000000000,
-        data: '0x02'
-      })}}>PlayWithAbiCoder</Button></section>
 
       <section>{
         props.user.authenticated ? <Button onClick={logOutOfWallet}>Sign out</Button> :

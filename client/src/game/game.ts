@@ -22,7 +22,7 @@ export class Game {
 
   public handleRoundResult(roundResult: RoundResult): void {
     // TODO: ...
-    // console.log('round result in game: ', roundResult);
+    console.log('round result in game: ', roundResult);
   }
 
   public handleBet(bet: Bet): void {

@@ -17,16 +17,16 @@ export const GameContainer: FunctionComponent<Props> = (props) => {
   }, [gameInstance]);
 
   useEffect(() => {
-    if(!!props.game.result) {
-      gameInstance.handleRoundResult(props.game.result);
-    }
-  }, [gameInstance, props.game]);
-
-  useEffect(() => {
     if(!!props.user.address) {
       gameInstance.setAddress(props.user.address);
     }
   }, [gameInstance, props.user.address]);
+
+  useEffect(() => {
+    if(!!props.game.result) {
+      gameInstance.handleRoundResult(props.game.result);
+    }
+  }, [gameInstance, props.game.result]);
 
   return (
     <div>

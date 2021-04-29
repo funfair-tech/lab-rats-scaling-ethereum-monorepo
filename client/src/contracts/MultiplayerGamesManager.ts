@@ -82,12 +82,14 @@ export interface MultiplayerGamesManagerEventsContext {
 export type MultiplayerGamesManagerMethodNames =
   | 'new'
   | 'acceptOwnership'
+  | 'admins'
   | 'consumedEntropyCommits'
   | 'contractState'
   | 'endGameRound'
   | 'gameRounds'
   | 'gameToken'
   | 'getPersistentGameData'
+  | 'getPersistentGameDataByID'
   | 'noMoreBetsForGameRound'
   | 'numRoundsInProgress'
   | 'onTokenTransfer'
@@ -126,6 +128,13 @@ export interface GetPersistentGameDataResponse {
   1: string;
   length: 2;
 }
+export interface GetPersistentGameDataByIDResponse {
+  _potValue: BigNumber;
+  0: BigNumber;
+  _gameData: string;
+  1: string;
+  length: 2;
+}
 export interface PersistentGameDataResponse {
   owner: string;
   0: string;
@@ -145,10 +154,12 @@ export interface MultiplayerGamesManager {
    * Type: constructor
    * @param _gameToken Type: address, Indexed: false
    * @param _admins Type: address[], Indexed: false
+   * @param _permittedGames Type: address[], Indexed: false
    */
   'new'(
     _gameToken: string,
     _admins: string[],
+    _permittedGames: string[],
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -160,6 +171,17 @@ export interface MultiplayerGamesManager {
   acceptOwnership(
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param parameter0 Type: address, Indexed: false
+   */
+  admins(
+    parameter0: string,
+    overrides?: ContractCallOverrides
+  ): Promise<boolean>;
   /**
    * Payable: false
    * Constant: true
@@ -218,6 +240,17 @@ export interface MultiplayerGamesManager {
   getPersistentGameData(
     overrides?: ContractCallOverrides
   ): Promise<GetPersistentGameDataResponse>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param _gameDataID Type: bytes32, Indexed: false
+   */
+  getPersistentGameDataByID(
+    _gameDataID: Arrayish,
+    overrides?: ContractCallOverrides
+  ): Promise<GetPersistentGameDataByIDResponse>;
   /**
    * Payable: false
    * Constant: false

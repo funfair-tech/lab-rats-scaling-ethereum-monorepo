@@ -1,5 +1,10 @@
 export interface RoundResult {
-  //TODO: 
-  test: any;
-  persistentGameData: unknown; // read from  EndGameRound _persistentGameDataID // getpersistantgamedatabyid
+  id: string;
+  playerAddresses: string[];
+  winAmounts: number[];
+  result: string;
+  history: string;
+  potWinLoss: string;
+  entropyReveal: string;
+  persistentGameData: string; 
 }
