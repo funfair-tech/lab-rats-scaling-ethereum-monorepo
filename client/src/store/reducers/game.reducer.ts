@@ -37,6 +37,7 @@ const gameReducer = (state = { ...initialState }, action: GameActionTypes): Game
     case SET_ROUND:
       return {
         ...state,
+        canPlay: true,
         round: action.payload,
       };
     case SET_CAN_PLAY:

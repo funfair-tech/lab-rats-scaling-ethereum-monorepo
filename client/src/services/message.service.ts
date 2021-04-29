@@ -44,8 +44,9 @@ class MessageService {
       time: timeLeftInSeconds,
       timeToNextRound: interRoundPause
     }
+
+    // store.dispatch(setCanPlay(true));
     store.dispatch(setRound(round));
-    store.dispatch(setCanPlay(true));
   };
 
   private handleBettingEnding = (): void => {

@@ -28,6 +28,24 @@ export const GameContainer: FunctionComponent<Props> = (props) => {
     }
   }, [gameInstance, props.game.result]);
 
+  useEffect(() => {
+    if(!!props.game.round) {
+      gameInstance.handleNextRound(props.game.round);
+    }
+  }, [gameInstance, props.game.round]);
+
+  useEffect(() => {
+    if(!!props.game.bets) {
+      gameInstance.handleBets(props.game.bets);
+    }
+  }, [gameInstance, props.game.bets]);
+
+  useEffect(() => {
+    if(props.game.canPlay === false && !!props.game.round) {
+      gameInstance.handleNoMoreBets(props.game.round.id);
+    }
+  }, [gameInstance, props.game.canPlay, props.game.round]);
+
   return (
     <div>
         <Canvas />

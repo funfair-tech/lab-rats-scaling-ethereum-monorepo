@@ -27,7 +27,7 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
       <section>{props.title}</section>
       <section>{props.user.tokenBalance}</section>
 
-      <section><Button disabled={!props.game.canPlay} onClick={()=>{gameService.handlePlayWithAbiCoder({
+      <section><Button disabled={!props.game.canPlay || (!!props.game.round && props.game.round.time < 0)} onClick={()=>{gameService.handlePlay({
         roundId: '',
         address: '',
         amount: 10000000000,

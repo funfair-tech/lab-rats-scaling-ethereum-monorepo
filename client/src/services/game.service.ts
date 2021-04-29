@@ -38,79 +38,79 @@ class GameService {
     return `${uint256Type}${roundId}${arrayType}${arrayLength}${uint256Type}${address}${betAmount}${storageType}${uint256Type}${betData}`;
   }
 
-  public async handlePlay(bet: Bet) {
+  // public async handlePlay(bet: Bet) {
 
-    //TODO: move to game.ts
-    const state = store.getState();
-    bet.roundId = state.game.round?.id as string;
-    bet.address = state.user.address as string;
+  //   //TODO: move to game.ts
+  //   const state = store.getState();
+  //   bet.roundId = state.game.round?.id as string;
+  //   bet.address = state.user.address as string;
 
-    if (!bet.roundId) {
-      store.dispatch(setUserError('Invalid round ID'));
-      throw new Error('Error placing bet. Round id not found');
-    }
+  //   if (!bet.roundId) {
+  //     store.dispatch(setUserError('Invalid round ID'));
+  //     throw new Error('Error placing bet. Round id not found');
+  //   }
 
-    const abi = new Interface([
-      {
-        anonymous: false,
-        inputs: [
-          {
-            indexed: true,
-            name: '_roundID',
-            type: 'bytes32',
-          },
-          {
-            components: [
-              {
-                name: 'playerAddress',
-                type: 'address',
-              },
-              {
-                name: 'betAmount',
-                type: 'uint256',
-              },
-              {
-                name: 'betData',
-                type: 'bytes',
-              },
-            ],
-            indexed: false,
-            name: '_bet',
-            type: 'tuple[]',
-          },
-        ],
-        name: 'bet',
-        stateMutability: 'nonpayable',
-        type: 'function',
-      },
-    ]);
+  //   const abi = new Interface([
+  //     {
+  //       anonymous: false,
+  //       inputs: [
+  //         {
+  //           indexed: true,
+  //           name: '_roundID',
+  //           type: 'bytes32',
+  //         },
+  //         {
+  //           components: [
+  //             {
+  //               name: 'playerAddress',
+  //               type: 'address',
+  //             },
+  //             {
+  //               name: 'betAmount',
+  //               type: 'uint256',
+  //             },
+  //             {
+  //               name: 'betData',
+  //               type: 'bytes',
+  //             },
+  //           ],
+  //           indexed: false,
+  //           name: '_bet',
+  //           type: 'tuple[]',
+  //         },
+  //       ],
+  //       name: 'bet',
+  //       stateMutability: 'nonpayable',
+  //       type: 'function',
+  //     },
+  //   ]);
 
-    const calldata = abi.encodeFunctionData('bet', [
-      bet.roundId,
-      [
-        {
-          playerAddress: bet.address,
-          betAmount: hexlify(bet.amount),
-          betData: hexlify(bet.data),
-        },
-      ],
-    ]);
+  //   const calldata = abi.encodeFunctionData('bet', [
+  //     bet.roundId,
+  //     [
+  //       {
+  //         playerAddress: bet.address,
+  //         betAmount: hexlify(bet.amount),
+  //         betData: hexlify(bet.data),
+  //       },
+  //     ],
+  //   ]);
 
-    const contract = await ethers.getContract<LabRatsToken>(
-      LabRatsTokenABI,
-      this.TOKEN_ADDRESS
-    );
-    const transactionResponse = await contract.transferAndCall(
-      this.GAME_MANAGER_ADDRESS,
-      bet.amount,
-      calldata
-    );
-    const receipt = await transactionResponse.wait(1);
-    console.log('handlePlay receipt: ', receipt);
-    // TODO: dispatch confirmation to store
-  }
+  //   const contract = await ethers.getContract<LabRatsToken>(
+  //     LabRatsTokenABI,
+  //     this.TOKEN_ADDRESS
+  //   );
+  //   const transactionResponse = await contract.transferAndCall(
+  //     this.GAME_MANAGER_ADDRESS,
+  //     bet.amount,
+  //     calldata
+  //   );
+  //   const receipt = await transactionResponse.wait(1);
+  //   console.log('handlePlay receipt: ', receipt);
+  //   // TODO: dispatch confirmation to store
+  // }
   
-  public async handlePlayWithAbiCoder(bet: Bet) {
+  public async handlePlay(bet: Bet) {
 
     //TODO: move to game.ts
     const state = store.getState();
@@ -199,21 +199,21 @@ class GameService {
     // TODO: dispatch confirmation to store
   }
 
-  public async testForRoundStart(blockHeader: BlockHeader) {
-    const eventName = 'StartGameRound';
-    // TODO: isInBloom ... [contract, eventName, roundId]
-    const contract = await ethers.getContract<MultiplayerGamesManager>(MultiplayerGamesManagerABI, this.GAME_MANAGER_ADDRESS);
-    const events: Event[] = await (contract as any).queryFilter(
-      eventName,
-      blockHeader.blockHash
-    );
+  // public async testForRoundStart(blockHeader: BlockHeader) {
+  //   const eventName = 'StartGameRound';
+  //   // TODO: isInBloom ... [contract, eventName, roundId]
+  //   const contract = await ethers.getContract<MultiplayerGamesManager>(MultiplayerGamesManagerABI, this.GAME_MANAGER_ADDRESS);
+  //   const events: Event[] = await (contract as any).queryFilter(
+  //     eventName,
+  //     blockHeader.blockHash
+  //   );
 
-    events.forEach((event: Event) => {
-      // const result: RoundResult = { test: event };
-      //@ts-ignore
-      store.dispatch(setRoundId(event._roundID));
-    });
-  }
+  //   events.forEach((event: Event) => {
+  //     // const result: RoundResult = { test: event };
+  //     //@ts-ignore
+  //     store.dispatch(setRoundId(event._roundID));
+  //   });
+  // }
 
   public async testForRoundResult(blockHeader: BlockHeader) {
     const eventName = 'EndGameRound';

@@ -14,19 +14,23 @@ export class Game {
   public handleNextRound(round: Round): void {
     // TODO: ...
     // anotherGame.getLogic.apiMessgeCall(typeString, round)
+    console.log('++ new round ', round);
   }
 
-  public handleNoMoreBets(roundID: string): void {
+  public handleNoMoreBets(roundId: string): void {
     // TODO: ...
+    console.log('++ no more bets on round ', roundId);
+
   }
 
   public handleRoundResult(roundResult: RoundResult): void {
     // TODO: ...
-    console.log('round result in game: ', roundResult);
+    console.log('++ round result ', roundResult);
   }
 
-  public handleBet(bet: Bet): void {
+  public handleBets(bets: Bet[]): void {
     // TODO: ...
+    console.log('++ bets  ', bets);
   }
 
   public setAddress(address: string): void {
