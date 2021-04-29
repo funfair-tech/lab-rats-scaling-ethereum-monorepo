@@ -86,18 +86,6 @@ export class GraphManager extends FFEngine.Component {
                 this.cells.push(cell);
             }
         }
-
-        //test grid bet highlighting
-        /*
-        let cell = this.GetCellAtCoordinate(new FFEngine.THREE.Vector2(4, 3));
-        cell?.SetBetType(Logic_BetType.HIGHER);
-        cell = this.GetCellAtCoordinate(new FFEngine.THREE.Vector2(4, 4));
-        cell?.SetBetType(Logic_BetType.HIGHER);
-        cell = this.GetCellAtCoordinate(new FFEngine.THREE.Vector2(4, 1));
-        cell?.SetBetType(Logic_BetType.HIGHER);
-        cell = this.GetCellAtCoordinate(new FFEngine.THREE.Vector2(4, 2));
-        cell?.SetBetType(Logic_BetType.HIGHER);
-        */
     }
 }
 
