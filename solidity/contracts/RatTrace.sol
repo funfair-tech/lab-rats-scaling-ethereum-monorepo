@@ -7,6 +7,7 @@ import "./IMultiplayerGameDefinition.sol";
 
 /*
     Betting info
+
     HIGHER = 0,
     LOWER = 1,
     SMALLHIGHER = 2,
@@ -69,13 +70,15 @@ contract RatTrace is IMultiplayerGameDefinition {
         
         _gameResult = abi.encode(currentValue, movement, history);
         currentValue += movement;
-        _historyToRecord = abi.encode(currentValue);
         _persistentDataOut = abi.encode(currentValue, history);
         
         // //Work out how big the pot it and split it
 
         (_persistentPotWinLoss, _winAmounts) = calculateRemainingPotAndWinnings(movement, _persistentPotValue, _bets);
 
+        //Record history
+        
+        _historyToRecord = abi.encode(currentValue, history, uint(int256(_persistentPotValue) + _persistentPotWinLoss));
     }
 
     function calculateRemainingPotAndWinnings(int256 _movement, uint256 _persistentPotValue, Bet[] memory _bets) internal pure returns (int _persistentPotWinLoss, uint256[] memory _winAmounts) {
