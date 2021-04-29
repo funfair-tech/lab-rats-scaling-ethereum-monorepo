@@ -2,6 +2,7 @@ import { FFEngine } from '@funfair/engine';
 import { Bet } from '../model/bet';
 import { MultiTrader } from './multiTrader';
 import { RoundResult } from '../model/roundResult';
+import { Round } from '../model/round';
 
 /**
  * Main game entry point, for initing the game engine and loading the game
@@ -10,12 +11,21 @@ export class Game {
 
   constructor(private play: (bet: Bet) => void) {};
 
+  public handleNextRound(round: Round): void {
+    // TODO: ...
+    // anotherGame.getLogic.apiMessgeCall(typeString, round)
+  }
+
+  public handleNoMoreBets(roundID: string): void {
+    // TODO: ...
+  }
+
   public handleRoundResult(roundResult: RoundResult): void {
     // TODO: ...
     // console.log('round result in game: ', roundResult);
   }
 
-  public handleBet(roundAction: Bet): void {
+  public handleBet(bet: Bet): void {
     // TODO: ...
   }
 

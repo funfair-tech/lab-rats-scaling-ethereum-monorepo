@@ -127,7 +127,7 @@ class MessageService {
       .catch(console.error);
   }
 
-  public async play(bet: Bet): Promise<void> {
+  public async broadcastBet(bet: Bet): Promise<void> {
     const toSend = JSON.stringify({
       action: MessageId.BET,
     });
