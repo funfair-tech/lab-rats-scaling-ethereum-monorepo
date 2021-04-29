@@ -94,7 +94,7 @@ namespace FunFair.Labs.ScalingEthereum.Server
 
             // resolve a logger
             ILogger<Startup> logger = loggerFactory.CreateLogger<Startup>();
-            logger.LogInformation(new EventId(id: 27), message: "Starting Labs NFT Server");
+            logger.LogInformation(new EventId(id: 27), message: "Starting Labs Scaling Ethereum Server");
 
             EthereumServices.ConfigureGasPriceRecommendationWatcher(serviceProvider: serviceProvider);
             EthereumServices.ConfigureEventProcessing(serviceProvider: serviceProvider);
@@ -115,11 +115,11 @@ namespace FunFair.Labs.ScalingEthereum.Server
                                                                                      configuration: ethereumConfigurationRoot,
                                                                                      fateChannelTokenFundingSourceAction: (_, _, _) => { });
 
-                logger.LogInformation(new EventId(id: 28), message: "Labs NFT Services Started");
+                logger.LogInformation(new EventId(id: 28), message: "Labs Scaling Ethereum Services Started");
             }
             catch (Exception exception)
             {
-                logger.LogError(new EventId(id: exception.HResult), exception: exception, message: "Failed to start Labs NFT Server services");
+                logger.LogError(new EventId(id: exception.HResult), exception: exception, message: "Failed to start Labs Scaling Ethereum Server services");
 
                 throw;
             }
