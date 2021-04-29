@@ -112,7 +112,7 @@ export class MultiTraderUI extends FFEngine.Component {
         FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), FFEngine.BitmapString, { text: 'Place your tokens', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 80, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, -160, 0]});
 
         this.betHigh = FFEngine.instance.CreateChildObjectWithComponent(this.betUI, UIButtonSprite);
-        this.betHigh.GetContainer().position.set(-120, 170, 0);
+        this.betHigh.GetContainer().position.set(-140, 190, 0);
         this.betHigh.GetSprite().SetSize(200, 300);
         this.betHigh.GetSprite().SetAlpha(0.5);
 
@@ -126,7 +126,7 @@ export class MultiTraderUI extends FFEngine.Component {
         FFEngine.instance.CreateChildObjectWithComponent(this.betHigh.GetContainer(), FFEngine.BitmapString, { text: 'High', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 40, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 0, 0]});
 
         this.betLow = FFEngine.instance.CreateChildObjectWithComponent(this.betUI, UIButtonSprite);
-        this.betLow.GetContainer().position.set(-120, -170, 0);
+        this.betLow.GetContainer().position.set(-140, -190, 0);
         this.betLow.GetSprite().SetSize(200, 300);
         this.betLow.GetSprite().SetAlpha(0.5);
 
@@ -146,7 +146,7 @@ export class MultiTraderUI extends FFEngine.Component {
         anchor.SetCamera(this.camera);
         anchor.SetAnchors(FFEngine.UIAnchorType.MAX, FFEngine.UIAnchorType.MAX);
         this.playerList = FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), UIPlayerList);
-        this.playerList.SetWidth(480);
+        this.playerList.SetWidth(420);
         this.playerList.GetContainer().position.set(-380, -200, 0);
         this.playerList.SetBackground(undefined, new FFEngine.THREE.Color(0xaaaaaa), 0.4);
         this.playerList.SetFont(ASSETPACK.GetFontAsset(FontAssetType.STANDARD));
