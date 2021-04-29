@@ -1,5 +1,5 @@
 import { FFEngine } from '@funfair/engine';
-import { GraphManager, GRID_MANAGER } from './graphManager';
+import { GraphManager, GRAPH_MANAGER } from './graphManager';
 
 /**
  * Manages the 3D game environment including world camera and gameplay objects
@@ -51,7 +51,7 @@ export class EnvironmentManager extends FFEngine.Component {
      * Moves the camera so the provided graph coordinate is centered on the screen
      */
     public SetCameraToGraphCoordinate(coord: FFEngine.THREE.Vector2): void {
-        let camPos = GRID_MANAGER.GridToWorld(coord);
+        let camPos = GRAPH_MANAGER.GridToWorld(coord);
         camPos.x += EnvironmentManager.CAM_X_OFFSET;
         camPos.z = EnvironmentManager.CAM_Z;
         this.MoveCamera(camPos);
@@ -62,19 +62,8 @@ export class EnvironmentManager extends FFEngine.Component {
     }
 
     private CreateScene(): void {
-
         //create components
         FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphManager);
-
-        //create some dummy graph data
-        GRID_MANAGER.AddResult(0);
-        GRID_MANAGER.AddResult(1);
-        GRID_MANAGER.AddResult(-1);
-        GRID_MANAGER.AddResult(2);
-        GRID_MANAGER.AddResult(3);
-
-        //test camera
-        this.SetCameraToGraphCoordinate(new FFEngine.THREE.Vector2(4, 3));
     }
 
     private MoveCamera(targetPosition: FFEngine.THREE.Vector3): void {
@@ -87,7 +76,7 @@ export class EnvironmentManager extends FFEngine.Component {
             startPosition.z + ((targetPosition.z - startPosition.z) / 2 ) );
 
         this.cameraInterpolator.CancelAll();
-        this.cameraInterpolator.QueueCurvePositionChange(targetPosition, controlPosition, 4, 0);
+        this.cameraInterpolator.QueueCurvePositionChange(targetPosition, controlPosition, 2, 0);
     }
 }
 

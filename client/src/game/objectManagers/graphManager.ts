@@ -2,6 +2,7 @@ import { FFEngine } from '@funfair/engine';
 import { GraphLine } from '../objects/graphLine';
 import { GraphCell } from '../objects/graphCell';
 import { Logic_BetType } from '../logic/logic_defines';
+import { ENVIRONMENT_MANAGER } from './environmentManager';
 
 /**
  * Manages the display of the grid of graph cells and line
@@ -13,13 +14,14 @@ export class GraphManager extends FFEngine.Component {
 
     private graphLine!: GraphLine;
     private cells: GraphCell[] = [];
+    private graphCoord: FFEngine.THREE.Vector2 = new FFEngine.THREE.Vector2();
 
     public Create(params: any): void {
         super.Create(params);
 
         this.container = new FFEngine.THREE.Object3D();
         this.container.name = 'Grid';
-        GRID_MANAGER = this;
+        GRAPH_MANAGER = this;
 
         //create grid
         this.CreateGrid();
@@ -56,6 +58,11 @@ export class GraphManager extends FFEngine.Component {
         if (this.graphLine) {
             this.graphLine.AddResult(price);
         }
+
+        //advance graph
+        this.graphCoord.x++;
+        this.graphCoord.y = price;
+        ENVIRONMENT_MANAGER.SetCameraToGraphCoordinate(this.graphCoord);
     }
 
     public GetCellAtCoordinate(coord: FFEngine.THREE.Vector2): GraphCell | undefined {
@@ -82,6 +89,7 @@ export class GraphManager extends FFEngine.Component {
         }
 
         //test grid bet highlighting
+        /*
         let cell = this.GetCellAtCoordinate(new FFEngine.THREE.Vector2(4, 3));
         cell?.SetBetType(Logic_BetType.HIGHER);
         cell = this.GetCellAtCoordinate(new FFEngine.THREE.Vector2(4, 4));
@@ -90,11 +98,12 @@ export class GraphManager extends FFEngine.Component {
         cell?.SetBetType(Logic_BetType.HIGHER);
         cell = this.GetCellAtCoordinate(new FFEngine.THREE.Vector2(4, 2));
         cell?.SetBetType(Logic_BetType.HIGHER);
+        */
     }
 }
 
 /**
  * Global Singleton reference
  */
- let GRID_MANAGER!: GraphManager;
- export { GRID_MANAGER };
+ let GRAPH_MANAGER!: GraphManager;
+ export { GRAPH_MANAGER };

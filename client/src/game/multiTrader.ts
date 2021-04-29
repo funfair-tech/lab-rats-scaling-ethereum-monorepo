@@ -6,6 +6,7 @@ import { EnvironmentManager, ENVIRONMENT_MANAGER } from './objectManagers/enviro
 import { LOGIC, Logic } from './logic/logic';
 import { LOGIC_TESTCODE } from './logic/logic_testcode';
 import { Logic_BetType, Logic_Configuration, Logic_RoundState } from './logic/logic_defines';
+import { GRAPH_MANAGER } from './objectManagers/graphManager';
 
 /**
  * Main game scene for the multiplayer trader game
@@ -52,6 +53,11 @@ export class MultiTrader extends FFEngine.Component {
             if (FFEngine.instance.debugBuild) {
                 if (params.keyCode === 68) { // 'D'
                     FFEngine.instance.ToggleDebugDisplay();
+                }
+
+                //test adding graph results
+                if (params.keyCode === 69) { // 'E'
+                    GRAPH_MANAGER.AddResult(FFEngine.MathHelper.GetRandomRange(-2, 2));
                 }
 
                 //Reserve some keys for testlogic

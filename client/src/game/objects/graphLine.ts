@@ -1,6 +1,6 @@
 import { FFEngine } from '@funfair/engine';
 import { ASSETPACK, TextureAssetType } from '../assetPack';
-import { GRID_MANAGER } from '../objectManagers/graphManager';
+import { GRAPH_MANAGER } from '../objectManagers/graphManager';
 
 /**
  * A display object representing a the graph line
@@ -21,6 +21,9 @@ export class GraphLine extends FFEngine.Component {
         this.line.SetFacingDirection(new FFEngine.THREE.Vector3(0, 0, 1));
         this.line.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
         this.line.SetColor(0xffffff);
+
+        //add initial point
+        this.AddResult(0);
     }
 
     /**
@@ -28,7 +31,7 @@ export class GraphLine extends FFEngine.Component {
      */
     public AddResult(price: number): void {
         let newIndex = this.points.length;
-        this.points.push(new FFEngine.THREE.Vector3(newIndex * GRID_MANAGER.GetCellWidth(), price * GRID_MANAGER.GetCellHeight(), 0));
+        this.points.push(new FFEngine.THREE.Vector3(newIndex * GRAPH_MANAGER.GetCellWidth(), price * GRAPH_MANAGER.GetCellHeight(), 0));
         this.line.SetShape(this.points);
     }
 }
