@@ -122,7 +122,6 @@ export class MultiTrader extends FFEngine.Component {
         //advance state if necessary
         if (this.lastNonce !== state.localNonce) {
 
-            console.log(' UPDATING TO NEW STATE');
             if (this.lastNonce === 1) {
                 //add all historical items starting with the oldest
                 for (let i=state.historicPrices.length-1;i>=0;i--) {
@@ -133,10 +132,13 @@ export class MultiTrader extends FFEngine.Component {
 
             this.lastNonce = state.localNonce;
 
-            //add a new result
+            //add a new graph result
             if (state.roundState === Logic_RoundState.COMPLETE) {
                 GRAPH_MANAGER.AddResult(state.currentPrice);
             }
+
+            //update prize pool
+            GLUI.SetPrizePool(state.currentPrizePool);
         }
         
     }

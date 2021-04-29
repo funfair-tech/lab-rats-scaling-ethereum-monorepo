@@ -17,6 +17,7 @@ export class MultiTraderUI extends FFEngine.Component {
     private betHigh!: UIButtonSprite;
     private betLow!: UIButtonSprite;
     private playerList!: UIPlayerList;
+    private prizePoolText!: FFEngine.BitmapString;
 
     /**
      * Creates the WebGL UI Scene and main component and registers it with the engine
@@ -65,6 +66,12 @@ export class MultiTraderUI extends FFEngine.Component {
 
     }
 
+    public SetPrizePool(value: number): void {
+        if (this.prizePoolText) {
+            this.prizePoolText.SetText('Prize Pool: ' + value.toString());
+        }
+    }
+
     /**
      * Show/hide betting UI
      */
@@ -99,8 +106,15 @@ export class MultiTraderUI extends FFEngine.Component {
         //create title
         let anchor = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.UIAnchor);
         anchor.SetCamera(this.camera);
-        anchor.SetAnchors(FFEngine.UIAnchorType.CENTER, FFEngine.UIAnchorType.MAX);
-        FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), FFEngine.BitmapString, { text: 'RatTrace', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 40, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, -80, 0]});
+        anchor.SetAnchors(FFEngine.UIAnchorType.MIN, FFEngine.UIAnchorType.MAX);
+        FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), FFEngine.BitmapString, { text: 'RatTrace', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 40, justification: 'left', noMipMaps: false, colour: 0xFFFFFF, pos:[15, -80, 0]});
+
+        //prize pool UI
+        anchor = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.UIAnchor);
+        anchor.SetCamera(this.camera);
+        anchor.SetAnchors(FFEngine.UIAnchorType.CENTER, FFEngine.UIAnchorType.MIN);
+        this.prizePoolText = FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), FFEngine.BitmapString, { text: '', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 40, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 40, 0]});
+        this.SetPrizePool(0);
 
         //create bet UI
         this.betUI = new FFEngine.THREE.Object3D();
