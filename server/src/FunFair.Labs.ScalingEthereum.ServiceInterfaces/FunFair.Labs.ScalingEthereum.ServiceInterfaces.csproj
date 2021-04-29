@@ -27,9 +27,9 @@
     <RuntimeHostConfigurationOption Include="System.Globalization.Invariant" Value="true" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="10.0.4" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.1.0"/>
     <PackageReference Include="FunFair.Common.All" Version="5.8.0.2828" />
-    <PackageReference Include="FunFair.Ethereum.All" Version="5.13.2.8624"/>
+    <PackageReference Include="FunFair.Ethereum.All" Version="5.15.0.8644"/>
     <PackageReference Include="FunFair.Random" Version="5.1.0.988" />
     <PackageReference Include="FunFair.ServerMonitoring" Version="1.3.1.2593" />
     <PackageReference Include="FunFair.ServerMonitoring.Metrics" Version="1.3.1.2593" />
@@ -42,7 +42,7 @@
     <PackageReference Include="FunFair.CodeAnalysis" Version="5.1.0.658" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.9.60" PrivateAssets="All" />
     <PackageReference Include="Roslynator.Analyzers" Version="3.1.0" PrivateAssets="All" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.21.0.30542" PrivateAssets="All" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.22.0.31243" PrivateAssets="All"/>
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
     <PackageReference Include="ToStringWithoutOverrideAnalyzer" Version="0.6.0" PrivateAssets="All" />
   </ItemGroup>
