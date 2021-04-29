@@ -17,6 +17,7 @@ export class MultiTrader extends FFEngine.Component {
 
     private startupFinished: boolean = false;
     private gamePhase: Logic_RoundState = Logic_RoundState.NOTSTARTED;
+    private lastNonce: number = 1;
 
     public Create(params: any): void {
 
@@ -117,6 +118,27 @@ export class MultiTrader extends FFEngine.Component {
         LOGIC.Tick();
         let state = LOGIC.GetCurrentState();
         this.SetGamePhase(state.roundState);
+
+        //advance state if necessary
+        if (this.lastNonce !== state.localNonce) {
+
+            console.log(' UPDATING TO NEW STATE');
+            if (this.lastNonce === 1) {
+                //add all historical items starting with the oldest
+                for (let i=state.historicPrices.length-1;i>=0;i--) {
+                    GRAPH_MANAGER.AddResult(state.historicPrices[i]);
+                }
+                GRAPH_MANAGER.AddResult(state.currentPrice);
+            }
+
+            this.lastNonce = state.localNonce;
+
+            //add a new result
+            if (state.roundState === Logic_RoundState.COMPLETE) {
+                GRAPH_MANAGER.AddResult(state.currentPrice);
+            }
+        }
+        
     }
 
     /**

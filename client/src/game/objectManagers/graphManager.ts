@@ -54,6 +54,11 @@ export class GraphManager extends FFEngine.Component {
      * Adds a result to the end of the graph line
      */
     public AddResult(price: number): void {
+
+        //temporary scaling until the graph sizing is sorted
+        price -= 1000;
+        price /= 5;
+
         if (this.graphLine) {
             this.graphLine.AddResult(price);
         }
@@ -77,8 +82,8 @@ export class GraphManager extends FFEngine.Component {
 
     private CreateGrid(): void {
         //test grid cells
-        for (let i=-10;i<10;i++) {
-            for (let j=-10;j<10;j++) {
+        for (let i=-10;i<30;i++) {
+            for (let j=-10;j<30;j++) {
                 let cell = FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphCell);
                 cell.GetContainer().position.copy(this.GridToWorld(new FFEngine.THREE.Vector2(i, j)));
                 cell.SetSize(GraphManager.CELL_WIDTH, GraphManager.CELL_HEIGHT);
