@@ -45,7 +45,7 @@ namespace FunFair.Labs.ScalingEthereum.Server.Configuration
         {
             get
             {
-                EthereumAmount minEthBalance = new(decimal.Parse(this.Configuration[key: @"Alerts:FaucetBalances:MinimumEth"] ?? "1", provider: CultureInfo.InvariantCulture)
+                EthereumAmount minEthBalance = new(decimal.Parse(this.Configuration[key: @"Alerts:FaucetBalances:MinimumNativeCurrency"] ?? "1", provider: CultureInfo.InvariantCulture)
                                                           .ToWei(EthereumUnit.ETHER));
                 Token minTokenBalance = new(decimal.Parse(this.Configuration[key: @"Alerts:FaucetBalances:MinimumToken"] ?? "1000.0", provider: CultureInfo.InvariantCulture));
 
@@ -57,7 +57,7 @@ namespace FunFair.Labs.ScalingEthereum.Server.Configuration
         {
             get
             {
-                EthereumAmount minEthBalance = new(decimal.Parse(this.Configuration[key: @"Alerts:HouseBalances:MinimumEth"] ?? "1", provider: CultureInfo.InvariantCulture)
+                EthereumAmount minEthBalance = new(decimal.Parse(this.Configuration[key: @"Alerts:HouseBalances:MinimumNativeCurrency"] ?? "1", provider: CultureInfo.InvariantCulture)
                                                           .ToWei(EthereumUnit.ETHER));
 
                 return new HouseBalanceConfiguration(minimumAllowedBalance: minEthBalance);
