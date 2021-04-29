@@ -119,7 +119,12 @@ contract MultiplayerGamesManager is Ownable() {
     //************************************************************************************************
     function getPersistentGameData() public view returns (uint256 _potValue, bytes memory _gameData)  {
         _potValue = persistentGameData[bytes32(bytes20(msg.sender))].potValue;
-        _gameData = persistentGameData[bytes32(bytes20(msg.sender))].gameData;        
+        _gameData = persistentGameData[bytes32(bytes20(msg.sender))].gameData;                
+    }
+
+    function getPersistentGameDataByID(bytes32 _gameDataID) public view returns (uint256 _potValue, bytes memory _gameData)  {
+        _potValue = persistentGameData[_gameDataID].potValue;
+        _gameData = persistentGameData[_gameDataID].gameData;                
     }
 
     //************************************************************************************************
