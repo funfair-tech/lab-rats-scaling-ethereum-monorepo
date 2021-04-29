@@ -24,6 +24,12 @@ export class Logic_ServerFeedQueue {
         this.serverMessageQueue.push(message);
     }
 
+    public APIMessageCall(type: string, data: any): void {
+        let message: Logic_ServerMessage = new Logic_ServerMessage(type);
+        message.data = data;
+        this.serverMessageQueue.push(message);
+    }
+
     public GetNextServerMessage(): Logic_ServerMessage | null {
         if(this.serverMessageQueue.length === 0) {
             return null;
