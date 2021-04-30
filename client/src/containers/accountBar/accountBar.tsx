@@ -6,6 +6,7 @@ import { Button } from '../../components/button/button';
 import window from '@funfair-tech/wallet-sdk/window';
 import { clearUserState } from '../../store/actions/user.actions';
 import { gameService } from '../../services/game.service';
+import { Coin } from '../../components/coin/coin';
 
 interface Props extends ReduxProps {
   title: string;
@@ -25,7 +26,7 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
     <div className='accountBar'>
       <section className='accountBar__content'>
         <section>{props.title}</section>
-        <section>{props.user.tokenBalance}</section>
+        <section className='accountBar__balance'><Coin visible={!!props.user.tokenBalance}/>{props.user.tokenBalance}</section>
 
         <section>
           <Button
