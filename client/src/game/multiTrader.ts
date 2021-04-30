@@ -39,7 +39,7 @@ export class MultiTrader extends FFEngine.Component {
         //Asset loading callback
         FFEngine.instance.assetLoader.AddLoadingPhaseCompleteCallback(() => this.AssetLoadingFinished());
 
-        Logic.Create(new Logic_Configuration(1000, 10, 5, 100, 30), true);
+        Logic.Create(new Logic_Configuration(1000, 10, 5, 100, 30), params.isLocalGame);
     }
 
     public Update(): void {

@@ -61,10 +61,16 @@ export class Game {
 
   private loadGame(): void {
 
+    //get URL params
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const localGame = urlParams.get('localGame') === 'true';
+    const developer = urlParams.get('developer') === 'true';
+
     // Define the game scene data
     let sceneData = new FFEngine.SceneData();
     sceneData.sceneClass = MultiTrader;
-    sceneData.isLocalGame = true;
+    sceneData.isLocalGame = localGame;
 
     //set save data keys
     FFEngine.EngineConfig.SetDataKey('labrats-game');
@@ -74,7 +80,7 @@ export class Game {
     options.allowPortrait = true;
     options.aspectRatio = 0;
     options.canvasType = FFEngine.CanvasType.STANDALONE;
-    FFEngine.instance.Init(options, true);
+    FFEngine.instance.Init(options, developer);
 
     // Load the game scene
     FFEngine.instance.LoadScene(sceneData);
