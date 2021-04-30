@@ -65,7 +65,14 @@ export class MultiTrader extends FFEngine.Component {
 
                 //Reserve some keys for testlogic
                 // 0 - 9 inclusive
-                if ((params.keyCode >= 48) && (params.keyCode <= 57)) {
+                //q,w,r,t,y
+                if (((params.keyCode >= 48) && (params.keyCode <= 57)) ||
+                (params.keyCode === 81) ||
+                (params.keyCode === 87) ||
+                (params.keyCode === 82) ||
+                (params.keyCode === 84) ||
+                (params.keyCode === 89) 
+                ) {
                     LOGIC_TESTCODE.KeyPressed(params.keyCode);
                 }
             }
