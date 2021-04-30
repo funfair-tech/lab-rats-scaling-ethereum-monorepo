@@ -48,7 +48,15 @@ export class PlayerManager extends FFEngine.Component {
                 betsUpdated = true;
             }
 
-            //update player state on the UI if its changed todo
+            //update player state on the UI if its changed
+            let playerListUI = GLUI.GetPlayerList().GetPlayerByIndex(i);
+            
+            if (playerListUI) {
+                let displayData = playerListUI.GetDisplayData();
+                displayData.bet = bet.amount;
+                displayData.win = bet.winnings;
+                playerListUI.UpdateDisplay();
+            }
         }
 
         //delete any remaining players that exist as they should not be there
@@ -76,8 +84,8 @@ export class PlayerManager extends FFEngine.Component {
     private DestroyPlayer(index: number): void {
         delete this.players[index];
 
-        //todo: remove from player list and game UI
-
+        //remove player from player list
+        GLUI.GetPlayerList().RemovePlayer(index);
     }
 }
 

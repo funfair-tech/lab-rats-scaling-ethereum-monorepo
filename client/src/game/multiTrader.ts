@@ -8,6 +8,7 @@ import { LOGIC_TESTCODE } from './logic/logic_testcode';
 import { Logic_BetType, Logic_Configuration, Logic_RoundState } from './logic/logic_defines';
 import { GRAPH_MANAGER } from './objectManagers/graphManager';
 import { PLAYER_MANAGER } from './objectManagers/playerManager';
+import { UIPlayerDisplayMode } from './objects/uiPlayerList';
 
 /**
  * Main game scene for the multiplayer trader game
@@ -174,9 +175,12 @@ export class MultiTrader extends FFEngine.Component {
                 case Logic_RoundState.NOTSTARTED: break;
                 case Logic_RoundState.ACCEPTINGBETS: 
                     GLUI.ShowBetUI(true);
+                    GLUI.SetPlayerListMode(UIPlayerDisplayMode.BET);
                 break;
                 case Logic_RoundState.CLOSEDFORBETS: break;
-                case Logic_RoundState.COMPLETE: break;
+                case Logic_RoundState.COMPLETE: 
+                    GLUI.SetPlayerListMode(UIPlayerDisplayMode.WIN);
+                break;
             }
         }
     }

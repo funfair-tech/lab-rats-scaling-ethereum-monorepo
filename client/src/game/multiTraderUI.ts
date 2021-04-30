@@ -94,6 +94,19 @@ export class MultiTraderUI extends FFEngine.Component {
         return this.playerList;
     }
 
+    public SetPlayerListMode(mode: UIPlayerDisplayMode): void {
+        if (this.playerList) {
+            this.playerList.SetDisplayMode(mode);
+
+            if (mode === UIPlayerDisplayMode.BET) {
+                this.playerList.SetRightTitle('Bet');
+            }
+            else {
+                this.playerList.SetRightTitle('Win');
+            }
+        }
+    }
+
     public AssetLoadingFinished(): void {
         this.CreateUIElements();
     }
