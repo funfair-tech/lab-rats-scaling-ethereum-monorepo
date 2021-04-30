@@ -86,11 +86,15 @@ export class MultiTraderUI extends FFEngine.Component {
     /**
      * Show/hide betting UI
      */
-     public ShowWinUI(visible: boolean, winnings: number): void {
+     public ShowWinUI(visible: boolean): void {
         if (this.winUI) {
+            let localPlayer = this.playerList.GetLocalPlayer();
+            visible = (!!localPlayer && visible);
             this.winUI.visible = visible;
 
             if (visible) {
+                let winnings = localPlayer ? localPlayer.GetDisplayData().win : 0;
+
                 if (winnings > 0) {
                     this.winText.SetText('You Win: ' + winnings);
                 }
@@ -153,6 +157,20 @@ export class MultiTraderUI extends FFEngine.Component {
         this.prizePoolText = FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), FFEngine.BitmapString, { text: '', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 40, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 40, 0]});
         this.SetPrizePool(0);
 
+        //create player list
+        anchor = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.UIAnchor);
+        anchor.SetCamera(this.camera);
+        anchor.SetAnchors(FFEngine.UIAnchorType.MAX, FFEngine.UIAnchorType.MAX);
+        this.playerList = FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), UIPlayerList);
+        this.playerList.SetWidth(400);
+        this.playerList.GetContainer().position.set(-320, -180, 0);
+        this.playerList.SetBackground(undefined, new FFEngine.THREE.Color(0xaaaaaa), 0.4);
+        this.playerList.SetFont(ASSETPACK.GetFontAsset(FontAssetType.STANDARD));
+        this.playerList.SetLeftTitle('Player');
+        this.playerList.SetRightTitle('Win');
+        this.playerList.SetDisplayMode(UIPlayerDisplayMode.WIN);
+        this.SetPlayerList(true);
+
         //create bet UI
         this.betUI = new FFEngine.THREE.Object3D();
         this.container.add(this.betUI);
@@ -201,21 +219,7 @@ export class MultiTraderUI extends FFEngine.Component {
         anchor.SetAnchors(FFEngine.UIAnchorType.CENTER, FFEngine.UIAnchorType.MAX);
 
         this.winText = FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), FFEngine.BitmapString, { text: '', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 120, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, -260, 0]});
-        this.ShowWinUI(false, 0);
-
-        //create player list
-        anchor = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.UIAnchor);
-        anchor.SetCamera(this.camera);
-        anchor.SetAnchors(FFEngine.UIAnchorType.MAX, FFEngine.UIAnchorType.MAX);
-        this.playerList = FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), UIPlayerList);
-        this.playerList.SetWidth(400);
-        this.playerList.GetContainer().position.set(-320, -180, 0);
-        this.playerList.SetBackground(undefined, new FFEngine.THREE.Color(0xaaaaaa), 0.4);
-        this.playerList.SetFont(ASSETPACK.GetFontAsset(FontAssetType.STANDARD));
-        this.playerList.SetLeftTitle('Player');
-        this.playerList.SetRightTitle('Win');
-        this.playerList.SetDisplayMode(UIPlayerDisplayMode.WIN);
-        this.SetPlayerList(true);
+        this.ShowWinUI(false);
     }
 
 }
