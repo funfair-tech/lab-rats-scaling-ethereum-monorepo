@@ -35,7 +35,7 @@ export const GameContainer: FunctionComponent<Props> = (props) => {
   }, [gameInstance, props.game.round]);
 
   useEffect(() => {
-    if(!!props.game.bets) {
+    if(!!props.game.bets && props.game.bets.length > 0) {
       gameInstance.handleBets(props.game.bets);
     }
   }, [gameInstance, props.game.bets]);
