@@ -112,8 +112,7 @@ class GameService {
   //   // TODO: dispatch confirmation to store
   // }
   
-  // public async handlePlay(bet: Bet) {
-  public async handlePlay(stake: number, action: number) {
+  public handlePlay = async (stake: number, action: number) => {
 
     const state = store.getState();
     const bet: Bet = {
