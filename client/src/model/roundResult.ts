@@ -1,3 +1,5 @@
+import { GameData } from './gameData';
+
 export interface RoundResult {
   id: string;
   playerAddresses: string[];
@@ -6,5 +8,5 @@ export interface RoundResult {
   history: string;
   potWinLoss: string;
   entropyReveal: string;
-  persistentGameData: string; 
+  persistentGameData: GameData|null; 
 }

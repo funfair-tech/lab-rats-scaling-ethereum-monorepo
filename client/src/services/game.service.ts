@@ -1,7 +1,7 @@
 import { hexlify } from 'ethers/lib/utils';
 import { LabRatsToken } from '../contracts/LabRatsToken';
 import LabRatsTokenABI from '../contracts/labRatsToken.json';
-import { MultiplayerGamesManager } from '../contracts/MultiplayerGamesManager';
+import { GetPersistentGameDataByIDResponse, MultiplayerGamesManager } from '../contracts/MultiplayerGamesManager';
 import MultiplayerGamesManagerABI from '../contracts/multiplayerGamesManager.json';
 import { Bet } from '../model/bet';
 import { BlockHeader } from '../model/blockHeader';
@@ -15,6 +15,7 @@ import { isContractAddressInBloom, isInBloom } from 'ethereum-bloom-filters';
 import { Event } from '@ethersproject/contracts';
 import { EndGameRound } from '../events/endGameRound';
 import { BetEvent } from '../events/betEvent';
+import { PersistentDataEvent } from '../events/persistentDataEvent';
 class GameService {
   // private GAME_ADDRESS = '0xb5F20F66F8a48d70BbBF8ACC18E28907f97ee552';
   private GAME_MANAGER_ADDRESS = '0x42f9A9bDe939E9f0e082a801D7245005a1066681';//prev'0xe3f2Fa6a3F16837d012e1493F50BD29db0BdADe4';
@@ -269,9 +270,12 @@ class GameService {
       blockHeader.blockHash
     );
 
-    events.forEach((event) => {
-      // TODO: fetch persistentGameData to add to 
-      const persistantData = 'TODO once getter available';
+    events.forEach(async(event) => {
+
+      const persistentData: GetPersistentGameDataByIDResponse|null = event.args ? 
+      await contract.getPersistentGameDataByID(event.args[EndGameRound.PERSISTENT_GAME_DATA_ID]) 
+      : null;
+
       const result: RoundResult|null = !!event.args ? {
         id: event.args[EndGameRound.ROUND_ID],
         playerAddresses: event.args[EndGameRound.PLAYER_ADDRESSES],
@@ -280,15 +284,17 @@ class GameService {
         history: event.args[EndGameRound.HISTORY],
         potWinLoss: event.args[EndGameRound.POT_WIN_LOSS],
         entropyReveal: event.args[EndGameRound.ENTROPY_REVEAL],
-        // fetch persistentGameData from the contract using persistentGameDataId in the result
-        persistentGameData: persistantData,
+        persistentGameData: !!persistentData ? {
+          id: event.args[EndGameRound.PERSISTENT_GAME_DATA_ID],
+          data: persistentData[PersistentDataEvent.GAME_DATA],
+          pot: persistentData[PersistentDataEvent.POT_VALUE].toNumber()
+        } : null,
       } : null;
 
       if(!!result) {
         store.dispatch(setResult(result));
         store.dispatch(clearBets());
       }
-      
     });
   }
 
