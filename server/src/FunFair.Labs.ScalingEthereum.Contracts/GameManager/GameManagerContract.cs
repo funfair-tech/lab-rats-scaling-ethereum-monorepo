@@ -1,9 +1,8 @@
-﻿using FunFair.Ethereum.DataTypes.Primitives;
+﻿using FunFair.Ethereum.Contracts;
+using FunFair.Ethereum.DataTypes.Primitives;
 using FunFair.Labs.ScalingEthereum.Contracts.GameManager.Events;
 using FunFair.Labs.ScalingEthereum.Contracts.GameManager.Transactions;
 using FunFair.Labs.ScalingEthereum.Contracts.Networks;
-using ContractInfoBuilder = FunFair.Ethereum.Contracts.ContractInfoBuilder;
-using IContractInfo = FunFair.Ethereum.Contracts.IContractInfo;
 
 namespace FunFair.Labs.ScalingEthereum.Contracts.GameManager
 {
