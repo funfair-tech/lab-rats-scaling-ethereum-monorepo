@@ -7,6 +7,7 @@ import { LOGIC, Logic } from './logic/logic';
 import { LOGIC_TESTCODE } from './logic/logic_testcode';
 import { Logic_BetType, Logic_Configuration, Logic_RoundState } from './logic/logic_defines';
 import { GRAPH_MANAGER } from './objectManagers/graphManager';
+import { PLAYER_MANAGER } from './objectManagers/playerManager';
 
 /**
  * Main game scene for the multiplayer trader game
@@ -139,6 +140,9 @@ export class MultiTrader extends FFEngine.Component {
 
             //update prize pool
             GLUI.SetPrizePool(state.currentPrizePool);
+
+            //update bets and players
+            PLAYER_MANAGER.UpdateBets(state.bets);
         }
         
     }

@@ -3,7 +3,7 @@ import { ASSETPACK, FontAssetType } from './assetPack';
 import { Logic_BetType } from './logic/logic_defines';
 import { MULTITRADER } from './multiTrader';
 import { ButtonSpriteStateConfig, UIButtonSprite } from './objects/uiButtonSprite';
-import { UIPlayerData, UIPlayerDisplayMode, UIPlayerList } from './objects/uiPlayerList';
+import { UIPlayerDisplayMode, UIPlayerList } from './objects/uiPlayerList';
 
 /**
  * Main UI Scene component, containing the orthographic camera and webGL UI components
@@ -84,10 +84,14 @@ export class MultiTraderUI extends FFEngine.Component {
     /**
      * Show/hide the player list
      */
-     public SetPlayerList(visible: boolean): void {
+    public SetPlayerList(visible: boolean): void {
         if (this.playerList) {
             this.playerList.GetContainer().visible = visible;
         }
+    }
+
+    public GetPlayerList(): UIPlayerList {
+        return this.playerList;
     }
 
     public AssetLoadingFinished(): void {
@@ -168,13 +172,6 @@ export class MultiTraderUI extends FFEngine.Component {
         this.playerList.SetRightTitle('Win');
         this.playerList.SetDisplayMode(UIPlayerDisplayMode.WIN);
         this.SetPlayerList(true);
-
-        //add some test players
-        this.playerList.SetPlayer(0, new UIPlayerData('0x0000', '0x0000', true));
-        this.playerList.SetPlayer(1, new UIPlayerData('0x0000', '0x0001', true));
-        this.playerList.SetPlayer(2, new UIPlayerData('0x0000', '0x0002', true));
-        this.playerList.SetPlayer(3, new UIPlayerData('0x0000', '0x0003', true));
-        this.playerList.SetPlayer(4, new UIPlayerData('0x0000', '0x0004', true));
     }
 
 }

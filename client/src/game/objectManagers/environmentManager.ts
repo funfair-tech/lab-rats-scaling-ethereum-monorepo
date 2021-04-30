@@ -1,5 +1,6 @@
 import { FFEngine } from '@funfair/engine';
 import { GraphManager, GRAPH_MANAGER } from './graphManager';
+import { PlayerManager } from './playerManager';
 
 /**
  * Manages the 3D game environment including world camera and gameplay objects
@@ -64,6 +65,7 @@ export class EnvironmentManager extends FFEngine.Component {
     private CreateScene(): void {
         //create components
         FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphManager);
+        FFEngine.instance.CreateChildObjectWithComponent(this.container, PlayerManager);
     }
 
     private MoveCamera(targetPosition: FFEngine.THREE.Vector3): void {
