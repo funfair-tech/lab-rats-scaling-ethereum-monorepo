@@ -126,7 +126,6 @@ export class MultiTrader extends FFEngine.Component {
     private UpdateLogicState(): void {
         LOGIC.Tick();
         let state = LOGIC.GetCurrentState();
-        this.SetGamePhase(state.roundState);
 
         //advance state if necessary
         if (this.lastNonce !== state.localNonce) {
@@ -151,6 +150,9 @@ export class MultiTrader extends FFEngine.Component {
 
             //update bets and players
             PLAYER_MANAGER.UpdateBets(state.bets);
+
+            //set the game phase
+            this.SetGamePhase(state.roundState);
         }
         
     }
