@@ -94,7 +94,7 @@ export class Logic_TestCode {
         }
 
         if(keyCode === 81) { //'q' place bet for user 1
-            let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('0x1234567fakeplayer0002cdef', Logic_BetType.HIGHER);
+            let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('0x2234567fakeplayer0002cdef', Logic_BetType.HIGHER);
             if(response === Logic_BetResponse.BETSUBMITTED) {
                 console.log('Logic_TestCode.Keypressed fake player 2 bet higher successfully submitted');
             } else {
@@ -103,7 +103,7 @@ export class Logic_TestCode {
         }
 
         if(keyCode === 87) { //'w' place bet for user 1
-            let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('0x1234567fakeplayer0003cdef', Logic_BetType.LOWER);
+            let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('0x3334567fakeplayer0003cdef', Logic_BetType.LOWER);
             if(response === Logic_BetResponse.BETSUBMITTED) {
                 console.log('Logic_TestCode.Keypressed fake player 3 bet lower successfully submitted');
             } else {
@@ -113,7 +113,7 @@ export class Logic_TestCode {
         }
 
         if(keyCode === 82) { //'r' place bet for user 1
-            let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('0x1234567fakeplayer0004cdef', Logic_BetType.LOWER);
+            let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('0x4434567fakeplayer0004cdef', Logic_BetType.LOWER);
             if(response === Logic_BetResponse.BETSUBMITTED) {
                 console.log('Logic_TestCode.Keypressed fake player 4 bet lower successfully submitted');
             } else {
@@ -123,7 +123,7 @@ export class Logic_TestCode {
         }
 
         if(keyCode === 84) { //'t' place bet for user 1
-            let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('0x1234567fakeplayer0005cdef', Logic_BetType.LOWER);
+            let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('0x5534567fakeplayer0005cdef', Logic_BetType.LOWER);
             if(response === Logic_BetResponse.BETSUBMITTED) {
                 console.log('Logic_TestCode.Keypressed fake player 5 bet lower successfully submitted');
             } else {
@@ -133,7 +133,7 @@ export class Logic_TestCode {
         }
 
         if(keyCode === 89) { //'y' place bet for user 1
-            let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('0x1234567fakeplayer0006cdef', Logic_BetType.HIGHER);
+            let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('0x6634567fakeplayer0006cdef', Logic_BetType.HIGHER);
             if(response === Logic_BetResponse.BETSUBMITTED) {
                 console.log('Logic_TestCode.Keypressed fake player 6 bet higher successfully submitted');
             } else {

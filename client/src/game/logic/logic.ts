@@ -16,7 +16,7 @@ export class Logic {
     protected currentState: Logic_GameState = new Logic_GameState();
     protected reportedState: Logic_GameState = JSON.parse(JSON.stringify(this.currentState));
     protected isLocalMode: boolean = false;
-    protected localPlayerAddress: string = '';
+    protected localPlayerAddress: string = '0x1234567fakeplayer89abcdef';
 
     static Create(config: Logic_Configuration, localMode: boolean): void {
         Logic_ServerFeedQueue.Create();
