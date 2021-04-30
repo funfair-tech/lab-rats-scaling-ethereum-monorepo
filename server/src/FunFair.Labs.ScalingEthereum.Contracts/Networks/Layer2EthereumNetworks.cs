@@ -1,4 +1,6 @@
 using System;
+using FunFair.Ethereum.DataTypes;
+using FunFair.Ethereum.DataTypes.Primitives;
 
 namespace FunFair.Labs.ScalingEthereum.Contracts.Networks
 {
