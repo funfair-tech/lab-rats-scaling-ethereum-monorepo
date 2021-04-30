@@ -18,6 +18,8 @@ export class MultiTraderUI extends FFEngine.Component {
     private betLow!: UIButtonSprite;
     private playerList!: UIPlayerList;
     private prizePoolText!: FFEngine.BitmapString;
+    private winUI!: FFEngine.THREE.Object3D;
+    private winText!: FFEngine.BitmapString;
 
     /**
      * Creates the WebGL UI Scene and main component and registers it with the engine
@@ -78,6 +80,24 @@ export class MultiTraderUI extends FFEngine.Component {
     public ShowBetUI(visible: boolean): void {
         if (this.betUI) {
             this.betUI.visible = visible;
+        }
+    }
+
+    /**
+     * Show/hide betting UI
+     */
+     public ShowWinUI(visible: boolean, winnings: number): void {
+        if (this.winUI) {
+            this.winUI.visible = visible;
+
+            if (visible) {
+                if (winnings > 0) {
+                    this.winText.SetText('You Win: ' + winnings);
+                }
+                else {
+                    this.winText.SetText('Better Luck Next Time!');
+                }
+            }
         }
     }
 
@@ -172,13 +192,24 @@ export class MultiTraderUI extends FFEngine.Component {
 
         this.ShowBetUI(false);
 
+        //create win UI
+        this.winUI = new FFEngine.THREE.Object3D();
+        this.container.add(this.winUI);
+
+        anchor = FFEngine.instance.CreateChildObjectWithComponent(this.winUI, FFEngine.UIAnchor);
+        anchor.SetCamera(this.camera);
+        anchor.SetAnchors(FFEngine.UIAnchorType.CENTER, FFEngine.UIAnchorType.MAX);
+
+        this.winText = FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), FFEngine.BitmapString, { text: '', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 120, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, -260, 0]});
+        this.ShowWinUI(false, 0);
+
         //create player list
         anchor = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.UIAnchor);
         anchor.SetCamera(this.camera);
         anchor.SetAnchors(FFEngine.UIAnchorType.MAX, FFEngine.UIAnchorType.MAX);
         this.playerList = FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), UIPlayerList);
-        this.playerList.SetWidth(420);
-        this.playerList.GetContainer().position.set(-380, -200, 0);
+        this.playerList.SetWidth(400);
+        this.playerList.GetContainer().position.set(-320, -180, 0);
         this.playerList.SetBackground(undefined, new FFEngine.THREE.Color(0xaaaaaa), 0.4);
         this.playerList.SetFont(ASSETPACK.GetFontAsset(FontAssetType.STANDARD));
         this.playerList.SetLeftTitle('Player');
