@@ -188,7 +188,6 @@ export class Logic {
 
         let potWinLoss: BigNumber = new BigNumber(message.data.potWinLoss.hex);        
         state.carryOverPrizePoolAfterResult = parseInt('0x' + message.data.history.substr(130, 64));
-        let currentCarryOverPrizePool: number = state.carryOverPrizePool - potWinLoss.toNumber();
         state.carryOverPrizePool = state.carryOverPrizePoolAfterResult - potWinLoss.toNumber();
 
         //Go through player bets  and rebuild their bet data from the playerAddresses and winnings data
@@ -255,6 +254,7 @@ export class Logic {
 
         state.currentPrizePool = message.data.currentPrizePool;
         state.carryOverPrizePool = message.data.carryOverPrizePool;
+        state.carryOverPrizePoolAfterResult = message.data.carryOverPrizePool;
         return true;
     }
 
