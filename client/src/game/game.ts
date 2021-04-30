@@ -33,6 +33,11 @@ export class Game {
     LOGIC_SERVERFEEDQUEUE.APIMessageCall(GameEvent.BETS, bets);
   }
 
+  public handleHistory(history: string): void {
+    console.log('++ history  ', history);
+    LOGIC_SERVERFEEDQUEUE.APIMessageCall(GameEvent.HISTORY, history);
+  }
+
   public setAddress(address: string): void {
     console.log('Game: user address -', address);
     LOGIC_SERVERFEEDQUEUE.APIMessageCall('LOCALPLAYERADDRESS', address);

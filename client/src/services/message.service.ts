@@ -4,7 +4,7 @@ import { apiRequest } from './api-request.service';
 import { Bet, SafeBet } from '../model/bet';
 import { MessageId } from '../model/messageId';
 import store from '../store/store';
-import { addBet, setCanPlay, setPlayersOnline, setRound } from '../store/actions/game.actions';
+import { addBet, setCanPlay, setHistory, setPlayersOnline, setRound } from '../store/actions/game.actions';
 import { Round } from '../model/round';
 
 class MessageService {
@@ -83,6 +83,12 @@ class MessageService {
     }
   };
 
+  private handleHistory = (history: string[]): void => {
+    if(history.length > 0){
+      store.dispatch(setHistory(history[0]));
+    }
+  };
+
 
   public async connectToServer(authenticate: boolean, networkName: string): Promise<void> {
     var options = {};
@@ -108,6 +114,8 @@ class MessageService {
     this.connection.on('GameRoundEnding', this.handleGameEnding);
     this.connection.on('GameRoundEnded', this.handleGameEnded);
     this.connection.on('NewMessage', this.handleBroadcast);
+    this.connection.on('History', this.handleHistory);
+
 
     this.connection.onclose(function () {
       console.log('signalr disconnected');

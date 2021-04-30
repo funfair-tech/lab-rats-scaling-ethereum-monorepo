@@ -7,6 +7,7 @@ import {
   CLEAR_GAME_STATE,
   GameActionTypes,
   SET_CAN_PLAY,
+  SET_HISTORY,
   SET_PLAYERS_ONLINE,
   SET_RESULT,
   SET_ROUND,
@@ -18,6 +19,7 @@ export interface Game {
   result: RoundResult | null;
   playersOnline: number | null;
   canPlay: boolean;
+  history: string|null;
 }
 
 const initialState: Game = {
@@ -26,6 +28,7 @@ const initialState: Game = {
   result: null,
   playersOnline: null,
   canPlay: false,
+  history: null
 };
 
 const gameReducer = ( state = { ...initialState }, action: GameActionTypes): Game => {
@@ -74,6 +77,11 @@ const gameReducer = ( state = { ...initialState }, action: GameActionTypes): Gam
       return {
         ...state,
         bets: [],
+      };
+    case SET_HISTORY:
+      return {
+        ...state,
+        history: action.payload,
       };
     default: {
       return state;

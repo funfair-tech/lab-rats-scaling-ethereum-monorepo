@@ -46,6 +46,12 @@ export const GameContainer: FunctionComponent<Props> = (props) => {
     }
   }, [gameInstance, props.game.canPlay, props.game.round]);
 
+  useEffect(() => {
+    if(!!props.game.history) {
+      gameInstance.handleHistory(props.game.history);
+    }
+  }, [gameInstance, props.game.history]);
+
   return (
     <div>
         <Canvas />

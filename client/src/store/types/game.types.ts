@@ -9,6 +9,7 @@ export const SET_ROUND = 'SET_ROUND';
 export const SET_CAN_PLAY = 'SET_CAN_PLAY';
 export const ADD_BET = 'ADD_BET';
 export const CLEAR_BETS = 'CLEAR_BETS';
+export const SET_HISTORY = 'SET_HISTORY';
 
 export interface ClearGameState {
   type: typeof CLEAR_GAME_STATE;
@@ -43,6 +44,11 @@ export interface ClearBets {
   type: typeof CLEAR_BETS;
 }
 
+export interface SetHistory {
+  type: typeof SET_HISTORY;
+  payload: string;
+}
+
 export type GameActionTypes =
   | ClearGameState
   | SetResult
@@ -50,4 +56,5 @@ export type GameActionTypes =
   | SetRound
   | SetCanPlay
   | AddBet
+  | SetHistory
   | ClearBets;

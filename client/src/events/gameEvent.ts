@@ -3,5 +3,6 @@ export enum GameEvent {
   BETS = 'BETS',  
   NO_MORE_BETS = 'NO_MORE_BETS',  
   RESULT = 'RESULT',  
+  HISTORY = 'HISTORY',  
 }
 

@@ -1,7 +1,7 @@
 import { Bet } from '../../model/bet';
 import { Round } from '../../model/round';
 import { RoundResult } from '../../model/roundResult';
-import { ADD_BET, CLEAR_BETS, CLEAR_GAME_STATE, GameActionTypes, SET_CAN_PLAY, SET_PLAYERS_ONLINE, SET_RESULT, SET_ROUND } from '../types/game.types';
+import { ADD_BET, CLEAR_BETS, CLEAR_GAME_STATE, GameActionTypes, SET_CAN_PLAY, SET_HISTORY, SET_PLAYERS_ONLINE, SET_RESULT, SET_ROUND } from '../types/game.types';
 
 export const setResult = (result: RoundResult): GameActionTypes => {
   return {
@@ -47,5 +47,12 @@ export const addBet = (bet: Bet): GameActionTypes => {
 export const clearBets = (): GameActionTypes => {
   return {
     type: CLEAR_BETS,
+  };
+};
+
+export const setHistory = (history: string): GameActionTypes => {
+  return {
+    type: SET_HISTORY,
+    payload: history,
   };
 };
