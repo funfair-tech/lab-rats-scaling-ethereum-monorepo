@@ -182,6 +182,7 @@ export class Logic_TestCode {
 
                 let winningBetData: Logic_BetWinData[] = [];
                 let prizeDistribution: number = 0;
+                let carryOverPrizePoolAtStart = state.carryOverPrizePool;
                 state.currentPrizePool = state.carryOverPrizePool;
 
                 for(let index: number = 0; index < state.bets.length; index++) {
@@ -267,6 +268,7 @@ export class Logic_TestCode {
                     lastAdjustment: state.lastAdjustment,
                     bets: state.bets,
                     currentPrizePool: state.currentPrizePool,
+                    potWinLoss: state.carryOverPrizePool - carryOverPrizePoolAtStart,
                     carryOverPrizePool: state.carryOverPrizePool
                 });
             }

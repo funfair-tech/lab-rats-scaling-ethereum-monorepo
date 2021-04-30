@@ -253,7 +253,7 @@ export class Logic {
         //Need to run though bets and add/apply correctly with additional data such as friendly name and winnings
 
         state.currentPrizePool = message.data.currentPrizePool;
-        state.carryOverPrizePool = message.data.carryOverPrizePool;
+        state.carryOverPrizePool = message.data.carryOverPrizePool - message.data.potWinLoss;
         state.carryOverPrizePoolAfterResult = message.data.carryOverPrizePool;
         return true;
     }
