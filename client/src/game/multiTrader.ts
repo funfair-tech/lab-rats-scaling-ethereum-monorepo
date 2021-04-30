@@ -18,6 +18,7 @@ export class MultiTrader extends FFEngine.Component {
     private static playerAddress: string = '0x1234567fakeplayer89abcdef';
 
     private startupFinished: boolean = false;
+    private localGame: boolean = false;
     private gamePhase: Logic_RoundState = Logic_RoundState.NOTSTARTED;
     private lastNonce: number = 1;
 
@@ -39,7 +40,8 @@ export class MultiTrader extends FFEngine.Component {
         //Asset loading callback
         FFEngine.instance.assetLoader.AddLoadingPhaseCompleteCallback(() => this.AssetLoadingFinished());
 
-        Logic.Create(new Logic_Configuration(1000, 10, 5, 100, 30), params.isLocalGame);
+        this.localGame = params.isLocalGame;
+        Logic.Create(new Logic_Configuration(1000, 10, 5, 100, 30), this.localGame);
     }
 
     public Update(): void {
@@ -105,8 +107,15 @@ export class MultiTrader extends FFEngine.Component {
      * Sends a bet to the logic
      */
     public InitiatePlayerBet(betType: Logic_BetType): void {
-        let betResponse = LOGIC.PlaceBetForLocalPlayer(MultiTrader.playerAddress, betType);
-        console.log('bet response: ' + betResponse);
+
+        if (this.localGame === true) {
+            let betResponse = LOGIC.PlaceBetForLocalPlayer(MultiTrader.playerAddress, betType);
+            console.log('bet response: ' + betResponse);
+        }
+        else {
+            let betResponse = LOGIC.PlaceBetToServer(betType);
+            console.log('bet response: ' + betResponse);
+        }
     }
 
     private UpdateLoadingPhase(): void {
