@@ -142,6 +142,8 @@ export class Logic {
             handled = this.NoMoreBetsFromFeed(message);
         } else if (message.type === 'RESULT') {
             handled = this.ResultFromFeed(message);
+        } else if (message.type === 'HISTORY') {
+            handled = this.HistoryFromFeed(message);
         }
         
         if(handled) {
@@ -181,9 +183,14 @@ export class Logic {
             movement = - (256 - movement);
         }
         state.lastAdjustment = movement;
+        let currentHistoricPrice: number = state.currentPrice;
         for(let index: number = 0; index < 32; index++) {
-            let byte: number = parseInt('0x' + message.data.result.substr(192 - (index * 2), 2));
-            state.historicPrices[index] = byte;
+            let byte: number = parseInt('0x' + message.data.result.substr(128 - (index * 2), 2));
+            if(byte & 0x80) {
+                byte = -(256 - byte);    
+            }
+            currentHistoricPrice -= byte;
+            state.historicPrices[index] = currentHistoricPrice;                    
         }
 
         let potWinLoss: BigNumber = new BigNumber(message.data.potWinLoss.hex);        
@@ -191,6 +198,29 @@ export class Logic {
         state.carryOverPrizePool = state.carryOverPrizePoolAfterResult - potWinLoss.toNumber();
 
         //Go through player bets  and rebuild their bet data from the playerAddresses and winnings data
+        return true;
+    }
+
+    protected HistoryFromFeed(message: any): boolean {
+        let state: Logic_GameState = this.currentState;
+        
+        state.serverNonce++;
+        state.roundState = Logic_RoundState.COMPLETE;
+
+        state.currentPrice = parseInt('0x' + message.data.substr(2,64));
+        let currentHistoricPrice = state.currentPrice;
+        for(let index: number = 0; index < 32; index++) {
+            let byte: number = parseInt('0x' + message.data.substr(128 - (index * 2), 2));
+            if(byte & 0x80) {
+                byte = -(256 - byte);    
+            }
+            currentHistoricPrice -= byte;
+            state.historicPrices[index] = currentHistoricPrice;
+        }
+        state.lastAdjustment = state.currentPrice - state.historicPrices[0];        
+        state.carryOverPrizePool = parseInt('0x' + message.data.substr(130, 64));
+        state.carryOverPrizePoolAfterResult = state.carryOverPrizePool;
+
         return true;
     }
 
