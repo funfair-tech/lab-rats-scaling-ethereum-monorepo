@@ -17,6 +17,11 @@ export class Logic {
     protected reportedState: Logic_GameState = JSON.parse(JSON.stringify(this.currentState));
     protected isLocalMode: boolean = false;
     protected localPlayerAddress: string = '0x1234567fakeplayer89abcdef';
+    protected static APIPlaycallback: (stake: number, action: number) => void;
+
+    public static SetAPIPlaycallback(callbackFunction: any) {
+        Logic.APIPlaycallback = callbackFunction;
+    }    
 
     static Create(config: Logic_Configuration, localMode: boolean): void {
         Logic_ServerFeedQueue.Create();
@@ -42,6 +47,20 @@ export class Logic {
 
     public GetCurrentState() : Logic_GameState {
         return this.reportedState;
+    }
+
+    public PlaceBetToServer(betType: number): Logic_BetResponse {
+        if(this.reportedState.roundState !== Logic_RoundState.ACCEPTINGBETS) {
+            return Logic_BetResponse.NOTINBETTINGPHASE;
+        }
+
+        if((betType < 0) || (betType >= Logic_BetType.NUMBETTYPES)) {
+            return Logic_BetResponse.INVALIDBET;
+        }
+
+        Logic.APIPlaycallback(this.configuration.betAmount * 100000000, betType);
+
+        return Logic_BetResponse.BETSUBMITTED;
     }
 
     public PlaceBetForLocalPlayer(playerAddress: string, betType: Logic_BetType): Logic_BetResponse {

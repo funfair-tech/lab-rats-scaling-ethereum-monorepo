@@ -93,6 +93,11 @@ export class Logic_TestCode {
             return;
         }
 
+        if(keyCode === 57) {
+            console.log('call place bet');
+            LOGIC.PlaceBetToServer(1);
+        }
+
         if(keyCode === 81) { //'q' place bet for user 1
             let response: Logic_BetResponse = LOGIC.PlaceBetForLocalPlayer('0x2234567fakeplayer0002cdef', Logic_BetType.HIGHER);
             if(response === Logic_BetResponse.BETSUBMITTED) {

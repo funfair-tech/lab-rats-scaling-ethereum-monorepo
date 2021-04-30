@@ -4,6 +4,7 @@ import { MultiTrader } from './multiTrader';
 import { RoundResult } from '../model/roundResult';
 import { Round } from '../model/round';
 import { GameEvent } from '../events/gameEvent';
+import { Logic } from './logic/logic';
 import { LOGIC_SERVERFEEDQUEUE } from './logic/logic_serverfeedqueue';
 
 /**
@@ -11,7 +12,9 @@ import { LOGIC_SERVERFEEDQUEUE } from './logic/logic_serverfeedqueue';
  */
 export class Game {
 
-  constructor(private play: (stake: number, action: number) => void) {};
+  constructor(private play: (stake: number, action: number) => void) {
+    Logic.SetAPIPlaycallback(play);
+  };
 
   public handleNextRound(round: Round): void {
     console.log('++ new round ', round);
