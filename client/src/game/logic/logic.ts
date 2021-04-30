@@ -8,6 +8,7 @@ import { Logic_GameState, Logic_Configuration, Logic_ServerMessage, Logic_BetTyp
 import { LOGIC_SERVERFEEDQUEUE, Logic_ServerFeedQueue } from './logic_serverfeedqueue';
 import { LOGIC_TESTCODE, Logic_TestCode } from './logic_testcode';
 import { Logic_SeededName } from './logic_seededname';
+import { BigNumber } from 'bignumber.js';
 
 export class Logic {
 
@@ -137,6 +138,10 @@ export class Logic {
             handled = true;        
         } else if (message.type === 'NEW_ROUND') {
             handled = this.NewRoundFromFeed(message);
+        } else if (message.type === 'NO_MORE_BETS') {
+            handled = this.NoMoreBetsFromFeed(message);
+        } else if (message.type === 'RESULT') {
+            handled = this.ResultFromFeed(message);
         }
         
         if(handled) {
@@ -153,6 +158,40 @@ export class Logic {
         state.serverBlock = message.data.block;
         state.roundState = Logic_RoundState.ACCEPTINGBETS;
         state.bets = [];
+        return true;
+    }
+
+    protected NoMoreBetsFromFeed(message: any): boolean {
+        let state: Logic_GameState = this.currentState;
+        state.serverNonce++;
+        state.roundID = message.data.id;
+        state.roundState = Logic_RoundState.CLOSEDFORBETS;
+        return true;
+    }
+
+    protected ResultFromFeed(message: any): boolean {
+        let state: Logic_GameState = this.currentState;
+        state.serverNonce++;
+        state.roundID = message.data.id;
+        state.roundState = Logic_RoundState.COMPLETE;
+
+        state.currentPrice = parseInt('0x' + message.data.result.substr(2,64));
+        let movement: number = parseInt('0x' + message.data.result.substr(128,2));
+        if(movement & 0x80) {
+            movement = - (256 - movement);
+        }
+        state.lastAdjustment = movement;
+        for(let index: number = 0; index < 32; index++) {
+            let byte: number = parseInt('0x' + message.data.result.substr(192 - (index * 2), 2));
+            state.historicPrices[index] = byte;
+        }
+
+        let potWinLoss: BigNumber = new BigNumber(message.data.potWinLoss.hex);        
+        state.carryOverPrizePoolAfterResult = parseInt('0x' + message.data.history.substr(130, 64));
+        let currentCarryOverPrizePool: number = state.carryOverPrizePool - potWinLoss.toNumber();
+        state.carryOverPrizePool = state.carryOverPrizePoolAfterResult - potWinLoss.toNumber();
+
+        //Go through player bets  and rebuild their bet data from the playerAddresses and winnings data
         return true;
     }
 

@@ -98,6 +98,7 @@ export class Logic_GameState {
     public lastAdjustment: number = 0;
     public bets: Logic_Bet[] = [];
     public carryOverPrizePool: number = 0;
+    public carryOverPrizePoolAfterResult: number = 0;
     public currentPrizePool: number = 0;
 
     //Reporting control
