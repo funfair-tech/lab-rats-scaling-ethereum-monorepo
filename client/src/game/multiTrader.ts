@@ -15,7 +15,7 @@ import { UIPlayerDisplayMode } from './objects/uiPlayerList';
  */
 export class MultiTrader extends FFEngine.Component {
 
-    private static playerAddress: string = '0x00000000';
+    private static playerAddress: string = '0x1234567fakeplayer89abcdef';
 
     private startupFinished: boolean = false;
     private gamePhase: Logic_RoundState = Logic_RoundState.NOTSTARTED;
