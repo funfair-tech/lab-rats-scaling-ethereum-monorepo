@@ -18,7 +18,7 @@ export const Faucet: FunctionComponent<Props> = (props) => {
       !props.user.loading &&
       !!props.user.address &&
       !!props.network.id &&
-      tokenBalance &&
+      tokenBalance !== null &&
       tokenBalance < 100
     ) {
       openFaucet();
@@ -32,6 +32,7 @@ export const Faucet: FunctionComponent<Props> = (props) => {
   ]);
 
   const openFaucet = async () => {
+
     const request: FaucetRequest = {
       network: props.network.name as string,
       address: props.user.address,
@@ -43,6 +44,11 @@ export const Faucet: FunctionComponent<Props> = (props) => {
 
     if (response.message) {
       props.setUserError(response.message);
+      // TODO: possibly retry the call here ... (add some sort of exit)
+      // props.setTransactionHash('0x');
+      // setTimeout(() => {
+      //   openFaucet();
+      // }, 10000);
     } else {
       props.setTransactionHash(response.transaction.transactionHash);
       await ethers.waitForTransactionReceipt(

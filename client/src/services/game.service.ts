@@ -6,7 +6,7 @@ import MultiplayerGamesManagerABI from '../contracts/multiplayerGamesManager.jso
 import { Bet } from '../model/bet';
 import { BlockHeader } from '../model/blockHeader';
 import { RoundResult } from '../model/roundResult';
-import { addBet, clearBets, setResult } from '../store/actions/game.actions';
+import { addBet, clearBets, setGameError, setResult } from '../store/actions/game.actions';
 import { setUserError } from '../store/actions/user.actions';
 import store from '../store/store';
 import { ethers } from './ether.service';
@@ -17,8 +17,7 @@ import { EndGameRound } from '../events/endGameRound';
 import { BetEvent } from '../events/betEvent';
 import { PersistentDataEvent } from '../events/persistentDataEvent';
 class GameService {
-  // private GAME_ADDRESS = '0xb5F20F66F8a48d70BbBF8ACC18E28907f97ee552';
-  private GAME_MANAGER_ADDRESS = '0x42f9A9bDe939E9f0e082a801D7245005a1066681';//prev'0xe3f2Fa6a3F16837d012e1493F50BD29db0BdADe4';
+  private GAME_MANAGER_ADDRESS = '0x42f9A9bDe939E9f0e082a801D7245005a1066681';
   private TOKEN_ADDRESS = '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2';
 
   private debugEncodeBet(bet: Bet): string {
@@ -191,17 +190,22 @@ class GameService {
     // console.log('++ amount:', bet.amount.toString());
     // console.log('++ unencoded data:', hexlify(bet.data));
     // console.log('++ encoded data:', encoded);
+    try{
+      const transactionResponse = await contract.transferAndCall(
+        this.GAME_MANAGER_ADDRESS,
+        bet.amount,
+        encoded
+      );
+      
+      messageService.broadcastBet(bet);
+  
+      const receipt = await transactionResponse.wait(1);
+      console.log('handlePlay receipt: ', receipt);
+    } catch(error) {
+      console.error(error);
+      store.dispatch(setGameError('Error placing bet'))
+    }
 
-    const transactionResponse = await contract.transferAndCall(
-      this.GAME_MANAGER_ADDRESS,
-      bet.amount,
-      encoded
-    );
-    
-    messageService.broadcastBet(bet);
-
-    const receipt = await transactionResponse.wait(1);
-    console.log('handlePlay receipt: ', receipt);
     // TODO: dispatch confirmation to store
   }
 

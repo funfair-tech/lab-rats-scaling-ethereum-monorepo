@@ -7,6 +7,7 @@ import {
   CLEAR_GAME_STATE,
   GameActionTypes,
   SET_CAN_PLAY,
+  SET_GAME_ERROR,
   SET_HISTORY,
   SET_PLAYERS_ONLINE,
   SET_RESULT,
@@ -14,6 +15,7 @@ import {
 } from '../types/game.types';
 
 export interface Game {
+  error: string | null;
   round: Round | null;
   bets: Bet[];
   result: RoundResult | null;
@@ -23,6 +25,7 @@ export interface Game {
 }
 
 const initialState: Game = {
+  error: null,
   round: null,
   bets: [],
   result: null,
@@ -33,8 +36,14 @@ const initialState: Game = {
 
 const gameReducer = ( state = { ...initialState }, action: GameActionTypes): Game => {
   switch (action.type) {
+  
     case CLEAR_GAME_STATE:
       return initialState;
+    case SET_GAME_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case SET_RESULT:
       return {
         ...state,
