@@ -10,10 +10,13 @@ export class GraphManager extends FFEngine.Component {
 
     private static readonly CELL_WIDTH: number = 3;
     private static readonly CELL_HEIGHT: number = 1.5;
+    private static readonly GRAPH_CELLS_WIDTH = 20;
+    private static readonly GRAPH_CELLS_HEIGHT = 30;
 
     private graphLine!: GraphLine;
     private cells: GraphCell[] = [];
     private graphCoord: FFEngine.THREE.Vector2 = new FFEngine.THREE.Vector2();
+    private graphCenter!: FFEngine.THREE.Vector2;
 
     public Create(params: any): void {
         super.Create(params);
@@ -22,8 +25,9 @@ export class GraphManager extends FFEngine.Component {
         this.container.name = 'Grid';
         GRAPH_MANAGER = this;
 
-        //create grid
-        this.CreateGrid();
+        //create graph grid
+        this.CreateCells();
+        this.UpdateCells(this.graphCoord);
 
         //create graph line
         this.graphLine = FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphLine);
@@ -67,6 +71,7 @@ export class GraphManager extends FFEngine.Component {
         this.graphCoord.x++;
         this.graphCoord.y = price;
         ENVIRONMENT_MANAGER.SetCameraToGraphCoordinate(this.graphCoord);
+        this.UpdateCells(this.graphCoord);
     }
 
     public GetCellAtCoordinate(coord: FFEngine.THREE.Vector2): GraphCell | undefined {
@@ -80,16 +85,53 @@ export class GraphManager extends FFEngine.Component {
         return undefined;
     }
 
-    private CreateGrid(): void {
-        //test grid cells
-        for (let i=-10;i<30;i++) {
-            for (let j=-10;j<30;j++) {
-                let cell = FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphCell);
-                cell.GetContainer().position.copy(this.GridToWorld(new FFEngine.THREE.Vector2(i, j)));
-                cell.SetSize(GraphManager.CELL_WIDTH, GraphManager.CELL_HEIGHT);
-                cell.SetCoordinates(new FFEngine.THREE.Vector2(i, j));
-                this.cells.push(cell);
+    /**
+     * Dynamically create cells around the current graph position
+     */
+    private UpdateCells(centerCoord: FFEngine.THREE.Vector2): void {
+
+        //round to closest whole grid coordinate
+        centerCoord.x = Math.round(centerCoord.x);
+        centerCoord.y = Math.round(centerCoord.y);
+
+        if (this.graphCenter === undefined || centerCoord.equals(this.graphCenter) === false) {
+            this.graphCenter = new FFEngine.THREE.Vector2(centerCoord);
+
+            //create cell coordinate bounds
+            let bounds = new FFEngine.THREE.Box2(   new FFEngine.THREE.Vector2(centerCoord.x - GraphManager.GRAPH_CELLS_WIDTH, centerCoord.y - GraphManager.GRAPH_CELLS_HEIGHT),
+                                                    new FFEngine.THREE.Vector2(centerCoord.x + GraphManager.GRAPH_CELLS_WIDTH - 1, centerCoord.y + GraphManager.GRAPH_CELLS_HEIGHT - 1));
+
+            //create list of spare cells that are out of bounds to subsequently be moved
+            let spareCells: GraphCell[] = [];
+            for (let i=0;i<this.cells.length;i++) {
+                if (bounds.containsPoint(this.cells[i].GetCoordinates()) === false) {
+                    spareCells.push(this.cells[i]);
+                }
             }
+
+            //make sure all required cells are filled
+            let spareCellIndex = 0;
+            for (let i=bounds.min.x;i<=bounds.max.x;i++) {
+                for (let j=bounds.min.y;j<=bounds.max.y;j++) {
+                    let coord = new FFEngine.THREE.Vector2(i, j);
+                    if (this.GetCellAtCoordinate(coord) === undefined) {
+                        spareCells[spareCellIndex].SetCoordinates(coord);
+                        spareCellIndex++;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * create enough grid cell objects for the required visible width/height
+     */
+    private CreateCells(): void {
+        for (let i=0;i<GraphManager.GRAPH_CELLS_WIDTH * GraphManager.GRAPH_CELLS_HEIGHT * 4;i++) {
+            let cell = FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphCell);
+            cell.SetSize(GraphManager.CELL_WIDTH, GraphManager.CELL_HEIGHT);
+            cell.SetCoordinates(new FFEngine.THREE.Vector2(Math.floor(i / GraphManager.GRAPH_CELLS_HEIGHT), i % GraphManager.GRAPH_CELLS_HEIGHT));
+            this.cells.push(cell);
         }
     }
 }

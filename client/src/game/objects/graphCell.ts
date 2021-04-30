@@ -1,6 +1,7 @@
 import { FFEngine } from '@funfair/engine';
 import { Logic_BetType } from '../logic/logic_defines';
 import { ENVIRONMENT_MANAGER } from '../objectManagers/environmentManager';
+import { GRAPH_MANAGER } from '../objectManagers/graphManager';
 
 /**
  * A display object representing a single cell on the graph grid
@@ -34,6 +35,8 @@ export class GraphCell extends FFEngine.Component {
 
     public SetCoordinates(coords: FFEngine.THREE.Vector2): void {
         this.coords.copy(coords);
+        this.container.position.copy(GRAPH_MANAGER.GridToWorld(coords));
+
     }
 
     public GetCoordinates(): FFEngine.THREE.Vector2 {
