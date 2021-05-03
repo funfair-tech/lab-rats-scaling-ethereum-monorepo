@@ -1,3 +1,5 @@
+import { LRError } from '../../model/errorCodes';
+
 export const SET_USER_ERROR = 'SET_USER_ERROR';
 export const SET_AUTHENTICATED = 'SET_AUTHENTICATED';
 export const SET_ETH_BALANCE = 'SET_ETH_BALANCE';
@@ -8,7 +10,7 @@ export const CLEAR_USER_STATE = 'CLEAR_USER_STATE';
 
 export interface SetUserErrorAction {
   type: typeof SET_USER_ERROR;
-  payload: string|null;
+  payload: LRError|null;
 }
 
 export interface SetAuthenticatedAction {

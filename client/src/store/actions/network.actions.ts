@@ -1,13 +1,22 @@
 import { BlockHeader } from '../../model/blockHeader';
+import { LRError } from '../../model/errorCodes';
 import {
   CLEAR_NETWORK_STATE,
   NetworkActionTypes,
   SET_BLOCK_HEADER,
+  SET_NETWORK_ERROR,
   SET_NETWORK_ID,
   SET_NETWORK_NAME,
   SET_TOKEN_SYMBOL,
   SET_TRANSACTION_HASH,
 } from '../types/network.types';
+
+export const setNetworkError = (error: LRError|null): NetworkActionTypes => {
+  return {
+    type: SET_NETWORK_ERROR,
+    payload: error,
+  };
+};
 
 export const setNetworkId = (id: number): NetworkActionTypes => {
   return {

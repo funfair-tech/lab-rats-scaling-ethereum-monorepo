@@ -1,4 +1,5 @@
 import { Bet } from '../../model/bet';
+import { LRError } from '../../model/errorCodes';
 import { Round } from '../../model/round';
 import { RoundResult } from '../../model/roundResult';
 
@@ -14,7 +15,7 @@ export const SET_HISTORY = 'SET_HISTORY';
 
 export interface SetGameError {
   type: typeof SET_GAME_ERROR;
-  payload: string | null;
+  payload: LRError | null;
 }
 
 export interface ClearGameState {

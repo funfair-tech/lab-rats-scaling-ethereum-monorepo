@@ -6,6 +6,7 @@ import { Round } from '../model/round';
 import { GameEvent } from '../events/gameEvent';
 import { Logic } from './logic/logic';
 import { LOGIC_SERVERFEEDQUEUE } from './logic/logic_serverfeedqueue';
+import { LRError } from '../model/errorCodes';
 
 /**
  * Main game entry point, for initing the game engine and loading the game
@@ -39,6 +40,10 @@ export class Game {
   public handleHistory(history: string): void {
     console.log('++ history  ', history);
     LOGIC_SERVERFEEDQUEUE.APIMessageCall(GameEvent.HISTORY, history);
+  }
+
+  public handleError(error: LRError): void {
+    console.log('++ error  ', error);
   }
 
   public setAddress(address: string): void {

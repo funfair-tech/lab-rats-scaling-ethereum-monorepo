@@ -1,3 +1,4 @@
+import { LRError } from '../../model/errorCodes';
 import {
   CLEAR_USER_STATE,
   SET_ADDRESS,
@@ -10,7 +11,7 @@ import {
 } from '../types/user.types';
 
 export interface User {
-  error: string|null;
+  error: LRError|null;
   authenticated: boolean;
   ethBalance: number|null;
   tokenBalance: number|null;

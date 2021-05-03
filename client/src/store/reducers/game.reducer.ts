@@ -1,4 +1,5 @@
 import { Bet } from '../../model/bet';
+import { LRError } from '../../model/errorCodes';
 import { Round } from '../../model/round';
 import { RoundResult } from '../../model/roundResult';
 import {
@@ -15,7 +16,7 @@ import {
 } from '../types/game.types';
 
 export interface Game {
-  error: string | null;
+  error: LRError | null;
   round: Round | null;
   bets: Bet[];
   result: RoundResult | null;

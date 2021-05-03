@@ -6,8 +6,9 @@ import { setTransactionHash } from '../../store/actions/network.actions';
 import { FaucetRequest } from '../../model/faucetRequst';
 import { FaucetResponse } from '../../model/faucetResponse';
 import { setUserError } from '../../store/actions/user.actions';
-import { Notification } from '../../components/notification/notification';
+import { Notification, NotificationType } from '../../components/notification/notification';
 import { ethers } from '../../services/ether.service';
+import { ErrorCode, LRError } from '../../model/errorCodes';
 
 interface Props extends ReduxProps {}
 
@@ -43,7 +44,7 @@ export const Faucet: FunctionComponent<Props> = (props) => {
     );
 
     if (response.message) {
-      props.setUserError(response.message);
+      props.setUserError({code: ErrorCode.FAUCET_ERROR, msg:response.message});
       // TODO: possibly retry the call here ... (add some sort of exit)
       // props.setTransactionHash('0x');
       // setTimeout(() => {
@@ -62,6 +63,7 @@ export const Faucet: FunctionComponent<Props> = (props) => {
     <Notification
       label='Funding your account'
       visible={!!props.network.transactionHash}
+      category={NotificationType.INFO}
     />
   );
 };
@@ -77,7 +79,7 @@ const mapDispatchToProps = (dispatch: Function) => {
   return {
     setTransactionHash: (transactionHash: string | null) =>
       dispatch(setTransactionHash(transactionHash)),
-    setUserError: (error: string) => dispatch(setUserError(error)),
+    setUserError: (error: LRError) => dispatch(setUserError(error)),
   };
 };
 

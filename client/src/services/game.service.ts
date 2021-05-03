@@ -7,7 +7,6 @@ import { Bet } from '../model/bet';
 import { BlockHeader } from '../model/blockHeader';
 import { RoundResult } from '../model/roundResult';
 import { addBet, clearBets, setGameError, setResult } from '../store/actions/game.actions';
-import { setUserError } from '../store/actions/user.actions';
 import store from '../store/store';
 import { ethers } from './ether.service';
 import { messageService } from './message.service';
@@ -16,6 +15,8 @@ import { Event } from '@ethersproject/contracts';
 import { EndGameRound } from '../events/endGameRound';
 import { BetEvent } from '../events/betEvent';
 import { PersistentDataEvent } from '../events/persistentDataEvent';
+import { ErrorCode } from '../model/errorCodes';
+import { setNetworkError } from '../store/actions/network.actions';
 class GameService {
   private GAME_MANAGER_ADDRESS = '0x42f9A9bDe939E9f0e082a801D7245005a1066681';
   private TOKEN_ADDRESS = '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2';
@@ -123,7 +124,7 @@ class GameService {
     } 
     
     if (!bet.roundId) {
-      store.dispatch(setUserError('Invalid round ID'));
+      store.dispatch(setGameError({code: ErrorCode.GENERAL_BET_ERROR, msg: 'Invalid round ID'}));
       throw new Error('Error placing bet. Round id not found');
     }
 
@@ -203,7 +204,7 @@ class GameService {
       console.log('handlePlay receipt: ', receipt);
     } catch(error) {
       console.error(error);
-      store.dispatch(setGameError('Error placing bet'))
+      store.dispatch(setGameError({code: ErrorCode.GENERAL_BET_ERROR, msg: 'Error placing bet'}))
     }
 
     // TODO: dispatch confirmation to store
@@ -239,7 +240,11 @@ class GameService {
     const events: Event[] = await (contract as any).queryFilter(
       eventName,
       blockHeader.blockHash
-    );
+    ).catch((error: any) => {
+      console.error(error);
+      store.dispatch(setNetworkError({code: ErrorCode.JSON_RPC_READ_ERROR, msg: `Error reading events for block ${blockHeader.blockNumber}`}));
+      return [];
+    });;
 
     events.forEach((event: Event) => {
       const bet: Bet|null = !!event.args ? {
@@ -271,12 +276,19 @@ class GameService {
     const events: Event[] = await (contract as any).queryFilter(
       eventName,
       blockHeader.blockHash
-    );
+    ).catch((error: any) => {
+      console.error(error);
+      store.dispatch(setNetworkError({code: ErrorCode.JSON_RPC_READ_ERROR, msg: `Error reading events for block ${blockHeader.blockNumber}`}));
+      return [];
+    });
 
     events.forEach(async(event) => {
-
       const persistentData: GetPersistentGameDataByIDResponse|null = event.args ? 
-      await contract.getPersistentGameDataByID(event.args[EndGameRound.PERSISTENT_GAME_DATA_ID]) 
+      await contract.getPersistentGameDataByID(event.args[EndGameRound.PERSISTENT_GAME_DATA_ID]).catch(error => {
+        console.error(error);
+        store.dispatch(setGameError({code: ErrorCode.JSON_RPC_READ_ERROR, msg: 'Error reading persistant game data'}));
+        return null;
+      }) 
       : null;
 
       const result: RoundResult|null = !!event.args ? {
