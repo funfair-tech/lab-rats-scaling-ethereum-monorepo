@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { Notification, NotificationType } from '../../components/notification/notification';
 import { RootState } from '../../store/reducers';
 import { connect, ConnectedProps } from 'react-redux';

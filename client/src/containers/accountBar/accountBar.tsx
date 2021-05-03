@@ -1,13 +1,16 @@
 import './accountBar.scss';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { RootState } from '../../store/reducers';
 import { connect, ConnectedProps } from 'react-redux';
 import { Button } from '../../components/button/button';
 import window from '@funfair-tech/wallet-sdk/window';
-import { clearUserState } from '../../store/actions/user.actions';
+import {
+  clearUserState,
+  setTokenBalance,
+} from '../../store/actions/user.actions';
 import { gameService } from '../../services/game.service';
 import { Coin } from '../../components/coin/coin';
-
+import store from '../../store/store';
 interface Props extends ReduxProps {
   title: string;
 }
@@ -26,7 +29,10 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
     <div className='accountBar'>
       <section className='accountBar__content'>
         <section>{props.title}</section>
-        <section className='accountBar__balance'><Coin visible={!!props.user.displayBalance}/>{props.user.displayBalance}</section>
+        <section className='accountBar__balance'>
+          <Coin visible={!!props.user.displayBalance} />
+          {props.user.displayBalance}
+        </section>
 
         <section>
           <Button
@@ -39,6 +45,16 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
             }}
           >
             play
+          </Button>
+        </section>
+
+        <section>
+          <Button
+            onClick={() => {
+              store.dispatch(setTokenBalance(0));
+            }}
+          >
+            zero balance
           </Button>
         </section>
 

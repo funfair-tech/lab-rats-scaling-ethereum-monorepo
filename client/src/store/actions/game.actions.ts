@@ -2,9 +2,20 @@ import { Bet } from '../../model/bet';
 import { LRError } from '../../model/errorCodes';
 import { Round } from '../../model/round';
 import { RoundResult } from '../../model/roundResult';
-import { ADD_BET, CLEAR_BETS, CLEAR_GAME_STATE, GameActionTypes, SET_CAN_PLAY, SET_GAME_ERROR, SET_HISTORY, SET_PLAYERS_ONLINE, SET_RESULT, SET_ROUND } from '../types/game.types';
+import {
+  ADD_BET,
+  CLEAR_BETS,
+  CLEAR_GAME_STATE,
+  GameActionTypes,
+  SET_CAN_PLAY,
+  SET_GAME_ERROR,
+  SET_HISTORY,
+  SET_PLAYERS_ONLINE,
+  SET_RESULT,
+  SET_ROUND,
+} from '../types/game.types';
 
-export const setGameError = (error: LRError|null): GameActionTypes => {
+export const setGameError = (error: LRError | null): GameActionTypes => {
   return {
     type: SET_GAME_ERROR,
     payload: error,
@@ -31,7 +42,7 @@ export const setPlayersOnline = (playersOnline: number): GameActionTypes => {
   };
 };
 
-export const setRound = (round: Round|null): GameActionTypes => {
+export const setRound = (round: Round | null): GameActionTypes => {
   return {
     type: SET_ROUND,
     payload: round,

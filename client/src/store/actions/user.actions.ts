@@ -1,7 +1,18 @@
 import { LRError } from '../../model/errorCodes';
-import { CLEAR_USER_STATE, FREEZE_DISPLAY_BALANCE, SET_ADDRESS, SET_AUTHENTICATED, SET_ETH_BALANCE, SET_LOADING, SET_TOKEN_BALANCE, SET_USER_ERROR, UNFREEZE_DISPLAY_BALANCE, UserActionTypes } from '../types/user.types';
+import {
+  CLEAR_USER_STATE,
+  FREEZE_DISPLAY_BALANCE,
+  SET_ADDRESS,
+  SET_AUTHENTICATED,
+  SET_ETH_BALANCE,
+  SET_LOADING,
+  SET_TOKEN_BALANCE,
+  SET_USER_ERROR,
+  UNFREEZE_DISPLAY_BALANCE,
+  UserActionTypes,
+} from '../types/user.types';
 
-export const setUserError = (error: LRError|null): UserActionTypes => {
+export const setUserError = (error: LRError | null): UserActionTypes => {
   return {
     type: SET_USER_ERROR,
     payload: error,
