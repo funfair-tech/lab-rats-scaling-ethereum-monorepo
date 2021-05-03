@@ -17,6 +17,7 @@ import { BetEvent } from '../events/betEvent';
 import { PersistentDataEvent } from '../events/persistentDataEvent';
 import { ErrorCode } from '../model/errorCodes';
 import { setNetworkError } from '../store/actions/network.actions';
+import { freezeDisplayBalance, unFreezeDisplayBalance } from '../store/actions/user.actions';
 class GameService {
   private GAME_MANAGER_ADDRESS = '0x42f9A9bDe939E9f0e082a801D7245005a1066681';
   private TOKEN_ADDRESS = '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2';
@@ -112,6 +113,14 @@ class GameService {
   //   // TODO: dispatch confirmation to store
   // }
   
+  public handleBalanceFreeze = (frozen: boolean) => {
+    if(frozen) {
+      store.dispatch(freezeDisplayBalance());
+    } else {
+      store.dispatch(unFreezeDisplayBalance());
+    }
+  }
+
   public handlePlay = async (stake: number, action: number) => {
 
     const state = store.getState();

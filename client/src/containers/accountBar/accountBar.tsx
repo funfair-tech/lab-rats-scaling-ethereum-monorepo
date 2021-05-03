@@ -26,7 +26,7 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
     <div className='accountBar'>
       <section className='accountBar__content'>
         <section>{props.title}</section>
-        <section className='accountBar__balance'><Coin visible={!!props.user.tokenBalance}/>{props.user.tokenBalance}</section>
+        <section className='accountBar__balance'><Coin visible={!!props.user.displayBalance}/>{props.user.displayBalance}</section>
 
         <section>
           <Button

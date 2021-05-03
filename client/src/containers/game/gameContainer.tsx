@@ -9,7 +9,7 @@ interface Props extends ReduxProps {}
 
 export const GameContainer: FunctionComponent<Props> = (props) => {
 
-  const gameInstance = useMemo(() => new Game(gameService.handlePlay), []);
+  const gameInstance = useMemo(() => new Game(gameService.handlePlay, gameService.handleBalanceFreeze), []);
 
   useEffect(() => {
     console.log('initialising game...');

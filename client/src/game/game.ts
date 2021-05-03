@@ -13,7 +13,7 @@ import { LRError } from '../model/errorCodes';
  */
 export class Game {
 
-  constructor(private play: (stake: number, action: number) => void) {
+  constructor(private play: (stake: number, action: number) => void, private freezeBalance: (frozen: boolean) => void) {
     Logic.SetAPIPlaycallback(play);
   };
 

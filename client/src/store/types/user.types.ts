@@ -7,6 +7,8 @@ export const SET_TOKEN_BALANCE = 'SET_TOKEN_BALANCE';
 export const SET_ADDRESS = 'SET_ADDRESS';
 export const SET_LOADING = 'SET_LOADING';
 export const CLEAR_USER_STATE = 'CLEAR_USER_STATE';
+export const FREEZE_DISPLAY_BALANCE = 'FREEZE_DISPLAY_BALANCE';
+export const UNFREEZE_DISPLAY_BALANCE = 'UNFREEZE_DISPLAY_BALANCE';
 
 export interface SetUserErrorAction {
   type: typeof SET_USER_ERROR;
@@ -42,6 +44,14 @@ export interface ClearUserState {
   type: typeof CLEAR_USER_STATE;
 }
 
+export interface FreezeDisplayBalance {
+  type: typeof FREEZE_DISPLAY_BALANCE;
+}
+
+export interface UnFreezeDisplayBalance {
+  type: typeof UNFREEZE_DISPLAY_BALANCE;
+}
+
 export type UserActionTypes =
   | SetUserErrorAction
   | SetAuthenticatedAction
@@ -49,4 +59,6 @@ export type UserActionTypes =
   | SetTokenBalanceAction
   | SetAddressAction
   | SetLoading
-  | ClearUserState;
+  | ClearUserState
+  | FreezeDisplayBalance
+  | UnFreezeDisplayBalance;

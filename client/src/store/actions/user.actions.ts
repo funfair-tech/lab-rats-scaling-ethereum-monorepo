@@ -1,5 +1,5 @@
 import { LRError } from '../../model/errorCodes';
-import { CLEAR_USER_STATE, SET_ADDRESS, SET_AUTHENTICATED, SET_ETH_BALANCE, SET_LOADING, SET_TOKEN_BALANCE, SET_USER_ERROR, UserActionTypes } from '../types/user.types';
+import { CLEAR_USER_STATE, FREEZE_DISPLAY_BALANCE, SET_ADDRESS, SET_AUTHENTICATED, SET_ETH_BALANCE, SET_LOADING, SET_TOKEN_BALANCE, SET_USER_ERROR, UNFREEZE_DISPLAY_BALANCE, UserActionTypes } from '../types/user.types';
 
 export const setUserError = (error: LRError|null): UserActionTypes => {
   return {
@@ -46,5 +46,17 @@ export const setLoading = (isLoading: boolean): UserActionTypes => {
 export const clearUserState = (): UserActionTypes => {
   return {
     type: CLEAR_USER_STATE,
+  };
+};
+
+export const freezeDisplayBalance = (): UserActionTypes => {
+  return {
+    type: FREEZE_DISPLAY_BALANCE,
+  };
+};
+
+export const unFreezeDisplayBalance = (): UserActionTypes => {
+  return {
+    type: UNFREEZE_DISPLAY_BALANCE,
   };
 };
