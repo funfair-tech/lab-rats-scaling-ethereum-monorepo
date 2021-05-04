@@ -2,6 +2,7 @@ import { FFEngine } from '@funfair/engine';
 import { GraphLine } from '../objects/graphLine';
 import { GraphCell } from '../objects/graphCell';
 import { ENVIRONMENT_MANAGER } from './environmentManager';
+import { GraphUI } from '../objects/graphUI';
 
 /**
  * Manages the display of the grid of graph cells and line
@@ -15,6 +16,7 @@ export class GraphManager extends FFEngine.Component {
 
     private graphLine!: GraphLine;
     private cells: GraphCell[] = [];
+    private graphUI!: GraphUI;
     private graphCoord: FFEngine.THREE.Vector2 = new FFEngine.THREE.Vector2();
     private graphCenter!: FFEngine.THREE.Vector2;
 
@@ -31,6 +33,9 @@ export class GraphManager extends FFEngine.Component {
 
         //create graph line
         this.graphLine = FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphLine);
+
+        //create graph UI
+        this.graphUI = FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphUI);
     }
 
     /**
@@ -85,12 +90,17 @@ export class GraphManager extends FFEngine.Component {
         return undefined;
     }
 
+    public UpdateGraphUI(): void {
+        this.graphUI.SetPosition(this.GridToWorld(this.graphCoord));
+    }
+
     /**
      * Dynamically create cells around the current graph position
      */
-    private UpdateCells(centerCoord: FFEngine.THREE.Vector2): void {
+    private UpdateCells(coord: FFEngine.THREE.Vector2): void {
 
         //round to closest whole grid coordinate
+        let centerCoord = new FFEngine.THREE.Vector3().copy(coord);
         centerCoord.x = Math.round(centerCoord.x);
         centerCoord.y = Math.round(centerCoord.y);
 

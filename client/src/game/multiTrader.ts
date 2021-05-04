@@ -191,6 +191,7 @@ export class MultiTrader extends FFEngine.Component {
                 case Logic_RoundState.ACCEPTINGBETS: 
                     GLUI.ShowBetUI(true);
                     GLUI.SetPlayerListMode(UIPlayerDisplayMode.BET);
+                    GRAPH_MANAGER.UpdateGraphUI();
                 break;
                 case Logic_RoundState.CLOSEDFORBETS: break;
                 case Logic_RoundState.COMPLETE: 

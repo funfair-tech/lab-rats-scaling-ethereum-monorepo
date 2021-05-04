@@ -66,7 +66,11 @@ export class GraphLine extends FFEngine.Component {
 
             for (let i=1;i<=GraphLine.INTERMEDIATE_POINTS_NUM;i++) {
                 let point = new FFEngine.THREE.Vector3().addVectors(previousPoint, new FFEngine.THREE.Vector3().copy(dif).multiplyScalar(i));
-                point.y += FFEngine.MathHelper.GetRandomRange(-GraphLine.INTERMEDIATE_POINTS_VARIANCE, GraphLine.INTERMEDIATE_POINTS_VARIANCE);
+
+                if (i < GraphLine.INTERMEDIATE_POINTS_NUM) {
+                    point.y += FFEngine.MathHelper.GetRandomRange(-GraphLine.INTERMEDIATE_POINTS_VARIANCE, GraphLine.INTERMEDIATE_POINTS_VARIANCE);
+                }
+                
                 this.points.push(point);
             }
         }
