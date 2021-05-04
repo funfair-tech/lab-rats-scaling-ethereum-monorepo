@@ -12,6 +12,7 @@ import { FFEngine } from '@funfair/engine';
  */
 export enum TextureAssetType {
     LINE,
+    GLOW,
 }
 
 /**
@@ -36,6 +37,10 @@ export class AssetPack {
         //load texture assets
         FFEngine.instance.assetLoader.LoadTextureNoMipMaps('game/line.png', (texture: any) => {
             this.textureAssets[TextureAssetType.LINE] = texture;
+        });
+
+        FFEngine.instance.assetLoader.LoadTextureNoMipMaps('game/glow.png', (texture: any) => {
+            this.textureAssets[TextureAssetType.GLOW] = texture;
         });
         
     }

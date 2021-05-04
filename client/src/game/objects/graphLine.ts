@@ -1,6 +1,7 @@
 import { FFEngine } from '@funfair/engine';
 import { ASSETPACK, TextureAssetType } from '../assetPack';
 import { GRAPH_MANAGER } from '../objectManagers/graphManager';
+import { GraphGlow } from './graphGlow';
 
 /**
  * A display object representing a the graph line
@@ -9,6 +10,7 @@ export class GraphLine extends FFEngine.Component {
 
     private points: FFEngine.THREE.Vector3[] = [];
     private line!: FFEngine.Line;
+    private glow!: GraphGlow;
 
     public Create(params: any): void {
         super.Create(params);
@@ -22,6 +24,9 @@ export class GraphLine extends FFEngine.Component {
         this.line.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
         this.line.SetColor(0xffffff);
 
+        //create glow object
+        this.glow = FFEngine.instance.CreateChildObjectWithComponent(this.container, GraphGlow);
+
         //add initial point
         this.AddResult(0);
     }
@@ -33,5 +38,7 @@ export class GraphLine extends FFEngine.Component {
         let newIndex = this.points.length;
         this.points.push(new FFEngine.THREE.Vector3(newIndex * GRAPH_MANAGER.GetCellWidth(), price * GRAPH_MANAGER.GetCellHeight(), 0));
         this.line.SetShape(this.points);
+
+        this.glow.GetContainer().position.copy(this.points[this.points.length-1]);
     }
 }
