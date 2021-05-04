@@ -6,21 +6,28 @@ import { setTransactionHash } from '../../store/actions/network.actions';
 import { FaucetRequest } from '../../model/faucetRequst';
 import { FaucetResponse } from '../../model/faucetResponse';
 import { setUserError } from '../../store/actions/user.actions';
-import { Notification, NotificationType } from '../../components/notification/notification';
+import {
+  Notification,
+  NotificationType,
+} from '../../components/notification/notification';
 import { ethers } from '../../services/ether.service';
 import { ErrorCode, LRError } from '../../model/errorCodes';
 
 interface Props extends ReduxProps {}
 
 export const Faucet: FunctionComponent<Props> = (props) => {
+  const MIN_TOKEN_BALANCE = 100;
+  const MIN_ETH_BALANCE = 0.002;
+
   useEffect(() => {
+    const ethBalance = props.user.ethBalance;
     const tokenBalance = props.user.tokenBalance;
     if (
       !props.user.loading &&
       !!props.user.address &&
       !!props.network.id &&
-      tokenBalance !== null &&
-      tokenBalance < 100
+      ((tokenBalance !== null && tokenBalance < MIN_TOKEN_BALANCE) ||
+        (ethBalance !== null && ethBalance < MIN_ETH_BALANCE))
     ) {
       openFaucet();
     }
@@ -29,11 +36,11 @@ export const Faucet: FunctionComponent<Props> = (props) => {
     props.user.loading,
     props.user.address,
     props.user.tokenBalance,
+    props.user.ethBalance,
     props.network.id,
   ]);
 
   const openFaucet = async () => {
-
     const request: FaucetRequest = {
       network: props.network.name as string,
       address: props.user.address,
@@ -44,7 +51,10 @@ export const Faucet: FunctionComponent<Props> = (props) => {
     );
 
     if (response.message) {
-      props.setUserError({code: ErrorCode.FAUCET_ERROR, msg:response.message});
+      props.setUserError({
+        code: ErrorCode.FAUCET_ERROR,
+        msg: response.message,
+      });
       // TODO: possibly retry the call here ... (add some sort of exit)
       // props.setTransactionHash('0x');
       // setTimeout(() => {

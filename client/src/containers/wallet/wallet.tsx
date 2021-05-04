@@ -4,6 +4,7 @@ import { MessageListeners } from '@funfair-tech/wallet-sdk/dist/src/app/core/ser
 import {
   AuthenticationCompletedResponse,
   ERC20TokenBalanceChangedResponse,
+  ETHBalanceChangedResponse,
   NewBlockResponse,
 } from '@funfair-tech/wallet-sdk/dist/src/app/core/services/message/models';
 import window from '@funfair-tech/wallet-sdk/window';
