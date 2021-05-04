@@ -157,8 +157,8 @@ export class MultiTraderUI extends FFEngine.Component {
         anchor.SetCamera(this.camera);
         anchor.SetAnchors(FFEngine.UIAnchorType.MAX, FFEngine.UIAnchorType.MAX);
         this.playerList = FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), UIPlayerList);
-        this.playerList.SetWidth(400);
-        this.playerList.GetContainer().position.set(-320, -180, 0);
+        this.playerList.SetWidth(300);
+        this.playerList.GetContainer().position.set(-220, -180, 0);
         this.playerList.SetBackground(undefined, new FFEngine.THREE.Color(0xaaaaaa), 0.4);
         this.playerList.SetFont(ASSETPACK.GetFontAsset(FontAssetType.STANDARD));
         this.playerList.SetLeftTitle('Player');
