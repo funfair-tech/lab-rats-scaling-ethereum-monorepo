@@ -8,7 +8,11 @@ import { GraphGlow } from './graphGlow';
  */
 export class GraphLine extends FFEngine.Component {
 
+    private static readonly INTERMEDIATE_POINTS_NUM = 3;
+    private static readonly INTERMEDIATE_POINTS_VARIANCE = 1;
+
     private points: FFEngine.THREE.Vector3[] = [];
+    private dataPoints: FFEngine.THREE.Vector3[] = [];
     private line!: FFEngine.Line;
     private glow!: GraphGlow;
 
@@ -34,9 +38,24 @@ export class GraphLine extends FFEngine.Component {
     /**
      * Adds a result to the graph line and advances the line along the grid
      */
-    public AddResult(price: number): void {
-        let newIndex = this.points.length;
-        this.points.push(new FFEngine.THREE.Vector3(newIndex * GRAPH_MANAGER.GetCellWidth(), price * GRAPH_MANAGER.GetCellHeight(), 0));
+    public AddResult(price: number, instant: boolean = true): void {
+        let newIndex = this.dataPoints.length;
+        let dataPoint = new FFEngine.THREE.Vector3(newIndex * GRAPH_MANAGER.GetCellWidth(), price * GRAPH_MANAGER.GetCellHeight(), 0);
+        this.dataPoints.push(dataPoint);
+
+        if (newIndex === 0) {
+            this.points.push(dataPoint);
+        }
+        else {
+            let previousPoint = this.dataPoints[newIndex-1];
+            let dif = new FFEngine.THREE.Vector3().subVectors(dataPoint, previousPoint).multiplyScalar(1/GraphLine.INTERMEDIATE_POINTS_NUM);
+
+            for (let i=1;i<=GraphLine.INTERMEDIATE_POINTS_NUM;i++) {
+                let point = new FFEngine.THREE.Vector3().addVectors(previousPoint, new FFEngine.THREE.Vector3().copy(dif).multiplyScalar(i));
+                point.y += FFEngine.MathHelper.GetRandomRange(-GraphLine.INTERMEDIATE_POINTS_VARIANCE, GraphLine.INTERMEDIATE_POINTS_VARIANCE);
+                this.points.push(point);
+            }
+        }
         this.line.SetShape(this.points);
 
         this.glow.GetContainer().position.copy(this.points[this.points.length-1]);
