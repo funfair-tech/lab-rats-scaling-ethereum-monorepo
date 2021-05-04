@@ -6,7 +6,7 @@ import MultiplayerGamesManagerABI from '../contracts/multiplayerGamesManager.jso
 import { Bet } from '../model/bet';
 import { BlockHeader } from '../model/blockHeader';
 import { RoundResult } from '../model/roundResult';
-import { addBet, clearBets, setGameError, setResult } from '../store/actions/game.actions';
+import { addBet, clearBets, setCanPlay, setGameError, setResult, setRound } from '../store/actions/game.actions';
 import store from '../store/store';
 import { ethers } from './ether.service';
 import { messageService } from './message.service';
@@ -18,6 +18,8 @@ import { PersistentDataEvent } from '../events/persistentDataEvent';
 import { ErrorCode } from '../model/errorCodes';
 import { setNetworkError } from '../store/actions/network.actions';
 import { freezeDisplayBalance, unFreezeDisplayBalance } from '../store/actions/user.actions';
+import { Round } from '../model/round';
+import { NoMoreBets } from '../events/noMoreBets';
 class GameService {
   private GAME_MANAGER_ADDRESS = '0x14FE1360ba12F1b84f3429f85138A0B8896A01Ca';
   private TOKEN_ADDRESS = '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2';
@@ -219,21 +221,67 @@ class GameService {
     // TODO: dispatch confirmation to store
   }
 
-  // public async testForRoundStart(blockHeader: BlockHeader) {
-  //   const eventName = 'StartGameRound';
-  //   // TODO: isInBloom ... [contract, eventName, roundId]
-  //   const contract = await ethers.getContract<MultiplayerGamesManager>(MultiplayerGamesManagerABI, this.GAME_MANAGER_ADDRESS);
-  //   const events: Event[] = await (contract as any).queryFilter(
-  //     eventName,
-  //     blockHeader.blockHash
-  //   );
+/**
+ * event NoMoreBets(bytes32 indexed _roundID, bytes32 indexed _persistentGameDataID);    
 
-  //   events.forEach((event: Event) => {
-  //     // const result: RoundResult = { test: event };
-  //     //@ts-ignore
-  //     store.dispatch(setRoundId(event._roundID));
-  //   });
-  // }
+ * @param blockHeader 
+ */
+
+  public async testForNoMoreBets(blockHeader: BlockHeader) {
+    const eventName = 'NoMoreBets';
+
+    const state = store.getState();
+    const contractInBloom = isContractAddressInBloom(blockHeader.bloomFilter, this.GAME_MANAGER_ADDRESS);
+    const roundInBloom = !!state.game.round ? isInBloom(blockHeader.bloomFilter, state.game.round.id) : false;
+    
+    if(!contractInBloom || !roundInBloom) {
+      return;
+    }
+
+    const contract = await ethers.getContract<MultiplayerGamesManager>(MultiplayerGamesManagerABI, this.GAME_MANAGER_ADDRESS);
+    const events: Event[] = await (contract as any).queryFilter(
+      eventName,
+      blockHeader.blockHash
+    ).catch((error: any) => {
+      console.error(error);
+      store.dispatch(setNetworkError({code: ErrorCode.JSON_RPC_READ_ERROR, msg: `Error reading events for block ${blockHeader.blockNumber}`}));
+      return [];
+    });;
+
+    events.forEach((event: Event) => {
+      if(!!event.args && event.args[NoMoreBets.ROUND_ID] === state.game.round?.id) {
+        store.dispatch(setCanPlay(false));
+      }
+    });
+  }
+
+  public async testForRoundStart(blockHeader: BlockHeader) {
+    const eventName = 'StartGameRound';
+    const contract = await ethers.getContract<MultiplayerGamesManager>(MultiplayerGamesManagerABI, this.GAME_MANAGER_ADDRESS);
+    const events: Event[] = await (contract as any).queryFilter(
+      eventName,
+      blockHeader.blockHash
+    ).catch((error: any) => {
+      console.error(error);
+      store.dispatch(setNetworkError({code: ErrorCode.JSON_RPC_READ_ERROR, msg: `Error reading events for block ${blockHeader.blockNumber}`}));
+      return [];
+    });;
+
+    events.forEach((event: Event) => {
+      console.log('++ start round event ', event);
+
+      const round : Round|null = !!event.args ?{
+        id: event.args[BetEvent.ROUND_ID],
+        block: blockHeader.blockNumber,
+        time: 0,
+        timeToNextRound: 0,
+      } : null
+
+      if(round) {
+        store.dispatch(setRound(round));
+      }
+    });
+  }
 
   public async testForBetEvents(blockHeader: BlockHeader) {
     const eventName = 'Bet';
@@ -325,6 +373,8 @@ class GameService {
   public async readBlockHeader(blockHeader: BlockHeader) {
     this.testForBetEvents(blockHeader);
     this.testForRoundResult(blockHeader);
+    // this.testForRoundStart(blockHeader);
+    // this.testForNoMoreBets(blockHeader);
   }
 
 }

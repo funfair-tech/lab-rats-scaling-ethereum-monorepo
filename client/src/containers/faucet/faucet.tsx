@@ -25,6 +25,7 @@ export const Faucet: FunctionComponent<Props> = (props) => {
     if (
       !props.user.loading &&
       !!props.user.address &&
+      !props.network.transactionHash &&
       !!props.network.id &&
       ((tokenBalance !== null && tokenBalance < MIN_TOKEN_BALANCE) ||
         (ethBalance !== null && ethBalance < MIN_ETH_BALANCE))
@@ -38,6 +39,7 @@ export const Faucet: FunctionComponent<Props> = (props) => {
     props.user.tokenBalance,
     props.user.ethBalance,
     props.network.id,
+    props.network.transactionHash,
   ]);
 
   const openFaucet = async () => {

@@ -38,14 +38,14 @@ class MessageService {
     console.log(
       `GameRoundStarted: ${gameRoundId} ${timeLeftInSeconds} ${startRoundBlockNumber} ${interRoundPause}`,
     );
+
+    // enable websocket rounds
     const round: Round = {
       id: gameRoundId,
       block: startRoundBlockNumber,
       time: timeLeftInSeconds,
       timeToNextRound: interRoundPause
     }
-
-    // store.dispatch(setCanPlay(true));
     store.dispatch(setRound(round));
   };
 
@@ -53,6 +53,7 @@ class MessageService {
     console.log(
       `BettingEnding: `,
     );
+    // enable websocket no more bets
     store.dispatch(setCanPlay(false));
   };
 
