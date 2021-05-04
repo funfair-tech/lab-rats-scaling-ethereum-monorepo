@@ -10,9 +10,11 @@ export class GraphLine extends FFEngine.Component {
 
     private static readonly INTERMEDIATE_POINTS_NUM = 3;
     private static readonly INTERMEDIATE_POINTS_VARIANCE = 1;
+    private static readonly RESULT_LERP_SPEED = 0.5;
 
     private points: FFEngine.THREE.Vector3[] = [];
     private dataPoints: FFEngine.THREE.Vector3[] = [];
+    private resultLerpCoef: number = 1;
     private line!: FFEngine.Line;
     private glow!: GraphGlow;
 
@@ -33,6 +35,18 @@ export class GraphLine extends FFEngine.Component {
 
         //add initial point
         this.AddResult(0);
+    }
+
+    public Update(): void {
+        if (this.resultLerpCoef < 1) {
+            this.resultLerpCoef += FFEngine.instance.GetDeltaTime() * GraphLine.RESULT_LERP_SPEED;
+
+            if (this.resultLerpCoef > 1) {
+                this.resultLerpCoef = 1;
+            }
+
+            this.UpdateGraphLerp();
+        }
     }
 
     /**
@@ -56,8 +70,36 @@ export class GraphLine extends FFEngine.Component {
                 this.points.push(point);
             }
         }
-        this.line.SetShape(this.points);
+        
+        //setup lerp and update graph
+        if (this.points.length > 2 && instant === false) {
+            this.resultLerpCoef = 0;
+        }
+        else {
+            this.resultLerpCoef = 1;
+        }
+        this.UpdateGraphLerp();
+    }
 
-        this.glow.GetContainer().position.copy(this.points[this.points.length-1]);
+    private UpdateGraphLerp(): void {
+        let drawPoints: FFEngine.THREE.Vector3[] = [];
+        let lerpPointCoef: number = (1 / GraphLine.INTERMEDIATE_POINTS_NUM);
+        let startLerpIndex: number = (this.points.length - GraphLine.INTERMEDIATE_POINTS_NUM);
+        let completeLerpPoints = Math.floor(this.resultLerpCoef / lerpPointCoef);
+        let remainingScaledLerpCoef = (this.resultLerpCoef - (completeLerpPoints * lerpPointCoef)) * GraphLine.INTERMEDIATE_POINTS_NUM;
+
+        for (let i=0;i<this.points.length;i++) {
+            if (i < startLerpIndex + completeLerpPoints) {
+                drawPoints.push(this.points[i]);
+            }
+            else if (i === startLerpIndex + completeLerpPoints) {
+                let dif = new FFEngine.THREE.Vector3().subVectors(this.points[i], this.points[i-1]).multiplyScalar(remainingScaledLerpCoef);
+                let lerpedPoint = new FFEngine.THREE.Vector3().copy(this.points[i-1]).add(dif);
+                drawPoints.push(lerpedPoint);
+            }
+        }
+
+        this.line.SetShape(drawPoints);
+        this.glow.GetContainer().position.copy(drawPoints[drawPoints.length-1]);
     }
 }

@@ -57,14 +57,14 @@ export class GraphManager extends FFEngine.Component {
     /**
      * Adds a result to the end of the graph line
      */
-    public AddResult(price: number): void {
+    public AddResult(price: number, instant: boolean = true): void {
 
         //temporary scaling until the graph sizing is sorted
         price -= 1000;
         price /= 5;
 
         if (this.graphLine) {
-            this.graphLine.AddResult(price);
+            this.graphLine.AddResult(price, instant);
         }
 
         //advance graph

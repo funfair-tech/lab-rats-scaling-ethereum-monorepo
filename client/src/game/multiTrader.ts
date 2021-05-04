@@ -60,11 +60,6 @@ export class MultiTrader extends FFEngine.Component {
                     FFEngine.instance.ToggleDebugDisplay();
                 }
 
-                //test adding graph results
-                if (params.keyCode === 69) { // 'E'
-                    GRAPH_MANAGER.AddResult(FFEngine.MathHelper.GetRandomRange(-2, 2));
-                }
-
                 //Reserve some keys for testlogic
                 // 0 - 9 inclusive
                 //q,w,r,t,y
@@ -151,7 +146,7 @@ export class MultiTrader extends FFEngine.Component {
 
             //add a new graph result
             if (state.roundState === Logic_RoundState.COMPLETE) {
-                GRAPH_MANAGER.AddResult(state.currentPrice);
+                GRAPH_MANAGER.AddResult(state.currentPrice, false);
             }
 
             //update prize pool
