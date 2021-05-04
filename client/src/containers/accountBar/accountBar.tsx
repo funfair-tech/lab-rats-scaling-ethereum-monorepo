@@ -36,7 +36,7 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
           <Coin visible={!!props.user.displayBalance} />
           {props.user.displayBalance}
         </section>
-
+{/* 
         <section>
           <Button
             disabled={
@@ -49,7 +49,7 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
           >
             play
           </Button>
-        </section>
+        </section> */}
 
         {/* <section>
           <Button
