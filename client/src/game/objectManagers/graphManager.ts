@@ -94,6 +94,10 @@ export class GraphManager extends FFEngine.Component {
         this.graphUI.SetPosition(this.GridToWorld(this.graphCoord));
     }
 
+    public GraphUIShowBetButtons(visible: boolean): void {
+        this.graphUI.ShowBetButtons(visible);
+    }
+
     /**
      * Dynamically create cells around the current graph position
      */
