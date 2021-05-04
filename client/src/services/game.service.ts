@@ -19,7 +19,7 @@ import { ErrorCode } from '../model/errorCodes';
 import { setNetworkError } from '../store/actions/network.actions';
 import { freezeDisplayBalance, unFreezeDisplayBalance } from '../store/actions/user.actions';
 class GameService {
-  private GAME_MANAGER_ADDRESS = '0x42f9A9bDe939E9f0e082a801D7245005a1066681';
+  private GAME_MANAGER_ADDRESS = '0x14FE1360ba12F1b84f3429f85138A0B8896A01Ca';
   private TOKEN_ADDRESS = '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2';
 
   private debugEncodeBet(bet: Bet): string {

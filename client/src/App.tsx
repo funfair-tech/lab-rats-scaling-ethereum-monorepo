@@ -6,9 +6,13 @@ import Game from './containers/game/gameContainer';
 import SplashScreen from './containers/splash/splashScreen';
 
 function App() {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const localGame = urlParams.get('localGame') === 'true';
+
   return (
     <div className='app'>
-      <SplashScreen />
+      {localGame ? null : <SplashScreen />}
       <AccountBar title='Lab Rats' />
       <Game />
       <Faucet />
