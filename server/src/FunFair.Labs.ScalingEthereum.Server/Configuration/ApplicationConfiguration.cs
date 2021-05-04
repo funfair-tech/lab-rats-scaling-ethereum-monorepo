@@ -39,17 +39,27 @@ namespace FunFair.Labs.ScalingEthereum.Server.Configuration
             this.Configuration[key: @"Environment"]
                 .ToEnum<ExecutionEnvironment>();
 
-        public IFaucetConfiguration FaucetConfiguration { get; } = new FaucetConfiguration(tokenToGive: new Token(value: 100_000m), ethToGive: new EthereumAmount(0.5m.ToWei(EthereumUnit.ETHER)));
+        public IFaucetConfiguration FaucetConfiguration
+        {
+            get
+            {
+                EthereumAmount nativeCurrencyToGive = new(decimal.Parse(this.Configuration[key: @"Faucet:NativeCurrencyToGive"] ?? "1", provider: CultureInfo.InvariantCulture)
+                                                                 .ToWei(EthereumUnit.ETHER));
+                Token tokenToGive = new(decimal.Parse(this.Configuration[key: @"Faucet:TokenToGive"] ?? "1000.0", provider: CultureInfo.InvariantCulture));
+
+                return new FaucetConfiguration(tokenToGive: tokenToGive, nativeCurrencyToGive: nativeCurrencyToGive);
+            }
+        }
 
         public IFaucetBalanceConfiguration FaucetBalanceConfiguration
         {
             get
             {
-                EthereumAmount minEthBalance = new(decimal.Parse(this.Configuration[key: @"Alerts:FaucetBalances:MinimumNativeCurrency"] ?? "1", provider: CultureInfo.InvariantCulture)
-                                                          .ToWei(EthereumUnit.ETHER));
+                EthereumAmount minNativeCurrency = new(decimal.Parse(this.Configuration[key: @"Alerts:FaucetBalances:MinimumNativeCurrency"] ?? "1", provider: CultureInfo.InvariantCulture)
+                                                              .ToWei(EthereumUnit.ETHER));
                 Token minTokenBalance = new(decimal.Parse(this.Configuration[key: @"Alerts:FaucetBalances:MinimumToken"] ?? "1000.0", provider: CultureInfo.InvariantCulture));
 
-                return new FaucetBalanceConfiguration(minimumAllowedNativeCurrencyBalance: minEthBalance, minimumAllowedTokenBalance: minTokenBalance.Erc20Value.TokenAmount);
+                return new FaucetBalanceConfiguration(minimumAllowedNativeCurrencyBalance: minNativeCurrency, minimumAllowedTokenBalance: minTokenBalance.Erc20Value.TokenAmount);
             }
         }
 

@@ -14,8 +14,8 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Models
         Token TokenToGive { get; }
 
         /// <summary>
-        ///     The amount of ETH to issue.
+        ///     The amount of the native currency to issue.
         /// </summary>
-        EthereumAmount EthToGive { get; }
+        EthereumAmount NativeCurrencyToGive { get; }
     }
 }

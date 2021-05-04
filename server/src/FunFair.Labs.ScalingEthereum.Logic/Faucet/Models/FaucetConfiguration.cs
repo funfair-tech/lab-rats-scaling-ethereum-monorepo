@@ -1,4 +1,5 @@
-﻿using FunFair.Ethereum.DataTypes.Primitives;
+﻿using System;
+using FunFair.Ethereum.DataTypes.Primitives;
 using FunFair.Labs.ScalingEthereum.DataTypes.Primitives;
 
 namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Models
@@ -11,18 +12,18 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Models
         /// <summary>
         ///     Constructor.
         /// </summary>
-        /// <param name="ethToGive">The amount of ETH to issue.</param>
-        /// <param name="tokenToGive">The amount of BAN to issue.</param>
-        public FaucetConfiguration(EthereumAmount ethToGive, Token tokenToGive)
+        /// <param name="nativeCurrencyToGive">The amount of the native currency to issue.</param>
+        /// <param name="tokenToGive">The amount of the token to issue.</param>
+        public FaucetConfiguration(EthereumAmount nativeCurrencyToGive, Token tokenToGive)
         {
-            this.EthToGive = ethToGive;
-            this.TokenToGive = tokenToGive;
+            this.NativeCurrencyToGive = nativeCurrencyToGive ?? throw new ArgumentNullException(nameof(nativeCurrencyToGive));
+            this.TokenToGive = tokenToGive ?? throw new ArgumentNullException(nameof(tokenToGive));
         }
 
         /// <inheritdoc />
         public Token TokenToGive { get; }
 
         /// <inheritdoc />
-        public EthereumAmount EthToGive { get; }
+        public EthereumAmount NativeCurrencyToGive { get; }
     }
 }

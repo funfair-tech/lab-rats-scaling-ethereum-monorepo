@@ -86,7 +86,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
             this._executionEnvironment = executionEnvironment;
             this._ethereumAccountManager = ethereumAccountManager ?? throw new ArgumentNullException(nameof(ethereumAccountManager));
 
-            this._nativeCurrencyLimits = new Limits<EthereumAmount>(amountToIssue: faucetConfiguration.EthToGive, faucetConfiguration.EthToGive / 2);
+            this._nativeCurrencyLimits = new Limits<EthereumAmount>(amountToIssue: faucetConfiguration.NativeCurrencyToGive, faucetConfiguration.NativeCurrencyToGive / 2);
             this._tokenCurrencyLimits = new Limits<Token>(amountToIssue: faucetConfiguration.TokenToGive, faucetConfiguration.TokenToGive / 2);
 
             this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -119,10 +119,10 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
                 await this.GetTokenBalancesAsync(recipient: recipient, networkBlockHeader: networkBlockHeader, faucetContractAddress: faucetContractAddress, cancellationToken: cancellationToken);
 
             (EthereumAmount nativeCurrencyAmount, Token tokenAmount) = this.CalculateFundsToIssue(recipient: recipient,
-                                                                                       recipientNativeCurrencyBalance: recipientEthBalance,
-                                                                                       recipientTokenBalance: recipientBalanceForToken,
-                                                                                       faucetNativeCurrencyBalance: sourceAccountBalance,
-                                                                                       faucetTokenBalance: sourceBalanceForToken);
+                                                                                                  recipientNativeCurrencyBalance: recipientEthBalance,
+                                                                                                  recipientTokenBalance: recipientBalanceForToken,
+                                                                                                  faucetNativeCurrencyBalance: sourceAccountBalance,
+                                                                                                  faucetTokenBalance: sourceBalanceForToken);
 
             if (!await this.IsAllowedToIssueFromFaucetAsync(ipAddress: ipAddress, recipientAddress: recipient.Address))
             {
@@ -130,8 +130,8 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
             }
 
             Issuance issuance =
-                new(recipient: recipient, ethToIssue: nativeCurrencyAmount, tokenToIssue: tokenAmount, sourceAccountBalance: sourceAccountBalance, sourceTokenBalance: sourceBalanceForToken, sourceName:
-                    sourceName, new NetworkContract(network: recipient.Network, contractAddress: faucetContractAddress), contractInfo: this._faucetContract);
+                new(recipient: recipient, ethToIssue: nativeCurrencyAmount, tokenToIssue: tokenAmount, sourceAccountBalance: sourceAccountBalance, sourceTokenBalance: sourceBalanceForToken, sourceName
+                    : sourceName, new NetworkContract(network: recipient.Network, contractAddress: faucetContractAddress), contractInfo: this._faucetContract);
 
             try
             {
@@ -212,7 +212,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Faucet.Services
                 throw new InsufficientTokenException();
             }
 
-            return (sourceBalanceForToken: new(sourceTokenBalance), recipientBalanceForToken: new(recipientTokenBalance));
+            return (sourceBalanceForToken: new Token(sourceTokenBalance), recipientBalanceForToken: new Token(recipientTokenBalance));
         }
 
         private async Task<(EthereumAmount sourceAccountBalance, EthereumAmount recipientEthBalance)> GetNativeCurrencyBalancesAsync(
