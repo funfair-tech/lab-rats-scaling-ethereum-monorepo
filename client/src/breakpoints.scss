@@ -1,0 +1,18 @@
+
+@mixin mb-portrait {
+  @media screen and (min-device-width: 320px) and (max-device-width: 823px) and (orientation: portrait) {
+    @content;
+  }
+}
+
+@mixin mb-landscape {
+  @media screen and (min-device-width: 320px) and (max-device-width: 823px) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin bp-small {
+  @media (min-width: 600px) {
+    @content;
+  }
+}

@@ -6,19 +6,18 @@ import { Button } from '../../components/button/button';
 import window from '@funfair-tech/wallet-sdk/window';
 import {
   clearUserState,
-  setTokenBalance,
 } from '../../store/actions/user.actions';
 import { gameService } from '../../services/game.service';
 import { Coin } from '../../components/coin/coin';
-import store from '../../store/store';
+// import store from '../../store/store';
 interface Props extends ReduxProps {
   title: string;
 }
 
 export const AccountBar: FunctionComponent<Props> = (props) => {
-  const loginToWallet = () => {
-    window.funwallet.sdk.auth.login();
-  };
+  // const loginToWallet = () => {
+  //   window.funwallet.sdk.auth.login();
+  // };
 
   const logOutOfWallet = async () => {
     await window.funwallet.sdk.auth.logout();
@@ -28,10 +27,13 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
   return (
     <div className='accountBar'>
       <section className='accountBar__content'>
-        <section>{props.title}</section>
+        {/* <section>{props.title}</section> */}
+        <section className='accountBar__logo'>
+          <img src={process.env.PUBLIC_URL + '/logo.png'} alt='Lab Rats' />
+        </section>
+
         <section className='accountBar__balance'>
-          {/* <Coin visible={!!props.user.displayBalance} /> */}
-          <Coin visible={true} />
+          <Coin visible={!!props.user.displayBalance} />
           {props.user.displayBalance}
         </section>
 
@@ -49,7 +51,7 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
           </Button>
         </section>
 
-        <section>
+        {/* <section>
           <Button
             onClick={() => {
               store.dispatch(setTokenBalance(0));
@@ -57,16 +59,19 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
           >
             zero balance
           </Button>
-        </section>
+        </section> */}
 
         <section>
-          {props.user.authenticated ? (
+          {/* {props.user.authenticated ? (
             <Button onClick={logOutOfWallet}>Sign out</Button>
           ) : (
             <Button onClick={loginToWallet} disabled={props.user.loading}>
               {props.user.loading ? 'Loading...' : 'Sign in'}
             </Button>
-          )}
+          )} */}
+          {props.user.authenticated ? (
+            <Button onClick={logOutOfWallet}>Sign out</Button>
+          ) : null}
         </section>
       </section>
     </div>
