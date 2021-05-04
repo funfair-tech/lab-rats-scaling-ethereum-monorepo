@@ -53,7 +53,7 @@ export class EnvironmentManager extends FFEngine.Component {
      */
     public SetCameraToGraphCoordinate(coord: FFEngine.THREE.Vector2): void {
         let camPos = GRAPH_MANAGER.GridToWorld(coord);
-        camPos.x += EnvironmentManager.CAM_X_OFFSET;
+        camPos.x += EnvironmentManager.CAM_X_OFFSET + 2.5;
         camPos.z = EnvironmentManager.CAM_Z;
         this.MoveCamera(camPos);
     }

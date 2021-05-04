@@ -3,6 +3,7 @@ import { GraphLine } from '../objects/graphLine';
 import { GraphCell } from '../objects/graphCell';
 import { ENVIRONMENT_MANAGER } from './environmentManager';
 import { GraphUI } from '../objects/graphUI';
+import { Player } from './playerManager';
 
 /**
  * Manages the display of the grid of graph cells and line
@@ -96,6 +97,10 @@ export class GraphManager extends FFEngine.Component {
 
     public GraphUIShowBetButtons(visible: boolean): void {
         this.graphUI.ShowBetButtons(visible);
+    }
+
+    public GraphUIUpdatePlayers(players: Player[]): void {
+        this.graphUI.UpdatePlayers(players);
     }
 
     /**

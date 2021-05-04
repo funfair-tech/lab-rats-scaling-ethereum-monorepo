@@ -1,10 +1,12 @@
 import { FFEngine } from '@funfair/engine';
-import { Logic_Bet } from '../logic/logic_defines';
+import { Logic_Bet, Logic_BetType } from '../logic/logic_defines';
 import { GLUI } from '../multiTraderUI';
 import { UIPlayerData } from '../objects/uiPlayerList';
+import { GRAPH_MANAGER } from './graphManager';
 
 export class Player {
-    constructor (public playerID: string) {}
+    constructor (public playerID: string,
+        public betType: Logic_BetType) {}
 }
 
 /**
@@ -69,11 +71,12 @@ export class PlayerManager extends FFEngine.Component {
 
         if (betsUpdated === true) {
             //update UI
+            GRAPH_MANAGER.GraphUIUpdatePlayers(this.players);
         }
     }
 
     private CreatePlayer(index: number, bet: Logic_Bet): Player {
-        this.players[index] = new Player(bet.address);
+        this.players[index] = new Player(bet.address, bet.betType);
 
         //add player to player list
         GLUI.GetPlayerList().SetPlayer(index, new UIPlayerData(bet.address, bet.name, bet.isLocalPlayer));

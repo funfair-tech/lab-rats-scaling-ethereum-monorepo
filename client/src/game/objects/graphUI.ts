@@ -1,8 +1,9 @@
 import { FFEngine } from '@funfair/engine';
-import { ASSETPACK, FontAssetType } from '../assetPack';
+import { ASSETPACK, FontAssetType, TextureAssetType } from '../assetPack';
 import { Logic_BetType } from '../logic/logic_defines';
 import { MULTITRADER } from '../multiTrader';
 import { ENVIRONMENT_MANAGER } from '../objectManagers/environmentManager';
+import { Player } from '../objectManagers/playerManager';
 import { ButtonSpriteStateConfig, UIButtonSprite } from './uiButtonSprite';
 
 /**
@@ -18,6 +19,7 @@ export class GraphUI extends FFEngine.Component {
     private betBigHigh!: UIButtonSprite;
     private betSmallLow!: UIButtonSprite;
     private betBigLow!: UIButtonSprite;
+    private playerBets: FFEngine.Sprite[] = [];
 
     public Create(params: any): void {
         super.Create(params);
@@ -132,7 +134,54 @@ export class GraphUI extends FFEngine.Component {
         this.betUI.visible = visible
     }
 
+    public UpdatePlayers(players: Player[]): void {
+
+        //remove current bets
+        for (let i=0;i<this.playerBets.length;i++) {
+            FFEngine.instance.Destroy(this.playerBets[i].GetContainer());
+        }
+        this.playerBets = [];
+
+        //spawn new bets
+        for (let i=0;i<players.length;i++) {
+            let sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
+            sprite.SetTexture(ASSETPACK.GetTextureAsset(TextureAssetType.GLOW));
+            sprite.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
+            sprite.SetSize(0.5, 0.5);
+            sprite.GetContainer().position.copy(this.GetPlayerPositionForBet(players[i].betType));
+            this.playerBets.push(sprite);
+        }
+    }
+
     public SetPosition(position: FFEngine.THREE.Vector3): void {
         this.container.position.copy(position);
+    }
+
+    private GetPlayerPositionForBet(betType: Logic_BetType): FFEngine.THREE.Vector3 {
+        let position = new FFEngine.THREE.Vector3();
+
+        switch (betType) {
+            case Logic_BetType.HIGHER:
+                position.copy(this.betHigh.GetContainer().position);
+            break;
+            case Logic_BetType.SMALLHIGHER:
+                position.copy(this.betSmallHigh.GetContainer().position);
+            break;
+            case Logic_BetType.LARGEHIGHER:
+                position.copy(this.betBigHigh.GetContainer().position);
+            break;
+            case Logic_BetType.LOWER:
+                position.copy(this.betLow.GetContainer().position);
+            break;
+            case Logic_BetType.SMALLLOWER:
+                position.copy(this.betSmallLow.GetContainer().position);
+            break;
+            case Logic_BetType.LARGELOWER:
+                position.copy(this.betSmallLow.GetContainer().position);
+            break;
+        }
+
+        position.y -= 0.5;
+        return position;
     }
 }
