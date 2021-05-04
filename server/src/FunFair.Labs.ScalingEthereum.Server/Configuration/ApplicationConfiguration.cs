@@ -39,7 +39,7 @@ namespace FunFair.Labs.ScalingEthereum.Server.Configuration
             this.Configuration[key: @"Environment"]
                 .ToEnum<ExecutionEnvironment>();
 
-        public IFaucetConfiguration FaucetConfiguration { get; } = new FaucetConfiguration(tokenToGive: new Token(value: 100_000m), ethToGive: new EthereumAmount(0.1m.ToWei(EthereumUnit.ETHER)));
+        public IFaucetConfiguration FaucetConfiguration { get; } = new FaucetConfiguration(tokenToGive: new Token(value: 100_000m), ethToGive: new EthereumAmount(0.5m.ToWei(EthereumUnit.ETHER)));
 
         public IFaucetBalanceConfiguration FaucetBalanceConfiguration
         {
