@@ -144,12 +144,14 @@ export class GraphUI extends FFEngine.Component {
 
         //spawn new bets
         for (let i=0;i<players.length;i++) {
-            let sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
-            sprite.SetTexture(ASSETPACK.GetTextureAsset(TextureAssetType.GLOW));
-            sprite.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
-            sprite.SetSize(0.5, 0.5);
-            sprite.GetContainer().position.copy(this.GetPlayerPositionForBet(players[i].betType));
-            this.playerBets.push(sprite);
+            if (players[i]) {
+                let sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
+                sprite.SetTexture(ASSETPACK.GetTextureAsset(TextureAssetType.GLOW));
+                sprite.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
+                sprite.SetSize(0.5, 0.5);
+                sprite.GetContainer().position.copy(this.GetPlayerPositionForBet(players[i].betType));
+                this.playerBets.push(sprite);
+            }
         }
     }
 
