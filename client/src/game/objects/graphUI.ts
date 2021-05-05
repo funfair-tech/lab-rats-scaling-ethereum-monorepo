@@ -50,7 +50,7 @@ export class GraphUI extends FFEngine.Component {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.HIGHER);
         });
 
-        let text = FFEngine.instance.CreateChildObjectWithComponent(this.betHigh.GetContainer(), FFEngine.BitmapString, { text: 'High', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 1, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 0, 0]});
+        let text = FFEngine.instance.CreateChildObjectWithComponent(this.betHigh.GetContainer(), FFEngine.BitmapString, { text: 'High', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.6, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 0, 0]});
         text.SetRenderOrder(1);
 
         this.betLow = FFEngine.instance.CreateChildObjectWithComponent(this.betUI, UIButtonSprite);
@@ -66,7 +66,7 @@ export class GraphUI extends FFEngine.Component {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.LOWER);
         });
 
-        text = FFEngine.instance.CreateChildObjectWithComponent(this.betLow.GetContainer(), FFEngine.BitmapString, { text: 'Low', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 1, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 0, 0]});
+        text = FFEngine.instance.CreateChildObjectWithComponent(this.betLow.GetContainer(), FFEngine.BitmapString, { text: 'Low', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.6, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 0, 0]});
         text.SetRenderOrder(1);
 
         this.betSmallHigh = FFEngine.instance.CreateChildObjectWithComponent(this.betUI, UIButtonSprite);
