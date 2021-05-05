@@ -1,3 +1,5 @@
+@import '../../theme.scss';
+
 .btn {
   padding: 10px;
   overflow: hidden;
@@ -5,15 +7,15 @@
   outline: none;
   border-radius: 2px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-  background-color: #a500e1;
-  color: #ecf0f1;
+  background-color: $accent-background-color;
+  color: $accent-font-color;
   transition: background-color 0.3s;
   cursor: pointer;
 }
 
 .btn:hover,
 .btn:focus {
-  background-color: #650488;
+  background-color: $accent-background-focus-color;
 }
 .btn:disabled {
   background-color: #aaa;

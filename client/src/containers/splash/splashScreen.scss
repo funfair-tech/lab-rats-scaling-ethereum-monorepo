@@ -50,7 +50,7 @@
       font-size: 44px;
       line-height: 54px;
       letter-spacing: 0px;
-      color: #fff;
+      color: $primary-font-color;
 
       h1 {
         margin: 0;
@@ -60,7 +60,7 @@
 
     &__description {
       text-align: left;
-      color: #fff;
+      color: $primary-font-color;
       opacity: 0.7;
       line-height: 1.6;
       @include bp-small {
@@ -104,12 +104,4 @@
       }
     }
   }
-
-
-  // &__hero {
-  //     position: fixed;
-  //     top: 50%;
-  //     left: 50%;
-  //     transform: translate(-50%, -50%);
-  // }
 }
