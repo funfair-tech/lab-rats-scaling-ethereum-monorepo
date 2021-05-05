@@ -194,7 +194,7 @@ export class GraphUI extends FFEngine.Component {
                 position.copy(this.betSmallLow.GetContainer().position);
             break;
             case Logic_BetType.LARGELOWER:
-                position.copy(this.betSmallLow.GetContainer().position);
+                position.copy(this.betBigLow.GetContainer().position);
             break;
         }
 
