@@ -111,6 +111,7 @@ export class MultiTrader extends FFEngine.Component {
             let betResponse = LOGIC.PlaceBetToServer(betType);
             console.log('bet response: ' + betResponse);
         }
+        GRAPH_MANAGER.GraphUILockBetButtons(true);
     }
 
     public GraphResultFinished(): void {
@@ -199,10 +200,12 @@ export class MultiTrader extends FFEngine.Component {
                 case Logic_RoundState.ACCEPTINGBETS: 
                     GLUI.ShowBetUI(true);
                     GRAPH_MANAGER.GraphUIShowBetButtons(true);
+                    GRAPH_MANAGER.GraphUILockBetButtons(false);
                     GLUI.SetPlayerListMode(UIPlayerDisplayMode.BET);
                     GRAPH_MANAGER.UpdateGraphUI();
                 break;
                 case Logic_RoundState.CLOSEDFORBETS: 
+                    GRAPH_MANAGER.GraphUILockBetButtons(true);
                     GLUI.ShowAwaitingResultUI(true);
                 break;
                 case Logic_RoundState.COMPLETE: 

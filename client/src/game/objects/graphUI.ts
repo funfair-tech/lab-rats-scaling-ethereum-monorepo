@@ -42,6 +42,7 @@ export class GraphUI extends FFEngine.Component {
         this.betHigh.GetSprite().SetAlpha(0.5);
 
         this.betHigh.SetupState(FFEngine.ButtonState.IDLE, new ButtonSpriteStateConfig(undefined, new FFEngine.THREE.Color(0xff50ff)));
+        this.betHigh.SetupState(FFEngine.ButtonState.LOCKED, new ButtonSpriteStateConfig(undefined, new FFEngine.THREE.Color(0xaa20aa)));
         this.betHigh.SetCamera(ENVIRONMENT_MANAGER.GetCamera());
 
         this.betHigh.SetOnClicked(() => {
@@ -57,6 +58,7 @@ export class GraphUI extends FFEngine.Component {
         this.betLow.GetSprite().SetAlpha(0.5);
 
         this.betLow.SetupState(FFEngine.ButtonState.IDLE, new ButtonSpriteStateConfig(undefined, new FFEngine.THREE.Color(0xff50ff)));
+        this.betLow.SetupState(FFEngine.ButtonState.LOCKED, new ButtonSpriteStateConfig(undefined, new FFEngine.THREE.Color(0xaa20aa)));
         this.betLow.SetCamera(ENVIRONMENT_MANAGER.GetCamera());
 
         this.betLow.SetOnClicked(() => {
@@ -72,6 +74,7 @@ export class GraphUI extends FFEngine.Component {
         this.betSmallHigh.GetSprite().SetAlpha(0.5);
 
         this.betSmallHigh.SetupState(FFEngine.ButtonState.IDLE, new ButtonSpriteStateConfig(undefined, new FFEngine.THREE.Color(0xff50ff)));
+        this.betSmallHigh.SetupState(FFEngine.ButtonState.LOCKED, new ButtonSpriteStateConfig(undefined, new FFEngine.THREE.Color(0xaa20aa)));
         this.betSmallHigh.SetCamera(ENVIRONMENT_MANAGER.GetCamera());
 
         this.betSmallHigh.SetOnClicked(() => {
@@ -87,6 +90,7 @@ export class GraphUI extends FFEngine.Component {
         this.betBigHigh.GetSprite().SetAlpha(0.5);
 
         this.betBigHigh.SetupState(FFEngine.ButtonState.IDLE, new ButtonSpriteStateConfig(undefined, new FFEngine.THREE.Color(0xff50ff)));
+        this.betBigHigh.SetupState(FFEngine.ButtonState.LOCKED, new ButtonSpriteStateConfig(undefined, new FFEngine.THREE.Color(0xaa20aa)));
         this.betBigHigh.SetCamera(ENVIRONMENT_MANAGER.GetCamera());
 
         this.betBigHigh.SetOnClicked(() => {
@@ -99,6 +103,7 @@ export class GraphUI extends FFEngine.Component {
         this.betSmallLow.GetSprite().SetAlpha(0.5);
 
         this.betSmallLow.SetupState(FFEngine.ButtonState.IDLE, new ButtonSpriteStateConfig(undefined, new FFEngine.THREE.Color(0xff50ff)));
+        this.betSmallLow.SetupState(FFEngine.ButtonState.LOCKED, new ButtonSpriteStateConfig(undefined, new FFEngine.THREE.Color(0xaa20aa)));
         this.betSmallLow.SetCamera(ENVIRONMENT_MANAGER.GetCamera());
 
         this.betSmallLow.SetOnClicked(() => {
@@ -114,6 +119,7 @@ export class GraphUI extends FFEngine.Component {
         this.betBigLow.GetSprite().SetAlpha(0.5);
 
         this.betBigLow.SetupState(FFEngine.ButtonState.IDLE, new ButtonSpriteStateConfig(undefined, new FFEngine.THREE.Color(0xff50ff)));
+        this.betBigLow.SetupState(FFEngine.ButtonState.LOCKED, new ButtonSpriteStateConfig(undefined, new FFEngine.THREE.Color(0xaa20aa)));
         this.betBigLow.SetCamera(ENVIRONMENT_MANAGER.GetCamera());
 
         this.betBigLow.SetOnClicked(() => {
@@ -132,6 +138,15 @@ export class GraphUI extends FFEngine.Component {
 
     public ShowBetButtons(visible: boolean): void {
         this.betUI.visible = visible
+    }
+
+    public LockBetButtons(locked: boolean): void {
+        this.betHigh.SetLocked(locked);
+        this.betLow.SetLocked(locked);
+        this.betSmallHigh.SetLocked(locked);
+        this.betSmallLow.SetLocked(locked);
+        this.betBigHigh.SetLocked(locked);
+        this.betBigLow.SetLocked(locked);
     }
 
     public UpdatePlayers(players: Player[]): void {

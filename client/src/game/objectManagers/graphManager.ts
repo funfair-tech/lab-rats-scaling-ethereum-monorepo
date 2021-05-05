@@ -99,6 +99,10 @@ export class GraphManager extends FFEngine.Component {
         this.graphUI.ShowBetButtons(visible);
     }
 
+    public GraphUILockBetButtons(locked: boolean): void {
+        this.graphUI.LockBetButtons(locked);
+    }
+
     public GraphUIUpdatePlayers(players: Player[]): void {
         this.graphUI.UpdatePlayers(players);
     }
