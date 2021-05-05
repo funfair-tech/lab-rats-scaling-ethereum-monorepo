@@ -6,7 +6,8 @@ import { GRAPH_MANAGER } from './graphManager';
 
 export class Player {
     constructor (public playerID: string,
-        public betType: Logic_BetType) {}
+        public betType: Logic_BetType,
+        public localPlayer: boolean) {}
 }
 
 /**
@@ -76,7 +77,7 @@ export class PlayerManager extends FFEngine.Component {
     }
 
     private CreatePlayer(index: number, bet: Logic_Bet): Player {
-        this.players[index] = new Player(bet.address, bet.betType);
+        this.players[index] = new Player(bet.address, bet.betType, bet.isLocalPlayer);
 
         //add player to player list
         GLUI.GetPlayerList().SetPlayer(index, new UIPlayerData(bet.address, bet.name, bet.isLocalPlayer));

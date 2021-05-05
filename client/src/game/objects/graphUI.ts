@@ -162,10 +162,10 @@ export class GraphUI extends FFEngine.Component {
         for (let i=0;i<players.length;i++) {
             if (players[i]) {
                 let sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
-                sprite.SetTexture(ASSETPACK.GetTextureAsset(TextureAssetType.GLOW));
-                sprite.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
+                sprite.SetTexture(ASSETPACK.GetTextureAsset(TextureAssetType.PLAYERICON));
                 sprite.SetSize(0.5, 0.5);
                 sprite.GetContainer().position.copy(this.GetPlayerPositionForBet(players[i].betType));
+                sprite.SetColor(new FFEngine.THREE.Color(players[i].localPlayer === true ? 0xffffff : 0x808080));
                 this.playerBets.push(sprite);
             }
         }
@@ -181,25 +181,31 @@ export class GraphUI extends FFEngine.Component {
         switch (betType) {
             case Logic_BetType.HIGHER:
                 position.copy(this.betHigh.GetContainer().position);
-            break;
-            case Logic_BetType.SMALLHIGHER:
-                position.copy(this.betSmallHigh.GetContainer().position);
-            break;
-            case Logic_BetType.LARGEHIGHER:
-                position.copy(this.betBigHigh.GetContainer().position);
+                position.y -= 0.8;
             break;
             case Logic_BetType.LOWER:
                 position.copy(this.betLow.GetContainer().position);
+                position.y -= 0.8;
             break;
+            case Logic_BetType.SMALLHIGHER:
+                position.copy(this.betSmallHigh.GetContainer().position);
+                position.y -= 0.4;
+            break;
+            case Logic_BetType.LARGEHIGHER:
+                position.copy(this.betBigHigh.GetContainer().position);
+                position.y -= 0.4;
+            break;
+            
             case Logic_BetType.SMALLLOWER:
                 position.copy(this.betSmallLow.GetContainer().position);
+                position.y -= 0.4;
             break;
             case Logic_BetType.LARGELOWER:
                 position.copy(this.betBigLow.GetContainer().position);
+                position.y -= 0.4;
             break;
         }
 
-        position.y -= 0.5;
         return position;
     }
 }
