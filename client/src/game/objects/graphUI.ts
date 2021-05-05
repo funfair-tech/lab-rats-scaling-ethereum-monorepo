@@ -20,6 +20,7 @@ export class GraphUI extends FFEngine.Component {
     private betSmallLow!: UIButtonSprite;
     private betBigLow!: UIButtonSprite;
     private playerBets: FFEngine.Sprite[] = [];
+    private playerBetCounters: number[] = [];
 
     public Create(params: any): void {
         super.Create(params);
@@ -157,6 +158,7 @@ export class GraphUI extends FFEngine.Component {
             FFEngine.instance.Destroy(this.playerBets[i].GetContainer());
         }
         this.playerBets = [];
+        let playerBetCounters = [];
 
         //spawn new bets
         for (let i=0;i<players.length;i++) {
@@ -164,8 +166,17 @@ export class GraphUI extends FFEngine.Component {
                 let sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
                 sprite.SetTexture(ASSETPACK.GetTextureAsset(TextureAssetType.PLAYERICON));
                 sprite.SetSize(0.5, 0.5);
-                sprite.GetContainer().position.copy(this.GetPlayerPositionForBet(players[i].betType));
                 sprite.SetColor(new FFEngine.THREE.Color(players[i].localPlayer === true ? 0xffffff : 0x808080));
+                
+                //position
+                let pos = this.GetPlayerPositionForBet(players[i].betType);
+                if (playerBetCounters[players[i].betType] === undefined) {
+                    playerBetCounters[players[i].betType] = 0;
+                }
+                playerBetCounters[players[i].betType]++;
+
+                pos.x -= playerBetCounters[players[i].betType] * 0.15;
+                sprite.GetContainer().position.copy(pos);
                 this.playerBets.push(sprite);
             }
         }
@@ -205,7 +216,7 @@ export class GraphUI extends FFEngine.Component {
                 position.y -= 0.4;
             break;
         }
-
+        position.x += 1.2;
         return position;
     }
 }
