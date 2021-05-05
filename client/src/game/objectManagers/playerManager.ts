@@ -28,7 +28,7 @@ export class PlayerManager extends FFEngine.Component {
     /**
      * Update bets and players in the game
      */
-    public UpdateBets(bets: Logic_Bet[]): void {
+    public UpdateBets(bets: Logic_Bet[], currencyMultiplier: number): void {
 
         let betsUpdated: boolean = false;
         let i: number = 0;
@@ -55,8 +55,8 @@ export class PlayerManager extends FFEngine.Component {
             
             if (playerListUI) {
                 let displayData = playerListUI.GetDisplayData();
-                displayData.bet = bet.amount;
-                displayData.win = bet.winnings;
+                displayData.bet = bet.amount / currencyMultiplier;
+                displayData.win = bet.winnings / currencyMultiplier;
                 playerListUI.UpdateDisplay();
             }
         }

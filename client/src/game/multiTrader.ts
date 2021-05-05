@@ -165,7 +165,7 @@ export class MultiTrader extends FFEngine.Component {
             GLUI.SetPrizePool(state.currentPrizePool);
 
             //update bets and players
-            PLAYER_MANAGER.UpdateBets(state.bets);
+            PLAYER_MANAGER.UpdateBets(state.bets, this.localGame ? 1 : 100000000);
 
             //set the game phase
             this.SetGamePhase(state.roundState);
