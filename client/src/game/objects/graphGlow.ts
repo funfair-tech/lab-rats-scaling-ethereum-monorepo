@@ -32,7 +32,7 @@ export class GraphGlow extends FFEngine.Component {
         this.sprite2.GetContainer().position.set(0, 0, 0.1);
         this.sprite2.GetContainer().rotateZ(Math.random());
 
-        let light = new FFEngine.THREE.PointLight(0xffffaa, 1, 10);
+        let light = new FFEngine.THREE.PointLight(0xffffff, 1, 10);
         light.position.z = 2;
         this.container.add(light);
     }
