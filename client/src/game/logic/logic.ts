@@ -163,6 +163,9 @@ export class Logic {
             handled = this.ResultFromFeed(message);
         } else if (message.type === 'HISTORY') {
             handled = this.HistoryFromFeed(message);
+        } else if (message.type === 'BETS') {
+           
+           handled = this.BetsFromFeed(message);
         }
         
         if(handled) {
@@ -239,6 +242,44 @@ export class Logic {
         state.lastAdjustment = state.currentPrice - state.historicPrices[0];        
         state.carryOverPrizePool = parseInt('0x' + message.data.substr(130, 64));
         state.carryOverPrizePoolAfterResult = state.carryOverPrizePool;
+
+        return true;
+    }
+
+    protected BetsFromFeed(message: any): boolean {
+        
+        let state: Logic_GameState = this.currentState;
+        let data: any =  message.data;
+
+        state.serverNonce++;
+
+        let newBets: any[] = data;
+
+        newBets.forEach((bet: any) => {
+            //Is the bet the correct round?
+            //console.log('snc this  bet: ' + JSON.stringify(bet));
+
+            if(state.roundID !== bet.roundId) {
+                //Ignore
+
+            } else {
+
+                //Is the bet already here?
+                    
+                let matchingBetIndex: number = state.bets.findIndex(currentBet => currentBet.address === bet.address);
+                if(matchingBetIndex !== -1) {
+                    //Just adjust the confirmed state
+
+                    state.bets[matchingBetIndex].confirmed = true;
+                } else {
+
+                    //Add the bet to the current state
+                    state.bets.push(new Logic_Bet(bet.address, Logic_SeededName.GetNameFromString(bet.address), parseInt(bet.amount), parseInt(bet.data), (bet.address === this.localPlayerAddress)));
+                }
+            }            
+        });
+
+        //Handled
 
         return true;
     }

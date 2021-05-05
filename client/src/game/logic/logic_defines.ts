@@ -62,6 +62,7 @@ export class Logic_Bet {
     public name: string = '';
     public amount: number = 0;
     public betType: Logic_BetType = Logic_BetType.NONE;
+    public confirmed: boolean = false;
     public winnings: number = 0;
     public resolved: boolean = false;
     public isLocalPlayer: boolean = false;
