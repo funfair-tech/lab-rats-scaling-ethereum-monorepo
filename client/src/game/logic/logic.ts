@@ -108,7 +108,7 @@ export class Logic {
         //Change to report (debug)
 
         if((this.reportedState.serverNonce !== stateServerNonceAtStartOfTick) || (this.reportedState.localNonce !== stateLocalNonceAtStartOfTick)) {
-            console.log('snc new reported state: ' + JSON.stringify(this.reportedState));
+            //console.log('snc new reported state: ' + JSON.stringify(this.reportedState));
         }
         
     }
@@ -220,6 +220,19 @@ export class Logic {
         state.carryOverPrizePool = state.carryOverPrizePoolAfterResult - potWinLoss.toNumber();
 
         //Go through player bets  and rebuild their bet data from the playerAddresses and winnings data
+
+        let playerAddresses = message.data.playerAddresses;
+        let winAmounts = message.data.winAmounts;
+
+        if(playerAddresses.length === winAmounts.length) {
+            for(let index: number = 0; index < playerAddresses.length; index++) {
+                let matchingBetIndex: number = state.bets.findIndex(currentBet => currentBet.address === playerAddresses[index]);
+                if(matchingBetIndex !== -1) {
+                    state.bets[matchingBetIndex].winnings = parseInt(winAmounts[index]);
+                    state.bets[matchingBetIndex].resolved = true;
+                }
+            }
+        }
         return true;
     }
 
