@@ -14,8 +14,11 @@ export enum TextureAssetType {
     LINE,
     GLOW,
     CELL,
+    PLAYERICON,
     BUTTONBETHIGH,
-    BUTTONBETLOW
+    BUTTONBETLOW,
+    BUTTONBETHIGHSMALL,
+    BUTTONBETLOWSMALL,
 }
 
 /**
@@ -49,6 +52,10 @@ export class AssetPack {
         FFEngine.instance.assetLoader.LoadTextureNoMipMaps('game/cell.png', (texture: any) => {
             this.textureAssets[TextureAssetType.CELL] = texture;
         });
+
+        FFEngine.instance.assetLoader.LoadTextureNoMipMaps('game/playerIcon.png', (texture: any) => {
+            this.textureAssets[TextureAssetType.PLAYERICON] = texture;
+        });
         
         FFEngine.instance.assetLoader.LoadTextureNoMipMaps('game/bethigh.png', (texture: any) => {
             this.textureAssets[TextureAssetType.BUTTONBETHIGH] = texture;
@@ -56,6 +63,14 @@ export class AssetPack {
 
         FFEngine.instance.assetLoader.LoadTextureNoMipMaps('game/betlow.png', (texture: any) => {
             this.textureAssets[TextureAssetType.BUTTONBETLOW] = texture;
+        });
+
+        FFEngine.instance.assetLoader.LoadTextureNoMipMaps('game/bethighrange.png', (texture: any) => {
+            this.textureAssets[TextureAssetType.BUTTONBETHIGHSMALL] = texture;
+        });
+
+        FFEngine.instance.assetLoader.LoadTextureNoMipMaps('game/betlowrange.png', (texture: any) => {
+            this.textureAssets[TextureAssetType.BUTTONBETLOWSMALL] = texture;
         });
     }
 
