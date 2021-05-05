@@ -217,8 +217,7 @@ class GameService {
       console.error(error);
       store.dispatch(setGameError({code: ErrorCode.GENERAL_BET_ERROR, msg: 'Error placing bet'}))
     }
-
-    // TODO: dispatch confirmation to store
+      // Confirmation comes from the bet event. See testForBetEvents below.
   }
 
 /**
@@ -373,8 +372,8 @@ class GameService {
   public async readBlockHeader(blockHeader: BlockHeader) {
     this.testForBetEvents(blockHeader);
     this.testForRoundResult(blockHeader);
-    // this.testForRoundStart(blockHeader);
-    // this.testForNoMoreBets(blockHeader);
+    this.testForRoundStart(blockHeader);
+    this.testForNoMoreBets(blockHeader);
   }
 
 }

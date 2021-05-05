@@ -1,11 +1,11 @@
 import * as signalR from '@microsoft/signalr';
 import window from '@funfair-tech/wallet-sdk/window';
 import { apiRequest } from './api-request.service';
-import { Bet, SafeBet } from '../model/bet';
+import { Bet } from '../model/bet';
 import { MessageId } from '../model/messageId';
 import store from '../store/store';
-import { addBet, setCanPlay, setHistory, setPlayersOnline, setRound } from '../store/actions/game.actions';
-import { Round } from '../model/round';
+import { setCanPlay, setHistory, setPlayersOnline } from '../store/actions/game.actions';
+// import { Round } from '../model/round';
 
 class MessageService {
   private connection: signalR.HubConnection | undefined;
@@ -40,13 +40,13 @@ class MessageService {
     );
 
     // enable websocket rounds
-    const round: Round = {
-      id: gameRoundId,
-      block: startRoundBlockNumber,
-      time: timeLeftInSeconds,
-      timeToNextRound: interRoundPause
-    }
-    store.dispatch(setRound(round));
+    // const round: Round = {
+    //   id: gameRoundId,
+    //   block: startRoundBlockNumber,
+    //   time: timeLeftInSeconds,
+    //   timeToNextRound: interRoundPause
+    // }
+    // store.dispatch(setRound(round));
   };
 
   private handleBettingEnding = (): void => {
@@ -74,10 +74,10 @@ class MessageService {
       const decoded = JSON.parse(message);
       switch (decoded.action) {
         case MessageId.BET:
-          const decodedBet = decoded as Bet;
-          const bet: Bet = new SafeBet(decodedBet.roundId, decodedBet.address, decodedBet.amount, decodedBet.data, false);
-          store.dispatch(addBet(bet));
-          break;
+          // const decodedBet = decoded as Bet;
+          // const bet: Bet = new SafeBet(decodedBet.roundId, decodedBet.address, decodedBet.amount, decodedBet.data, false);
+          // store.dispatch(addBet(bet));
+          // break;
       }
     } catch (error) {
       console.error(`Error parsing broadcast message ${error}`);
