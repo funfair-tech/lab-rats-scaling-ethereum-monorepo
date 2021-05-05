@@ -22,9 +22,11 @@ export class GraphCell extends FFEngine.Component {
 
         this.container = new FFEngine.THREE.Object3D();
 
-        this.sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite, { map:  ASSETPACK.GetTextureAsset(TextureAssetType.CELL) });
-        //this.sprite.SetColor(new FFEngine.THREE.Color(0xbb20bb));
-        //this.sprite.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
+        //custom material which accepts lights
+        let material = new FFEngine.THREE.MeshLambertMaterial();
+        material.map = ASSETPACK.GetTextureAsset(TextureAssetType.CELL);
+
+        this.sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite, { material: material });
         this.SetBetType(Logic_BetType.NONE);
     }
 

@@ -28,9 +28,10 @@ export class GraphUI extends FFEngine.Component {
 
         //price line
         this.priceLine = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
-        this.priceLine.SetColor(new FFEngine.THREE.Color(0xee60ee));
+        this.priceLine.SetColor(new FFEngine.THREE.Color(0xccccff));
         this.priceLine.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
         this.priceLine.SetSize(100, 0.05);
+        this.priceLine.GetContainer().position.set(0, 0, 0.05);
 
         //betting UI
         this.betUI = new FFEngine.THREE.Object3D();
