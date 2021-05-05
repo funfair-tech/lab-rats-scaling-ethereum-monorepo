@@ -180,7 +180,9 @@ export class MultiTrader extends FFEngine.Component {
                     GLUI.ShowBetUI(false);
                     //GRAPH_MANAGER.GraphUIShowBetButtons(false);
                 break;
-                case Logic_RoundState.CLOSEDFORBETS: break;
+                case Logic_RoundState.CLOSEDFORBETS: 
+                    GLUI.ShowAwaitingResultUI(false);
+                break;
                 case Logic_RoundState.COMPLETE: 
                     GLUI.ShowWinUI(false);
                 break;
@@ -200,7 +202,9 @@ export class MultiTrader extends FFEngine.Component {
                     GLUI.SetPlayerListMode(UIPlayerDisplayMode.BET);
                     GRAPH_MANAGER.UpdateGraphUI();
                 break;
-                case Logic_RoundState.CLOSEDFORBETS: break;
+                case Logic_RoundState.CLOSEDFORBETS: 
+                    GLUI.ShowAwaitingResultUI(true);
+                break;
                 case Logic_RoundState.COMPLETE: 
                     
                 break;

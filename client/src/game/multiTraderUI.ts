@@ -15,6 +15,7 @@ export class MultiTraderUI extends FFEngine.Component {
     private prizePoolText!: FFEngine.BitmapString;
     private winUI!: FFEngine.THREE.Object3D;
     private winText!: FFEngine.BitmapString;
+    private awaitingResultUI!: FFEngine.THREE.Object3D;
 
     /**
      * Creates the WebGL UI Scene and main component and registers it with the engine
@@ -97,6 +98,15 @@ export class MultiTraderUI extends FFEngine.Component {
                     this.winText.SetText('Better Luck Next Time!');
                 }
             }
+        }
+    }
+
+    /**
+     * Show/hide awaiting UI
+     */
+     public ShowAwaitingResultUI(visible: boolean): void {
+        if (this.awaitingResultUI) {
+            this.awaitingResultUI.visible = visible;
         }
     }
 
@@ -186,6 +196,17 @@ export class MultiTraderUI extends FFEngine.Component {
 
         this.winText = FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), FFEngine.BitmapString, { text: '', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 120, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, -260, 0]});
         this.ShowWinUI(false);
+
+        //create awaiting results UI
+        this.awaitingResultUI = new FFEngine.THREE.Object3D();
+        this.container.add(this.awaitingResultUI);
+
+        anchor = FFEngine.instance.CreateChildObjectWithComponent(this.awaitingResultUI, FFEngine.UIAnchor);
+        anchor.SetCamera(this.camera);
+        anchor.SetAnchors(FFEngine.UIAnchorType.CENTER, FFEngine.UIAnchorType.MAX);
+
+        FFEngine.instance.CreateChildObjectWithComponent(anchor.GetContainer(), FFEngine.BitmapString, { text: 'Waiting for results', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 120, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, -260, 0]});
+        this.ShowAwaitingResultUI(false);
     }
 
 }
