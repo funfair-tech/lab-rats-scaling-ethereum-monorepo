@@ -13,6 +13,9 @@ import { FFEngine } from '@funfair/engine';
 export enum TextureAssetType {
     LINE,
     GLOW,
+    CELL,
+    BUTTONBETHIGH,
+    BUTTONBETLOW
 }
 
 /**
@@ -42,7 +45,18 @@ export class AssetPack {
         FFEngine.instance.assetLoader.LoadTextureNoMipMaps('game/glow.png', (texture: any) => {
             this.textureAssets[TextureAssetType.GLOW] = texture;
         });
+
+        FFEngine.instance.assetLoader.LoadTextureNoMipMaps('game/cell.png', (texture: any) => {
+            this.textureAssets[TextureAssetType.CELL] = texture;
+        });
         
+        FFEngine.instance.assetLoader.LoadTextureNoMipMaps('game/bethigh.png', (texture: any) => {
+            this.textureAssets[TextureAssetType.BUTTONBETHIGH] = texture;
+        });
+
+        FFEngine.instance.assetLoader.LoadTextureNoMipMaps('game/betlow.png', (texture: any) => {
+            this.textureAssets[TextureAssetType.BUTTONBETLOW] = texture;
+        });
     }
 
     /**

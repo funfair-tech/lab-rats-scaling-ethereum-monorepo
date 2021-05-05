@@ -2,15 +2,16 @@ import { FFEngine } from '@funfair/engine';
 import { Logic_BetType } from '../logic/logic_defines';
 import { ENVIRONMENT_MANAGER } from '../objectManagers/environmentManager';
 import { GRAPH_MANAGER } from '../objectManagers/graphManager';
+import { ASSETPACK, TextureAssetType } from '../assetPack';
 
 /**
  * A display object representing a single cell on the graph grid
  */
 export class GraphCell extends FFEngine.Component {
 
-    private static readonly CELL_BORDER: number = 0.05;
-    private static readonly CELL_IDLE_ALPHA: number = 0.3;
-    private static readonly CELL_ACTIVE_ALPHA: number = 0.8;
+    private static readonly CELL_BORDER: number = 0;//0.05;
+    private static readonly CELL_IDLE_ALPHA: number = 0.8;
+    private static readonly CELL_ACTIVE_ALPHA: number = 0.5;
 
     private sprite!: FFEngine.Sprite;
     private coords: FFEngine.THREE.Vector2 = new FFEngine.THREE.Vector2();
@@ -21,9 +22,9 @@ export class GraphCell extends FFEngine.Component {
 
         this.container = new FFEngine.THREE.Object3D();
 
-        this.sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
-        this.sprite.SetColor(new FFEngine.THREE.Color(0xbb20bb));
-        this.sprite.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
+        this.sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite, { map:  ASSETPACK.GetTextureAsset(TextureAssetType.CELL) });
+        //this.sprite.SetColor(new FFEngine.THREE.Color(0xbb20bb));
+        //this.sprite.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
         this.SetBetType(Logic_BetType.NONE);
     }
 
