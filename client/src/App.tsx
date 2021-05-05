@@ -3,6 +3,7 @@ import AccountBar from './containers/accountBar/accountBar';
 import ErrorNotification from './containers/errorNotification/errorNotification';
 import Faucet from './containers/faucet/faucet';
 import Game from './containers/game/gameContainer';
+import PlayerCount from './containers/playerCount/playerCount';
 import SplashScreen from './containers/splash/splashScreen';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       <Game />
       <Faucet />
       <ErrorNotification visible={true}/>
+      <PlayerCount/>
     </div>
   );
 }

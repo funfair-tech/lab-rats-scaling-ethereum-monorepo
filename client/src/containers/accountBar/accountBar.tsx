@@ -7,17 +7,12 @@ import window from '@funfair-tech/wallet-sdk/window';
 import {
   clearUserState,
 } from '../../store/actions/user.actions';
-import { gameService } from '../../services/game.service';
 import { Coin } from '../../components/coin/coin';
-// import store from '../../store/store';
 interface Props extends ReduxProps {
   title: string;
 }
 
 export const AccountBar: FunctionComponent<Props> = (props) => {
-  // const loginToWallet = () => {
-  //   window.funwallet.sdk.auth.login();
-  // };
 
   const logOutOfWallet = async () => {
     await window.funwallet.sdk.auth.logout();
@@ -36,39 +31,8 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
           <Coin visible={!!props.user.displayBalance} />
           {props.user.displayBalance}
         </section>
-{/* 
-        <section>
-          <Button
-            disabled={
-              !props.game.canPlay ||
-              (!!props.game.round && props.game.round.time < 0)
-            }
-            onClick={() => {
-              gameService.handlePlay(10000000000, 2);
-            }}
-          >
-            play
-          </Button>
-        </section> */}
-
-        {/* <section>
-          <Button
-            onClick={() => {
-              store.dispatch(setTokenBalance(0));
-            }}
-          >
-            zero balance
-          </Button>
-        </section> */}
 
         <section>
-          {/* {props.user.authenticated ? (
-            <Button onClick={logOutOfWallet}>Sign out</Button>
-          ) : (
-            <Button onClick={loginToWallet} disabled={props.user.loading}>
-              {props.user.loading ? 'Loading...' : 'Sign in'}
-            </Button>
-          )} */}
           {props.user.authenticated ? (
             <Button onClick={logOutOfWallet}>Sign out</Button>
           ) : null}
