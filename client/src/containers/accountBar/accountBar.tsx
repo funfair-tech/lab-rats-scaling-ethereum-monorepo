@@ -13,6 +13,18 @@ interface Props extends ReduxProps {
   title: string;
 }
 
+const isFloat = (value: number) => {
+  return Number(value) === value && value % 1 !== 0;
+}
+
+const formatBalance = (balance: number|null) => {
+  if(balance === null){
+    return balance;
+  } else {
+    return isFloat(balance) ? balance.toFixed(2) : balance; 
+  }
+}
+
 export const AccountBar: FunctionComponent<Props> = (props) => {
 
   const logOutOfWallet = async () => {
@@ -30,7 +42,7 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
 
         <section className='accountBar__balance'>
           <Coin visible={!!props.user.displayBalance} />
-          {props.user.displayBalance}
+          {formatBalance(props.user.displayBalance)}
         </section>
 
          {/* <section>
