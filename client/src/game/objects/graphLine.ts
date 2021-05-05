@@ -18,6 +18,7 @@ export class GraphLine extends FFEngine.Component {
     private resultLerpCoef: number = 1;
     private line!: FFEngine.Line;
     private glow!: GraphGlow;
+    private numCellsOffset: number = 40;    //at least as big as the history to ensure initial point is plotted far to the left
 
     public Create(params: any): void {
         super.Create(params);
@@ -51,12 +52,16 @@ export class GraphLine extends FFEngine.Component {
         }
     }
 
+    public OffsetLine(numCells: number): void {
+        this.numCellsOffset = numCells;
+    }
+
     /**
      * Adds a result to the graph line and advances the line along the grid
      */
     public AddResult(price: number, instant: boolean = true): void {
         let newIndex = this.dataPoints.length;
-        let dataPoint = new FFEngine.THREE.Vector3(newIndex * GRAPH_MANAGER.GetCellWidth(), price * GRAPH_MANAGER.GetCellHeight(), 0);
+        let dataPoint = new FFEngine.THREE.Vector3((newIndex - this.numCellsOffset) * GRAPH_MANAGER.GetCellWidth(), price * GRAPH_MANAGER.GetCellHeight(), 0);
         this.dataPoints.push(dataPoint);
 
         if (newIndex === 0) {

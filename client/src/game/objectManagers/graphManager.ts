@@ -74,10 +74,17 @@ export class GraphManager extends FFEngine.Component {
         }
 
         //advance graph
-        this.graphCoord.x++;
+        if (instant === false) {
+            this.graphCoord.x++;
+        }
+
         this.graphCoord.y = price;
         ENVIRONMENT_MANAGER.SetCameraToGraphCoordinate(this.graphCoord);
         this.UpdateCells(this.graphCoord);
+    }
+
+    public OffsetLine(numCells: number): void {
+        this.graphLine.OffsetLine(numCells);
     }
 
     public GetCellAtCoordinate(coord: FFEngine.THREE.Vector2): GraphCell | undefined {

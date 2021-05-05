@@ -145,6 +145,9 @@ export class MultiTrader extends FFEngine.Component {
             if (this.initialStateReceived === false && state.historicPrices.length > 0) {
                 this.initialStateReceived = true;
 
+                //add offset so the graph is at the origin
+                GRAPH_MANAGER.OffsetLine(state.historicPrices.length + 1);
+
                 for (let i=state.historicPrices.length-1;i>=0;i--) {
                     GRAPH_MANAGER.AddResult(state.historicPrices[i]);
                 }
