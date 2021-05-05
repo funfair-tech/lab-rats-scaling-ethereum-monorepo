@@ -21,7 +21,7 @@ namespace FunFair.Labs.ScalingEthereum.Logic.Games
         ///     The amount of time to wait between rounds, so the client has time to display
         ///     the exciting results animation!
         /// </summary>
-        public static TimeSpan InterGameDelay { get; } = TimeSpan.FromSeconds(value: 15);
+        public static TimeSpan InterGameDelay { get; } = TimeSpan.FromSeconds(value: 5);
 
         /// <summary>
         ///     Length of time before a round timeout can occur.
