@@ -6,7 +6,7 @@
     "@ethersproject/providers": "^5.1.2",
     "@funfair-tech/wallet-react": "^1.1.2",
     "@funfair-tech/wallet-sdk": "^3.3.0",
-    "@funfair/engine": "file:../internal/funfair-engine-2.0.19.tgz",
+    "@funfair/engine": "file:../internal/funfair-engine-2.0.20.tgz",
     "@microsoft/signalr": "^5.0.5",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
