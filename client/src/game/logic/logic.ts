@@ -100,6 +100,10 @@ export class Logic {
                 this.FeedFromWebSocket(message);
             }
 
+            //Fix the current prize pool
+
+            this.RecalculateCurrentPrizePool();
+
             //Update the reported state
         
             this.UpdateReportedState();
@@ -295,6 +299,21 @@ export class Logic {
         //Handled
 
         return true;
+    }
+
+    protected RecalculateCurrentPrizePool(): void {
+        let state: Logic_GameState = this.currentState;
+
+        //Work out the current prize pool
+
+        if(state.roundState === Logic_RoundState.COMPLETE) {
+            //Special case for this
+        } else {
+            state.currentPrizePool = state.carryOverPrizePoolAfterResult;
+            state.bets.forEach((bet) => {
+                state.currentPrizePool += bet.amount;
+            });
+        }
     }
 
     protected TESTStartRoundFromFeed(message: any): boolean {
