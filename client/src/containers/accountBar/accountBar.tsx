@@ -8,21 +8,23 @@ import {
   clearUserState,
 } from '../../store/actions/user.actions';
 import { Coin } from '../../components/coin/coin';
+import BigNumber from 'bignumber.js';
 // import store from '../../store/store';
 interface Props extends ReduxProps {
   title: string;
 }
 
-const isFloat = (value: number) => {
-  return Number(value) === value && value % 1 !== 0;
-}
+// const isFloat = (value: number) => {
+//   return Number(value) === value && value % 1 !== 0;
+// }
 
 const formatBalance = (balance: number|null) => {
-  if(balance === null){
-    return balance;
-  } else {
-    return isFloat(balance) ? balance.toFixed(2) : balance; 
-  }
+  // if(balance === null){
+  //   return balance;
+  // } else {
+  //   // return isFloat(balance) ? balance.toFixed(2) : balance; 
+  // }
+  return balance !== null ? new BigNumber(balance).toFixed(0) : null;
 }
 
 export const AccountBar: FunctionComponent<Props> = (props) => {
