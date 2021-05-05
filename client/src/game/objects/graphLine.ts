@@ -1,5 +1,6 @@
 import { FFEngine } from '@funfair/engine';
 import { ASSETPACK, TextureAssetType } from '../assetPack';
+import { MULTITRADER } from '../multiTrader';
 import { GRAPH_MANAGER } from '../objectManagers/graphManager';
 import { GraphGlow } from './graphGlow';
 
@@ -41,8 +42,9 @@ export class GraphLine extends FFEngine.Component {
         if (this.resultLerpCoef < 1) {
             this.resultLerpCoef += FFEngine.instance.GetDeltaTime() * GraphLine.RESULT_LERP_SPEED;
 
-            if (this.resultLerpCoef > 1) {
+            if (this.resultLerpCoef >= 1) {
                 this.resultLerpCoef = 1;
+                MULTITRADER.GraphResultFinished();
             }
 
             this.UpdateGraphLerp();

@@ -9,7 +9,7 @@ import { GRAPH_MANAGER } from '../objectManagers/graphManager';
 export class GraphCell extends FFEngine.Component {
 
     private static readonly CELL_BORDER: number = 0.05;
-    private static readonly CELL_IDLE_ALPHA: number = 0.4;
+    private static readonly CELL_IDLE_ALPHA: number = 0.3;
     private static readonly CELL_ACTIVE_ALPHA: number = 0.8;
 
     private sprite!: FFEngine.Sprite;

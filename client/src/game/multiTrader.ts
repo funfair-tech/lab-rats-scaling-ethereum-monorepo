@@ -113,6 +113,11 @@ export class MultiTrader extends FFEngine.Component {
         }
     }
 
+    public GraphResultFinished(): void {
+        GLUI.SetPlayerListMode(UIPlayerDisplayMode.WIN);
+        GLUI.ShowWinUI(true);
+    }
+
     private UpdateLoadingPhase(): void {
         if (FFEngine.instance.assetLoader.IsLoadingPhaseActive()) {
             let assetLoadCoef = FFEngine.instance.assetLoader.GetAssetLoadingCoef();
@@ -197,8 +202,7 @@ export class MultiTrader extends FFEngine.Component {
                 break;
                 case Logic_RoundState.CLOSEDFORBETS: break;
                 case Logic_RoundState.COMPLETE: 
-                    GLUI.SetPlayerListMode(UIPlayerDisplayMode.WIN);
-                    GLUI.ShowWinUI(true);
+                    
                 break;
             }
         }
