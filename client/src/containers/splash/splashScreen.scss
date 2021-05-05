@@ -9,7 +9,7 @@
   height: 100vh;
   background: $primary-background-color;
   z-index: 10;
-  // position: absolute;
+  position: absolute;
 
   &__header {
     height: 50px;
@@ -26,7 +26,10 @@
 
   &__hero {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    @include bp-small {
+      flex-direction: column;
+    }
     position: fixed;
     top: 50%;
     transform: translate(0, -50%);
@@ -62,16 +65,23 @@
       text-align: left;
       color: $primary-font-color;
       opacity: 0.7;
-      line-height: 1.6;
+      line-height: 1.7;
+      margin-bottom: 30px;
+
       @include bp-small {
-        font-size: 25px;
+        font-size: 24px;
+        line-height: 1.4;
+        margin-bottom: 0;
       }
     }
     
     &__signin {
       display: flex;
       button {
-        min-width: 50%;
+        min-width: 100%;
+        @include bp-small {
+          min-width: 50%;
+        }
       }
     }
   }
@@ -92,10 +102,12 @@
       height: 200px;
       border-radius: 8px;
       overflow: hidden;
+      margin-bottom: 30px;
 
       @include bp-small {
         width: 100%;
         height: 300px;
+        margin-bottom: 0;
         // transform: perspective(1000px) rotateY(16deg) rotateX(2deg) rotateZ(-7deg) scaleY(0.95) translatex(2%);
       }
 

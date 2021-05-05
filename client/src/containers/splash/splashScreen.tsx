@@ -8,14 +8,13 @@ import window from '@funfair-tech/wallet-sdk/window';
 interface Props extends ReduxProps {}
 
 const SplashScreen: FunctionComponent<Props> = (props) => {
-
   const handleLogin = () => {
     window.funwallet.sdk.auth.login();
   };
 
   return !props.user.authenticated ? (
     <div className='splash'>
-      {/* <section className='splash__header'>
+      <section className='splash__header'>
         <section className='splash__logo'>
           <img
             src={process.env.PUBLIC_URL + '/logo.png'}
@@ -23,7 +22,7 @@ const SplashScreen: FunctionComponent<Props> = (props) => {
             alt='Lab Rats'
           />
         </section>
-      </section> */}
+      </section>
       <section className='splash__hero'>
         <section className='splash__cta'>
           <section className='splash__cta__title'>
@@ -31,10 +30,10 @@ const SplashScreen: FunctionComponent<Props> = (props) => {
           </section>
           <section className='splash__cta__description'>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-              dapibus auctor leo a hendrerit. Sed dui dui, accumsan a libero
-              nec, tempus molestie augue. Cras sed arcu a diam fringilla aliquet
-              quis eget nulla.
+              A multiplayer trading graph betting game where you bet if the graph 
+              will go up or down. Sign and send the transaction on every bet using 
+              optimism L2 to show how you can do complete on chain betting without 
+              spending loads of ETH on gas.
             </p>
           </section>
           <section className='splash__cta__signin'>
@@ -56,7 +55,6 @@ const SplashScreen: FunctionComponent<Props> = (props) => {
     </div>
   ) : null;
 };
-
 
 const mapStateToProps = (state: RootState) => {
   return {
