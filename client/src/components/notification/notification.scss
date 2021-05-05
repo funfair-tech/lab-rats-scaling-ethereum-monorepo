@@ -4,10 +4,10 @@
   justify-content: center;
   align-items: center;
   position: fixed;
-  bottom: 70px;
+  bottom: 17px;
   width: 320px;
   height: 50px;
-  background: rgba($color: #000000, $alpha: 0.6);
+  background: rgba($color: #000000, $alpha: 0.85);
   color: #aeaeae;
   left: 50%;
   transform: translate(-50%, 0);
@@ -15,7 +15,7 @@
   overflow: hidden;
 
   &__title {
-    font-size: 19px;
+    font-size: 18px;
     font-weight: bold;
   }
  }
@@ -25,26 +25,24 @@
  }
 
   .success {
-    background: blue;
+    color: #6dc7a9;
   }
 
   .info {
-    color: white;
-    background: #6dc7a9;
+    color: #f8f8f8;
   }
 
   .warn {
-    background: blue;
+    color: rgb(194, 131, 13);
   }
 
   .error {
-    color: white;
-    background: #cb4154;
+    color: #cb4154;
   }
 
- ////
- // Possible animation option 1 :
- ////
+ //
+//  Possible animation option 1 :
+ //
 //  .notification {
 // 	--angle: 0deg;
 // 	width: 300px;
@@ -68,4 +66,4 @@
 //   initial-value: 90deg;
 //   inherits: false;
 // }
-////
+//

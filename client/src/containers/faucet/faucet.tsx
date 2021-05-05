@@ -67,6 +67,10 @@ export const Faucet: FunctionComponent<Props> = (props) => {
       await ethers.waitForTransactionReceipt(
         response.transaction.transactionHash
       );
+
+      // keep the notification on the screen long enough to read
+      await new Promise(resolve => setTimeout(resolve, 2500));
+
       props.setTransactionHash(null);
     }
   };
@@ -75,6 +79,7 @@ export const Faucet: FunctionComponent<Props> = (props) => {
     <Notification
       label='Funding your account'
       visible={!!props.network.transactionHash}
+      // visible={true}
       category={NotificationType.INFO}
     />
   );

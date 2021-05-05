@@ -8,6 +8,7 @@ import {
   clearUserState,
 } from '../../store/actions/user.actions';
 import { Coin } from '../../components/coin/coin';
+// import store from '../../store/store';
 interface Props extends ReduxProps {
   title: string;
 }
@@ -31,6 +32,16 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
           <Coin visible={!!props.user.displayBalance} />
           {props.user.displayBalance}
         </section>
+
+         {/* <section>
+          <Button
+            onClick={() => {
+              store.dispatch(setTokenBalance(0));
+            }}
+          >
+            zero balance
+          </Button>
+        </section> */}
 
         <section>
           {props.user.authenticated ? (
