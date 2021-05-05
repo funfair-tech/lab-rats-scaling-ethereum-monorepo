@@ -31,10 +31,10 @@ export class EnvironmentManager extends FFEngine.Component {
 
         //add world fog
         let worldScene = FFEngine.instance.scenes['WORLD'];
-        worldScene.fog = new FFEngine.THREE.Fog(0x000000, 5, 16);
+        worldScene.fog = new FFEngine.THREE.Fog(0x220144, 8, 16);
 
         //add world ambient light
-        this.container.add(new FFEngine.THREE.AmbientLight(0x404040));
+        this.container.add(new FFEngine.THREE.AmbientLight(0x606060));
     }
 
     public OnRendererResize(params: FFEngine.IRendererResizeParams): void {
