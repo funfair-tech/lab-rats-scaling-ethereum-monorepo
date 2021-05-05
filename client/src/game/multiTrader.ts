@@ -20,7 +20,8 @@ export class MultiTrader extends FFEngine.Component {
     private startupFinished: boolean = false;
     private localGame: boolean = false;
     private gamePhase: Logic_RoundState = Logic_RoundState.NOTSTARTED;
-    private lastNonce: number = 1;
+    private lastNonce: number = 0;
+    private initialStateReceived: boolean = false;
 
     public Create(params: any): void {
 
@@ -140,8 +141,10 @@ export class MultiTrader extends FFEngine.Component {
         //advance state if necessary
         if (this.lastNonce !== state.localNonce) {
 
-            if (this.lastNonce === 1) {
-                //add all historical items starting with the oldest
+            //add initial history and values when they exist in the state
+            if (this.initialStateReceived === false && state.historicPrices.length > 0) {
+                this.initialStateReceived = true;
+
                 for (let i=state.historicPrices.length-1;i>=0;i--) {
                     GRAPH_MANAGER.AddResult(state.historicPrices[i]);
                 }
