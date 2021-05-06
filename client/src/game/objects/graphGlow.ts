@@ -51,13 +51,13 @@ export class GraphGlow extends FFEngine.Component {
     }
 
     private SpawnParticle(): void {
-        this.particleSystem.SpawnParticle(new FFEngine.THREE.Vector3(0, 0, -5),
-            new FFEngine.THREE.Vector3((Math.random()-0.5) * 2, (Math.random()-0.3) * 2, 0),
-            1 + (Math.random()*1),    //Size
-            1 + (Math.random()*0.5),    //Lifetime
+        this.particleSystem.SpawnParticle(new FFEngine.THREE.Vector3(0, 0, -5), //pos
+            new FFEngine.THREE.Vector3((Math.random()-0.5) * 2, (Math.random()-0.3) * 2, 0),    //vel
+            0.2 + (Math.random()*0.2),    //Size
+            0.5 + (Math.random()*0.5),    //Lifetime
             [1, 0.7, 0.7, 0.6],   //Colour
             (Math.random() - 0.5) * 4,   //Spin
-            0.2,  //Size end
+            0.001,  //Size end
             0.0, // fade in coef
             0.2, // fade out coef
             [1, 0.7, 0.7, 0.3],   //Colour end
