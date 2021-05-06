@@ -12,8 +12,8 @@ export class GraphManager extends FFEngine.Component {
 
     private static readonly CELL_WIDTH: number = 3;
     private static readonly CELL_HEIGHT: number = 1.5;
-    private static readonly GRAPH_CELLS_WIDTH = 20;
-    private static readonly GRAPH_CELLS_HEIGHT = 30;
+    private static readonly GRAPH_CELLS_WIDTH = 12;
+    private static readonly GRAPH_CELLS_HEIGHT = 10;
 
     private graphLine!: GraphLine;
     private cells: GraphCell[] = [];
