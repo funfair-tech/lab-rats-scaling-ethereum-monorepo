@@ -12,6 +12,10 @@ export class EnvironmentManager extends FFEngine.Component {
 
     private camera!: FFEngine.THREE.PerspectiveCamera;
     private cameraInterpolator!: FFEngine.Interpolator;
+    private cameraZoomLerpTimer: number = 0;
+    private cameraZoomLerpTime: number = 0;
+    private cameraZoomLerpStart: number = 0;
+    private cameraZoomLerpEnd: number = 0;
 
     public Create(params: any): void {
         super.Create(params);
@@ -52,7 +56,18 @@ export class EnvironmentManager extends FFEngine.Component {
     }
 
     public Update(): void {
-        
+
+        //update camera lerp
+        if (this.cameraZoomLerpTimer > 0) {
+            this.cameraZoomLerpTimer -= FFEngine.instance.GetDeltaTime();
+
+            if (this.cameraZoomLerpTimer < 0) {
+                this.cameraZoomLerpTimer = 0;
+            }
+
+            this.camera.zoom = this.cameraZoomLerpStart + (((this.cameraZoomLerpTime - this.cameraZoomLerpTimer) / this.cameraZoomLerpTime) * (this.cameraZoomLerpEnd - this.cameraZoomLerpStart));
+            this.camera.updateProjectionMatrix();
+        }
     }
 
     /**
@@ -92,7 +107,18 @@ export class EnvironmentManager extends FFEngine.Component {
 
             
             this.cameraInterpolator.QueueCurvePositionChange(targetPosition, controlPosition, 2, 0);
+            this.StartZoomLerp(1.4, 1.5);
+
+            FFEngine.instance.DelayedCallback(2.3, () => {
+                this.StartZoomLerp(1, 1.5);
+            });
         }
+    }
+
+    private StartZoomLerp(target: number, time: number): void {
+        this.cameraZoomLerpTimer = this.cameraZoomLerpTime = time;
+        this.cameraZoomLerpStart = this.camera.zoom;
+        this.cameraZoomLerpEnd = target;
     }
 }
 
