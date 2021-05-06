@@ -25,7 +25,7 @@ namespace FunFair.Labs.ScalingEthereum.Server.ServiceStartup
             }
 
             // we need list of origins till we decide how we will ship monitoring app
-            string[] corsOrigins = {"https://localhost:3000", "https://*.netlify.app"};
+            string[] corsOrigins = {"https://localhost:3000", "https://host"};
 
             return applicationBuilder.UseXFrameOptions(applicationConfiguration)
                                      .UseXContentTypeOptions()
