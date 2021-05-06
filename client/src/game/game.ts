@@ -18,27 +18,22 @@ export class Game {
   };
 
   public handleNextRound(round: Round): void {
-    console.log('++ new round ', round);
     LOGIC_SERVERFEEDQUEUE.APIMessageCall(GameEvent.NEW_ROUND, round);
   }
 
   public handleNoMoreBets(roundId: string): void {
-    console.log('++ no more bets on round ', roundId);
     LOGIC_SERVERFEEDQUEUE.APIMessageCall(GameEvent.NO_MORE_BETS, roundId);
   }
 
   public handleRoundResult(roundResult: RoundResult): void {
-    console.log('++ round result ', roundResult);
     LOGIC_SERVERFEEDQUEUE.APIMessageCall(GameEvent.RESULT, roundResult);
   }
 
   public handleBets(bets: Bet[]): void {
-    console.log('++ bets  ', bets);
     LOGIC_SERVERFEEDQUEUE.APIMessageCall(GameEvent.BETS, bets);
   }
 
   public handleHistory(history: string): void {
-    console.log('++ history  ', history);
     LOGIC_SERVERFEEDQUEUE.APIMessageCall(GameEvent.HISTORY, history);
   }
 
@@ -47,7 +42,6 @@ export class Game {
   }
 
   public setAddress(address: string): void {
-    console.log('Game: user address -', address);
     LOGIC_SERVERFEEDQUEUE.APIMessageCall('LOCALPLAYERADDRESS', address);
     MultiTrader.SetPlayerAddress(address);
   }

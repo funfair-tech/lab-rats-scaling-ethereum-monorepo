@@ -383,8 +383,6 @@ class GameService {
     const contract = await ethers.getContract<MultiplayerGamesManager>(MultiplayerGamesManagerABI, this.GAME_MANAGER_ADDRESS);
 
     (contract as any).on( 'StartGameRound' , (...args:any[]) => {
-      // console.log('## start round event', args);
-      
       const round : Round = {
         id: args[StartGameRound.ROUND_ID],
         //TODO: remove redundant fields
@@ -397,8 +395,6 @@ class GameService {
     });
 
     (contract as any).on( 'Bet' , (...args:any[]) => {
-      console.log('## bet event ', args);
-
       const bet: Bet = {
         roundId: args[BetEvent.ROUND_ID], 
         address: args[BetEvent.DATA]['playerAddress'],
@@ -411,7 +407,6 @@ class GameService {
     });
 
     (contract as any).on( 'NoMoreBets' , (...args:any[]) => {
-      // console.log('## no more bets event', args);
       const state = store.getState();
       if( args[NoMoreBets.ROUND_ID] === state.game.round?.id) {
         store.dispatch(setCanPlay(false));
@@ -419,9 +414,6 @@ class GameService {
     });
 
     (contract as any).on( 'EndGameRound' , async (...args:any[]) => {
-
-      // console.log('## end game round event ', args);
-
       const persistentData: GetPersistentGameDataByIDResponse|null = await contract.getPersistentGameDataByID(args[EndGameRound.PERSISTENT_GAME_DATA_ID]).catch(error => {
         console.error(error);
         store.dispatch(setGameError({code: ErrorCode.JSON_RPC_READ_ERROR, msg: 'Error reading persistant game data'}));
