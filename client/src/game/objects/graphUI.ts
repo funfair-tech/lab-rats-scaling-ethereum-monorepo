@@ -62,7 +62,7 @@ export class GraphUI extends FFEngine.Component {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.SMALLHIGHER);
         });
 
-        text = FFEngine.instance.CreateChildObjectWithComponent(this.betSmallHigh.GetContainer(), FFEngine.BitmapString, { text: 'Small Rise', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.5, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[-0.35, 0.35, 0]});
+        text = FFEngine.instance.CreateChildObjectWithComponent(this.betSmallHigh.GetContainer(), FFEngine.BitmapString, { text: 'Rise', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.4, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[-0.35, 0.35, 0]});
         text.SetRenderOrder(1);
 
         this.betBigHigh = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGHSMALL), 4.5, 1.5 + (1.5/2), 2.9, 1.48);
@@ -71,7 +71,7 @@ export class GraphUI extends FFEngine.Component {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.LARGEHIGHER);
         });
 
-        text = FFEngine.instance.CreateChildObjectWithComponent(this.betBigHigh.GetContainer(), FFEngine.BitmapString, { text: 'Large Rise', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.5, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[-0.35, 0.35, 0]});
+        text = FFEngine.instance.CreateChildObjectWithComponent(this.betBigHigh.GetContainer(), FFEngine.BitmapString, { text: 'Large Rise', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.4, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[-0.35, 0.35, 0]});
         text.SetRenderOrder(1);
 
         this.betSmallLow = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOWSMALL), 4.5, -1.5/2, 2.9, 1.48);
@@ -80,7 +80,7 @@ export class GraphUI extends FFEngine.Component {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.SMALLLOWER);
         });
 
-        text = FFEngine.instance.CreateChildObjectWithComponent(this.betSmallLow.GetContainer(), FFEngine.BitmapString, { text: 'Small Fall', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.5, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[-0.35, 0.35, 0]});
+        text = FFEngine.instance.CreateChildObjectWithComponent(this.betSmallLow.GetContainer(), FFEngine.BitmapString, { text: 'Fall', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.4, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[-0.35, 0.35, 0]});
         text.SetRenderOrder(1);
 
         this.betBigLow = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOWSMALL), 4.5, -1.5 - (1.5/2), 2.9, 1.48);
@@ -89,7 +89,7 @@ export class GraphUI extends FFEngine.Component {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.LARGELOWER);
         });
 
-        text = FFEngine.instance.CreateChildObjectWithComponent(this.betBigLow.GetContainer(), FFEngine.BitmapString, { text: 'Large Fall', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.5, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[-0.35, 0.35, 0]});
+        text = FFEngine.instance.CreateChildObjectWithComponent(this.betBigLow.GetContainer(), FFEngine.BitmapString, { text: 'Large Fall', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.4, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[-0.35, 0.35, 0]});
         text.SetRenderOrder(1);
 
         this.ShowBetButtons(false);
