@@ -173,7 +173,18 @@ export class GraphUI extends FFEngine.Component {
     }
 
     public SetPosition(position: FFEngine.THREE.Vector3): void {
-        this.container.position.copy(position);
+
+        const fadeTime = 1;//0.5;
+        const waitTime = 1.5;//0.8;
+        this.priceLine.StartLerpAlpha(0, fadeTime);
+        this.betHigh.StartLerpAlpha(0, fadeTime);
+
+        FFEngine.instance.DelayedCallback(waitTime, ()=> {
+            this.container.position.copy(position);
+            this.priceLine.StartLerpAlpha(1, fadeTime);
+            this.betHigh.StartLerpAlpha(1, fadeTime);
+        });
+        
     }
 
     private GetPlayerPositionForBet(betType: Logic_BetType): FFEngine.THREE.Vector3 {

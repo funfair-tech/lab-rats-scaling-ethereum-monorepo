@@ -21,8 +21,8 @@ export class UIButtonSprite extends UIButton {
 
     public Update(): void {
         if (this.highlight && this.highlightGlowActive) {
-            this.highlightGlowTimer += FFEngine.instance.GetDeltaTime() * 3;
-            this.highlight.SetAlpha((Math.sin(this.highlightGlowTimer) * 0.5) + 0.5);
+            //this.highlightGlowTimer += FFEngine.instance.GetDeltaTime() * 3;
+            //this.highlight.SetAlpha((Math.sin(this.highlightGlowTimer) * 0.5) + 0.5);
         }
     }
 
@@ -46,11 +46,17 @@ export class UIButtonSprite extends UIButton {
 
     public SetHighlight(active: boolean): void {
         if (this.highlight) {
-            this.highlight.GetContainer().visible = active;
+            this.highlight.SetAlpha(active ? 1 : 0);
+        }
+    }
 
-            if (active) {
-                this.highlight.SetAlpha(1);
-            }
+    public StartLerpAlpha(targetAlpha: number, time: number) {
+        if (this.sprite) {
+            this.sprite.StartLerpAlpha(targetAlpha, time);
+        }
+
+        if (this.highlight) {
+            this.highlight.StartLerpAlpha(targetAlpha, time);
         }
     }
 
