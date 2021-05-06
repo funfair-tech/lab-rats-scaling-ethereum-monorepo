@@ -11,7 +11,7 @@ export class GraphGlow extends FFEngine.Component {
 
     private sprite!: FFEngine.Sprite;
     private sprite2!: FFEngine.Sprite;
-
+    private particleSystem!: FFEngine.ParticleSystem;
 
     public Create(params: any): void {
         super.Create(params);
@@ -32,6 +32,10 @@ export class GraphGlow extends FFEngine.Component {
         this.sprite2.GetContainer().position.set(0, 0, 0.1);
         this.sprite2.GetContainer().rotateZ(Math.random());
 
+        this.particleSystem = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.ParticleSystem, { map: ASSETPACK.GetTextureAsset(TextureAssetType.GLOW), numParticles: 1000 });
+        this.particleSystem.SetSystemGravity(new FFEngine.THREE.Vector3(0, -2, 0));
+        this.particleSystem.GetContainer().position.set(0, 0, 5);
+
         let light = new FFEngine.THREE.PointLight(0xffffff, 1, 10);
         light.position.z = 2;
         this.container.add(light);
@@ -42,5 +46,22 @@ export class GraphGlow extends FFEngine.Component {
         this.sprite.SetSize(size, size);
         size = FFEngine.MathHelper.GetRandomRange(GraphGlow.GLOW_SIZE_MIN, GraphGlow.GLOW_SIZE_MAX);
         this.sprite2.SetSize(size, size);
+
+        this.SpawnParticle();
+    }
+
+    private SpawnParticle(): void {
+        this.particleSystem.SpawnParticle(new FFEngine.THREE.Vector3(0, 0, -5),
+            new FFEngine.THREE.Vector3((Math.random()-0.5) * 2, (Math.random()-0.3) * 2, 0),
+            1 + (Math.random()*1),    //Size
+            1 + (Math.random()*0.5),    //Lifetime
+            [1, 0.7, 0.7, 0.6],   //Colour
+            (Math.random() - 0.5) * 4,   //Spin
+            0.2,  //Size end
+            0.0, // fade in coef
+            0.2, // fade out coef
+            [1, 0.7, 0.7, 0.3],   //Colour end
+            true    // random initial rotation
+        );
     }
 }
