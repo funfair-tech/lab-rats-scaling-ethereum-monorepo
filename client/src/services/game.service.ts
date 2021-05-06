@@ -20,6 +20,7 @@ import { setNetworkError } from '../store/actions/network.actions';
 import { freezeDisplayBalance, unFreezeDisplayBalance } from '../store/actions/user.actions';
 import { Round } from '../model/round';
 import { NoMoreBets } from '../events/noMoreBets';
+import { StartGameRound } from '../events/startGameRound';
 class GameService {
   private GAME_MANAGER_ADDRESS = '0x832B7d868C45a53e9690ffc12527391098bBd0dD';
   private TOKEN_ADDRESS = '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2';
@@ -209,7 +210,7 @@ class GameService {
         encoded
       );
       
-      messageService.broadcastBet(bet);
+      // messageService.broadcastBet(bet);
   
       const receipt = await transactionResponse.wait(1);
       console.log('handlePlay receipt: ', receipt);
@@ -370,11 +371,85 @@ class GameService {
   }
 
   public async readBlockHeader(blockHeader: BlockHeader) {
-    this.testForBetEvents(blockHeader);
-    this.testForRoundResult(blockHeader);
-    this.testForRoundStart(blockHeader);
-    this.testForNoMoreBets(blockHeader);
+    // this.testForBetEvents(blockHeader);
+    // this.testForRoundResult(blockHeader);
+    // this.testForRoundStart(blockHeader);
+    // this.testForNoMoreBets(blockHeader);
   }
+
+
+  ////////////////////////////////////////////////////////////////////////////////////////
+  public async subscribeToContractEvents() {
+    const contract = await ethers.getContract<MultiplayerGamesManager>(MultiplayerGamesManagerABI, this.GAME_MANAGER_ADDRESS);
+
+    (contract as any).on( 'StartGameRound' , (...args:any[]) => {
+      console.log('## start round event', args);
+      
+      const round : Round = {
+        id: args[StartGameRound.ROUND_ID],
+        //TODO: remove redundant fields
+        block: 0,
+        time: 0,
+        timeToNextRound: 0,
+      }
+
+      store.dispatch(setRound(round));
+    });
+
+    (contract as any).on( 'Bet' , (...args:any[]) => {
+      console.log('## bet event ', args);
+
+      const bet: Bet = {
+        roundId: args[BetEvent.ROUND_ID], 
+        address: args[BetEvent.DATA]['playerAddress'],
+        amount: args[BetEvent.DATA]['betAmount'],
+        data: args[BetEvent.DATA]['betData'],
+        confirmed: true,
+      };
+
+        store.dispatch(addBet(bet));
+    });
+
+    (contract as any).on( 'NoMoreBets' , (...args:any[]) => {
+      console.log('## no more bets event', args);
+      const state = store.getState();
+      if( args[NoMoreBets.ROUND_ID] === state.game.round?.id) {
+        store.dispatch(setCanPlay(false));
+      }
+    });
+
+    (contract as any).on( 'EndGameRound' , async (...args:any[]) => {
+
+      console.log('## end game round event ', args);
+
+      const persistentData: GetPersistentGameDataByIDResponse|null = await contract.getPersistentGameDataByID(args[EndGameRound.PERSISTENT_GAME_DATA_ID]).catch(error => {
+        console.error(error);
+        store.dispatch(setGameError({code: ErrorCode.JSON_RPC_READ_ERROR, msg: 'Error reading persistant game data'}));
+        return null;
+      }) 
+
+      const result: RoundResult = {
+        id: args[EndGameRound.ROUND_ID],
+        playerAddresses: args[EndGameRound.PLAYER_ADDRESSES],
+        winAmounts: args[EndGameRound.WIN_AMOUNTS],
+        result: args[EndGameRound.GAME_RESULT],
+        history: args[EndGameRound.HISTORY],
+        potWinLoss: args[EndGameRound.POT_WIN_LOSS],
+        entropyReveal: args[EndGameRound.ENTROPY_REVEAL],
+        persistentGameData: !!persistentData ? {
+          id: args[EndGameRound.PERSISTENT_GAME_DATA_ID],
+          data: persistentData[PersistentDataEvent.GAME_DATA],
+          pot: persistentData[PersistentDataEvent.POT_VALUE].toNumber()
+        } : null,
+      };
+
+      if(!!result) {
+        store.dispatch(setResult(result));
+        store.dispatch(clearBets());
+      }
+    });
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////
 
 }
 

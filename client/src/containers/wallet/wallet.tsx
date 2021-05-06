@@ -51,7 +51,7 @@ class Wallet extends Component<Props> {
           this.props.setNetworkName(data.currentNetwork.name);
           this.props.setNetworkId(data.currentNetwork.id.valueOf());
 
-          messageService.connectToServer(true, data.currentNetwork.name);
+          // messageService.connectToServer(true, data.currentNetwork.name);
         }
       }
     );
@@ -62,6 +62,8 @@ class Wallet extends Component<Props> {
         if (result.origin === this.walletUrl) {
           setEtherContext();
           this.props.setLoading(false);
+          gameService.subscribeToContractEvents();
+
         }
       }
     );
@@ -107,6 +109,9 @@ class Wallet extends Component<Props> {
       MessageListeners.newBlock,
       (result: NewBlockResponse) => {
         if (result.origin === this.walletUrl) {
+          // console.log(`^^ WALLET BLOCK NUMBER: [${new Date()}]`,result.data.blockNumber);
+          console.log(`^^ WALLET BLOCK NUMBER: [${Date.now()}]`,result.data.blockNumber);
+
           const networkId = this.props.network.id;
           if (!!networkId && networkId === result.data.networkId) {
             this.props.setBlockHeader(result.data);

@@ -8,4 +8,3 @@ export enum EndGameRound {
   GAME_RESULT = 6, 
   HISTORY = 7,
 }
-
