@@ -12,6 +12,8 @@ export class GraphGlow extends FFEngine.Component {
     private sprite!: FFEngine.Sprite;
     private sprite2!: FFEngine.Sprite;
     private particleSystem!: FFEngine.ParticleSystem;
+    private particleTimer: number = 0;
+    private particleActive: boolean = false;
 
     public Create(params: any): void {
         super.Create(params);
@@ -33,7 +35,7 @@ export class GraphGlow extends FFEngine.Component {
         this.sprite2.GetContainer().rotateZ(Math.random());
 
         this.particleSystem = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.ParticleSystem, { map: ASSETPACK.GetTextureAsset(TextureAssetType.GLOW), numParticles: 1000 });
-        this.particleSystem.SetSystemGravity(new FFEngine.THREE.Vector3(0, -2, 0));
+        this.particleSystem.SetSystemGravity(new FFEngine.THREE.Vector3(0, -4, 0));
         this.particleSystem.GetContainer().position.set(0, 0, 5);
 
         let light = new FFEngine.THREE.PointLight(0xffffff, 1, 10);
@@ -47,15 +49,26 @@ export class GraphGlow extends FFEngine.Component {
         size = FFEngine.MathHelper.GetRandomRange(GraphGlow.GLOW_SIZE_MIN, GraphGlow.GLOW_SIZE_MAX);
         this.sprite2.SetSize(size, size);
 
-        this.SpawnParticle();
+        //update particle spawns
+        if (this.particleActive) {
+            this.particleTimer += FFEngine.instance.GetDeltaTime();
+            while (this.particleTimer >= 0.01) {
+                this.particleTimer -= 0.01;
+                this.SpawnParticle();
+            }
+        }
+    }
+
+    public SetParticlesActive(active: boolean): void {
+        this.particleActive = active;
     }
 
     private SpawnParticle(): void {
         this.particleSystem.SpawnParticle(new FFEngine.THREE.Vector3(0, 0, -5), //pos
-            new FFEngine.THREE.Vector3((Math.random()-0.5) * 2, (Math.random()-0.3) * 2, 0),    //vel
+            new FFEngine.THREE.Vector3((Math.random()-0.5) * 3, (Math.random()-0.3) * 3, 0),    //vel
             0.2 + (Math.random()*0.2),    //Size
-            0.5 + (Math.random()*0.5),    //Lifetime
-            [1, 0.7, 0.7, 0.6],   //Colour
+            0.3 + (Math.random()*0.3),    //Lifetime
+            [1, 0.7, 0.7, 0.8],   //Colour
             (Math.random() - 0.5) * 4,   //Spin
             0.001,  //Size end
             0.0, // fade in coef

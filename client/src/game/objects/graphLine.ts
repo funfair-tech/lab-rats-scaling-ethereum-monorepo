@@ -46,6 +46,7 @@ export class GraphLine extends FFEngine.Component {
             if (this.resultLerpCoef >= 1) {
                 this.resultLerpCoef = 1;
                 MULTITRADER.GraphResultFinished();
+                this.glow.SetParticlesActive(false);
             }
 
             this.UpdateGraphLerp();
@@ -85,6 +86,7 @@ export class GraphLine extends FFEngine.Component {
         //setup lerp and update graph
         if (this.points.length > 2 && instant === false) {
             this.resultLerpCoef = 0;
+            this.glow.SetParticlesActive(true);
         }
         else {
             this.resultLerpCoef = 1;
