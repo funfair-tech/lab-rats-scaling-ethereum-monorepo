@@ -42,6 +42,8 @@ export class UIButtonSprite extends UIButton {
 
     public SetupHighlight(texture: FFEngine.THREE.Texture): void {
         this.highlight = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
+        this.highlight.SetBlendingMode(FFEngine.THREE.AdditiveBlending);
+        this.highlight.SetTexture(texture);
     }
 
     /**
