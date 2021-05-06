@@ -21,7 +21,7 @@ import { freezeDisplayBalance, unFreezeDisplayBalance } from '../store/actions/u
 import { Round } from '../model/round';
 import { NoMoreBets } from '../events/noMoreBets';
 class GameService {
-  private GAME_MANAGER_ADDRESS = '0x14FE1360ba12F1b84f3429f85138A0B8896A01Ca';
+  private GAME_MANAGER_ADDRESS = '0x832B7d868C45a53e9690ffc12527391098bBd0dD';
   private TOKEN_ADDRESS = '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2';
 
   private debugEncodeBet(bet: Bet): string {
