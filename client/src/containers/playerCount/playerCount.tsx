@@ -7,7 +7,7 @@ interface Props extends ReduxProps {}
 
 export const PlayerCount: FunctionComponent<Props> = (props) => {
   return props.user.authenticated ? <div className='playerCount'>
-    <div className='playerCount__summary'>	
+    <div key={props.game.playersOnline} className='playerCount__summary'>	
       <div className='playerCount__icon'>&#128101;</div> <div>{props.game.playersOnline}</div>
     </div>
     <div className='playerCount__details'>players online</div>
