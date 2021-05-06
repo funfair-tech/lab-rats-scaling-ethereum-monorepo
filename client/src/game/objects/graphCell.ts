@@ -25,6 +25,7 @@ export class GraphCell extends FFEngine.Component {
         //custom material which accepts lights
         let material = new FFEngine.THREE.MeshLambertMaterial();
         material.map = ASSETPACK.GetTextureAsset(TextureAssetType.CELL);
+        material.depthWrite = false;
 
         this.sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite, { material: material });
         this.SetBetType(Logic_BetType.NONE);
