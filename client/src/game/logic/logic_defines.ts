@@ -102,6 +102,10 @@ export class Logic_GameState {
     public carryOverPrizePoolAfterResult: number = 0;
     public currentPrizePool: number = 0;
 
+    //Bet win flags
+
+    public betWinFlags: boolean[] = [];
+
     //Reporting control
 
     public serverBlock: string = '0x0';

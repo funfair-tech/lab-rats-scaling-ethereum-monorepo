@@ -104,6 +104,10 @@ export class Logic {
 
             this.RecalculateCurrentPrizePool();
 
+            //Determine any winning bet flags
+
+            this.CorrectBetWinFlags();
+
             //Update the reported state
         
             this.UpdateReportedState();
@@ -313,6 +317,37 @@ export class Logic {
             state.bets.forEach((bet) => {
                 state.currentPrizePool += bet.amount;
             });
+        }
+    }
+
+    protected CorrectBetWinFlags(): void {
+        let state: Logic_GameState = this.currentState;
+
+        //Clear out bet win flags
+
+        state.betWinFlags = [false, false, false, false, false, false];
+        
+        //Set only if state is complete
+
+        if(state.roundState === Logic_RoundState.COMPLETE) {
+
+            //Determine winners
+
+            if(state.lastAdjustment > 0) {
+                state.betWinFlags[Logic_BetType.HIGHER] = true;
+                if(state.lastAdjustment > 5) {
+                    state.betWinFlags[Logic_BetType.LARGEHIGHER] = true;                    
+                } else {
+                    state.betWinFlags[Logic_BetType.SMALLHIGHER] = true;
+                }
+            } else if (state.lastAdjustment < 0) {
+                state.betWinFlags[Logic_BetType.LOWER] = true;
+                if(state.lastAdjustment < -5) {
+                    state.betWinFlags[Logic_BetType.LARGELOWER] = true;                    
+                } else {
+                    state.betWinFlags[Logic_BetType.SMALLLOWER] = true;
+                }
+            }
         }
     }
 
