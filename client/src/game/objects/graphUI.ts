@@ -108,6 +108,13 @@ export class GraphUI extends FFEngine.Component {
         this.betSmallLow.SetLocked(locked);
         this.betBigHigh.SetLocked(locked);
         this.betBigLow.SetLocked(locked);
+
+        this.betHigh.SetHighlightGlow(!locked);
+        this.betLow.SetHighlightGlow(!locked);
+        this.betSmallHigh.SetHighlightGlow(!locked);
+        this.betSmallLow.SetHighlightGlow(!locked);
+        this.betBigHigh.SetHighlightGlow(!locked);
+        this.betBigLow.SetHighlightGlow(!locked);
     }
 
     public UpdatePlayers(players: Player[]): void {

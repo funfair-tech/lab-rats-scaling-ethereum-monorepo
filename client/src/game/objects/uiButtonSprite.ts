@@ -9,12 +9,21 @@ export class UIButtonSprite extends UIButton {
     private sprite!: FFEngine.Sprite;
     private highlight!: FFEngine.Sprite;
     private stateConfig: ButtonSpriteStateConfig[] = [];
+    private highlightGlowActive: boolean = false;
+    private highlightGlowTimer: number = 0;
 
     public Create(params: any): void {
         super.Create(params);
         
         this.sprite = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
         this.SetRaycastObject(this.sprite.GetContainer());
+    }
+
+    public Update(): void {
+        if (this.highlight && this.highlightGlowActive) {
+            this.highlightGlowTimer += FFEngine.instance.GetDeltaTime() * 3;
+            this.highlight.SetAlpha((Math.sin(this.highlightGlowTimer) * 0.5) + 0.5);
+        }
     }
 
     /**
@@ -26,6 +35,13 @@ export class UIButtonSprite extends UIButton {
 
     public GetHighlightSprite(): FFEngine.Sprite {
         return this.highlight;
+    }
+
+    public SetHighlightGlow(active: boolean): void {
+        if (this.highlight) {
+            this.highlight.GetContainer().visible = active;
+            this.highlightGlowActive = active;
+        }
     }
 
     /**
