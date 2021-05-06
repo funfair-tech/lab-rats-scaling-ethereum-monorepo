@@ -51,6 +51,10 @@ export class EnvironmentManager extends FFEngine.Component {
         this.CreateScene();
     }
 
+    public Update(): void {
+        
+    }
+
     /**
      * Moves the camera so the provided graph coordinate is centered on the screen
      */
