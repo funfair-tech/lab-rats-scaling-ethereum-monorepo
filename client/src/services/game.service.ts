@@ -9,7 +9,7 @@ import { RoundResult } from '../model/roundResult';
 import { addBet, clearBets, setCanPlay, setGameError, setResult, setRound } from '../store/actions/game.actions';
 import store from '../store/store';
 import { ethers } from './ether.service';
-import { messageService } from './message.service';
+// import { messageService } from './message.service';
 import { isContractAddressInBloom, isInBloom } from 'ethereum-bloom-filters';
 import { Event } from '@ethersproject/contracts';
 import { EndGameRound } from '../events/endGameRound';
@@ -25,24 +25,24 @@ class GameService {
   private GAME_MANAGER_ADDRESS = '0x832B7d868C45a53e9690ffc12527391098bBd0dD';
   private TOKEN_ADDRESS = '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2';
 
-  private debugEncodeBet(bet: Bet): string {
+  // private debugEncodeBet(bet: Bet): string {
 
-    const leftPadValue = (value: string, digits=64) => {
-      return Array(Math.max(digits - value.length + 1, 0)).join('0') + value;
-    }
+  //   const leftPadValue = (value: string, digits=64) => {
+  //     return Array(Math.max(digits - value.length + 1, 0)).join('0') + value;
+  //   }
 
 
-    const uint256Type = '0000000000000000000000000000000000000000000000000000000000000020';
-    const roundId = bet.roundId.substring(2);
-    const arrayType = '0000000000000000000000000000000000000000000000000000000000000040';
-    const storageType = '0000000000000000000000000000000000000000000000000000000000000060';
-    const arrayLength = '0000000000000000000000000000000000000000000000000000000000000001';
-    const address = `000000000000000000000000${bet.address.substring(2)}`
-    const betAmount = leftPadValue(hexlify(bet.amount).substring(2));
-    const betData = leftPadValue(hexlify(bet.data).substring(2));
+  //   const uint256Type = '0000000000000000000000000000000000000000000000000000000000000020';
+  //   const roundId = bet.roundId.substring(2);
+  //   const arrayType = '0000000000000000000000000000000000000000000000000000000000000040';
+  //   const storageType = '0000000000000000000000000000000000000000000000000000000000000060';
+  //   const arrayLength = '0000000000000000000000000000000000000000000000000000000000000001';
+  //   const address = `000000000000000000000000${bet.address.substring(2)}`
+  //   const betAmount = leftPadValue(hexlify(bet.amount).substring(2));
+  //   const betData = leftPadValue(hexlify(bet.data).substring(2));
 
-    return `${uint256Type}${roundId}${arrayType}${arrayLength}${uint256Type}${address}${betAmount}${storageType}${uint256Type}${betData}`;
-  }
+  //   return `${uint256Type}${roundId}${arrayType}${arrayLength}${uint256Type}${address}${betAmount}${storageType}${uint256Type}${betData}`;
+  // }
 
   // public async handlePlay(bet: Bet) {
 
