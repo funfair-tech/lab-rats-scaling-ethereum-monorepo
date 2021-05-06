@@ -30,10 +30,10 @@ const SplashScreen: FunctionComponent<Props> = (props) => {
           </section>
           <section className='splash__cta__description'>
             <p>
-              A multiplayer trading graph betting game where you bet if the graph 
-              will go up or down. Sign and send the transaction on every bet using 
-              optimism L2 to show how you can do complete on chain betting without 
-              spending loads of ETH on gas.
+              A multiplayer trading simulation game running in real-time on the Optimism chain.
+              Players try to predict where the price will go next by placing tokens on the graph.
+              This proof of concept shows that all token transfers and game logic can be performed
+              on-chain without spending excessive ETH on gas costs.
             </p>
           </section>
           <section className='splash__cta__signin'>
