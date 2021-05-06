@@ -6,13 +6,7 @@ import { BigNumber, Contract, ContractInterface, utils} from 'ethers';
 class EtherService {
   private _provider: Web3Provider;
   constructor() {
-    // this._provider = new Web3Provider(window.funwallet.sdk.ethereum as any);
     this._provider = new Web3Provider(window.funwallet.sdk.ethereum as any);
-
-    // setInterval(async ()=>{
-    //   const block = await this._provider.getBlockNumber();
-    //   console.log(`^^ POLL BLOCK NUMBER: [${new Date()}]`, block);
-    // }, 1000);
   }
 
   /**
@@ -57,7 +51,6 @@ class EtherService {
   }
 
   public encode(types: any[], parameters: any[]): string {
-    // const paramTypes: ParamType[] = types.map(type => utils.ParamType.from( type ));
     const paramTypes: ParamType[] = types.map(type => utils.ParamType.from( type ));
     return utils.defaultAbiCoder.encode(paramTypes, parameters);
   }

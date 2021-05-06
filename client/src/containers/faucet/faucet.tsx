@@ -79,7 +79,6 @@ export const Faucet: FunctionComponent<Props> = (props) => {
     <Notification
       label='Funding your account'
       visible={!!props.network.transactionHash}
-      // visible={true}
       category={NotificationType.INFO}
     />
   );

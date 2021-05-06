@@ -9,21 +9,11 @@ import {
 } from '../../store/actions/user.actions';
 import { Coin } from '../../components/coin/coin';
 import BigNumber from 'bignumber.js';
-// import store from '../../store/store';
 interface Props extends ReduxProps {
   title: string;
 }
 
-// const isFloat = (value: number) => {
-//   return Number(value) === value && value % 1 !== 0;
-// }
-
 const formatBalance = (balance: number|null) => {
-  // if(balance === null){
-  //   return balance;
-  // } else {
-  //   // return isFloat(balance) ? balance.toFixed(2) : balance; 
-  // }
   return balance !== null ? new BigNumber(balance).toFixed(0) : null;
 }
 
@@ -37,7 +27,7 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
   return (
     <div className='accountBar'>
       <section className='accountBar__content'>
-        {/* <section>{props.title}</section> */}
+        
         <section className='accountBar__logo'>
           <img src={process.env.PUBLIC_URL + '/logo.png'} alt='Lab Rats' />
         </section>
@@ -46,16 +36,6 @@ export const AccountBar: FunctionComponent<Props> = (props) => {
           <Coin visible={!!props.user.displayBalance} />
           {formatBalance(props.user.displayBalance)}
         </section>
-
-         {/* <section>
-          <Button
-            onClick={() => {
-              store.dispatch(setTokenBalance(0));
-            }}
-          >
-            zero balance
-          </Button>
-        </section> */}
 
         <section>
           {props.user.authenticated ? (
