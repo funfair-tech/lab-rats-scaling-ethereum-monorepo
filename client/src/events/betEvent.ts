@@ -3,12 +3,3 @@ export enum BetEvent {
   DATA = 1,  
 }
 
-export interface IBet {
-  roundId: string;
-  data: {
-    playerAddress: string;
-    betAmount: number;
-    betData: string;
-  };  
-}
-

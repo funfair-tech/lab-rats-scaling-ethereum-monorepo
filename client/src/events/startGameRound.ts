@@ -4,10 +4,3 @@ export enum StartGameRound {
   CONFIG = 2, 
 }
 
-export interface IStartGameRound {
-  entropyCommit: string;
-  gameAddress: string;
-  persistentGameDataID: string;
-  roundID: string;
-}
-

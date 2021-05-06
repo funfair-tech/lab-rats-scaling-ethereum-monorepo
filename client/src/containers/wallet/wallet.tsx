@@ -51,7 +51,7 @@ class Wallet extends Component<Props> {
           this.props.setNetworkName(data.currentNetwork.name);
           this.props.setNetworkId(data.currentNetwork.id.valueOf());
 
-          messageService.connectToServer(true, data.currentNetwork.name);
+          // messageService.connectToServer(true, data.currentNetwork.name);
         }
       }
     );

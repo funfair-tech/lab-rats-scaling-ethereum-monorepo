@@ -12,18 +12,16 @@ import { ethers } from './ether.service';
 import { messageService } from './message.service';
 import { isContractAddressInBloom, isInBloom } from 'ethereum-bloom-filters';
 import { Event } from '@ethersproject/contracts';
-import { EndGameRound, IEndGameRound } from '../events/endGameRound';
-import { BetEvent, IBet } from '../events/betEvent';
+import { EndGameRound } from '../events/endGameRound';
+import { BetEvent } from '../events/betEvent';
 import { PersistentDataEvent } from '../events/persistentDataEvent';
 import { ErrorCode } from '../model/errorCodes';
 import { setNetworkError } from '../store/actions/network.actions';
 import { freezeDisplayBalance, unFreezeDisplayBalance } from '../store/actions/user.actions';
 import { Round } from '../model/round';
-import { INoMoreBets, NoMoreBets } from '../events/noMoreBets';
-import { IStartGameRound } from '../events/startGameRound';
-import { eventNames } from 'node:process';
+import { NoMoreBets } from '../events/noMoreBets';
+import { StartGameRound } from '../events/startGameRound';
 class GameService {
-  // private GAME_MANAGER_ADDRESS = '0x14FE1360ba12F1b84f3429f85138A0B8896A01Ca';
   private GAME_MANAGER_ADDRESS = '0x832B7d868C45a53e9690ffc12527391098bBd0dD';
   private TOKEN_ADDRESS = '0x11160251d4283A48B7A8808aa0ED8EA5349B56e2';
 
@@ -212,7 +210,7 @@ class GameService {
         encoded
       );
       
-      messageService.broadcastBet(bet);
+      // messageService.broadcastBet(bet);
   
       const receipt = await transactionResponse.wait(1);
       console.log('handlePlay receipt: ', receipt);
@@ -384,13 +382,11 @@ class GameService {
   public async subscribeToContractEvents() {
     const contract = await ethers.getContract<MultiplayerGamesManager>(MultiplayerGamesManagerABI, this.GAME_MANAGER_ADDRESS);
 
-    (contract as any).on( 'StartGameRound' , (from:string, to: string, event: IStartGameRound) => {
-      console.log('## start round event from', from);
-      console.log('## start round event to', to);
-      console.log('## start round event ', event);
+    (contract as any).on( 'StartGameRound' , (...args:any[]) => {
+      console.log('## start round event', args);
       
       const round : Round = {
-        id: event.roundID,
+        id: args[StartGameRound.ROUND_ID],
         //TODO: remove redundant fields
         block: 0,
         time: 0,
@@ -400,53 +396,48 @@ class GameService {
       store.dispatch(setRound(round));
     });
 
-    (contract as any).on( 'Bet' , (from:string, to: string, event: IBet) => {
-      console.log('## bet event from', from);
-      console.log('## bet event to', to);
-      console.log('## bet event ', event);
+    (contract as any).on( 'Bet' , (...args:any[]) => {
+      console.log('## bet event ', args);
 
       const bet: Bet = {
-        roundId: event.roundId, 
-        address: event.data.playerAddress,
-        amount: event.data.betAmount,
-        data: event.data.betData,
+        roundId: args[BetEvent.ROUND_ID], 
+        address: args[BetEvent.DATA]['playerAddress'],
+        amount: args[BetEvent.DATA]['betAmount'],
+        data: args[BetEvent.DATA]['betData'],
         confirmed: true,
       };
 
         store.dispatch(addBet(bet));
     });
 
-    (contract as any).on( 'NoMoreBets' , (from:string, to: string, event: INoMoreBets) => {
-      console.log('## no more bets event from', from);
-      console.log('## no more bets event to', to);
-      console.log('## no more bets event ', event);
+    (contract as any).on( 'NoMoreBets' , (...args:any[]) => {
+      console.log('## no more bets event', args);
       const state = store.getState();
-      if( event.roundId === state.game.round?.id) {
+      if( args[NoMoreBets.ROUND_ID] === state.game.round?.id) {
         store.dispatch(setCanPlay(false));
       }
     });
 
-    (contract as any).on( 'EndGameRound' , async (from:string, to: string, event: IEndGameRound) => {
-      console.log('## end game round event from', from);
-      console.log('## end game round event to', to);
-      console.log('## end game round event ', event);
+    (contract as any).on( 'EndGameRound' , async (...args:any[]) => {
 
-      const persistentData: GetPersistentGameDataByIDResponse|null = await contract.getPersistentGameDataByID(event.persistentGameDataID).catch(error => {
+      console.log('## end game round event ', args);
+
+      const persistentData: GetPersistentGameDataByIDResponse|null = await contract.getPersistentGameDataByID(args[EndGameRound.PERSISTENT_GAME_DATA_ID]).catch(error => {
         console.error(error);
         store.dispatch(setGameError({code: ErrorCode.JSON_RPC_READ_ERROR, msg: 'Error reading persistant game data'}));
         return null;
       }) 
 
       const result: RoundResult = {
-        id: event.roundId,
-        playerAddresses: event.playerAddresses,
-        winAmounts: event.winAmounts,
-        result: event.result,
-        history: event.history,
-        potWinLoss: event.persistentGameDataPotWinLoss,
-        entropyReveal: event.entropyReveal,
+        id: args[EndGameRound.ROUND_ID],
+        playerAddresses: args[EndGameRound.PLAYER_ADDRESSES],
+        winAmounts: args[EndGameRound.WIN_AMOUNTS],
+        result: args[EndGameRound.GAME_RESULT],
+        history: args[EndGameRound.HISTORY],
+        potWinLoss: args[EndGameRound.POT_WIN_LOSS],
+        entropyReveal: args[EndGameRound.ENTROPY_REVEAL],
         persistentGameData: !!persistentData ? {
-          id: event.persistentGameDataID,
+          id: args[EndGameRound.PERSISTENT_GAME_DATA_ID],
           data: persistentData[PersistentDataEvent.GAME_DATA],
           pot: persistentData[PersistentDataEvent.POT_VALUE].toNumber()
         } : null,

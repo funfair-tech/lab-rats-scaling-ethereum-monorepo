@@ -8,15 +8,3 @@ export enum EndGameRound {
   GAME_RESULT = 6, 
   HISTORY = 7,
 }
-
-export interface IEndGameRound {
-  roundId: string;  
-  persistentGameDataID: string; 
-  entropyReveal: string; 
-  playerAddresses: string[]; 
-  winAmounts: number[]; 
-  persistentGameDataPotWinLoss: string; 
-  result: string; 
-  history: string;
-}
-
