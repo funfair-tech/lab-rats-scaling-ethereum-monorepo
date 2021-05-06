@@ -164,7 +164,7 @@ export class MultiTrader extends FFEngine.Component {
             }
 
             //update prize pool
-            GLUI.SetPrizePool(this.localGame ? state.currentPrizePool : state.currentPrizePool / 100000000);
+            GLUI.SetPrizePool(this.GetRoundedValue(this.localGame ? state.currentPrizePool : state.currentPrizePool / 100000000));
 
             //update bets and players
             PLAYER_MANAGER.UpdateBets(state.bets, this.localGame ? 1 : 100000000);
@@ -221,6 +221,10 @@ export class MultiTrader extends FFEngine.Component {
                 break;
             }
         }
+    }
+
+    public GetRoundedValue(value: number): number {
+        return Math.round(value * 100) / 100;
     }
 
 }

@@ -1,5 +1,6 @@
 import { FFEngine } from '@funfair/engine';
 import { Logic_Bet, Logic_BetType } from '../logic/logic_defines';
+import { MULTITRADER } from '../multiTrader';
 import { GLUI } from '../multiTraderUI';
 import { UIPlayerData } from '../objects/uiPlayerList';
 import { GRAPH_MANAGER } from './graphManager';
@@ -56,8 +57,8 @@ export class PlayerManager extends FFEngine.Component {
             
             if (playerListUI) {
                 let displayData = playerListUI.GetDisplayData();
-                displayData.bet = bet.amount / currencyMultiplier;
-                displayData.win = bet.winnings / currencyMultiplier;
+                displayData.bet = MULTITRADER.GetRoundedValue(bet.amount / currencyMultiplier);
+                displayData.win = MULTITRADER.GetRoundedValue(bet.winnings / currencyMultiplier);
                 playerListUI.UpdateDisplay();
             }
         }
