@@ -213,6 +213,7 @@ export class Logic {
             movement = - (256 - movement);
         }
         state.lastAdjustment = movement;
+        state.currentPrice += state.lastAdjustment;
         let currentHistoricPrice: number = state.currentPrice;
         for(let index: number = 0; index < 32; index++) {
             let byte: number = parseInt('0x' + message.data.result.substr(192 - (index * 2), 2));
@@ -251,7 +252,9 @@ export class Logic {
         state.roundState = Logic_RoundState.COMPLETE;
 
         state.currentPrice = parseInt('0x' + message.data.substr(2,64));
+
         let currentHistoricPrice = state.currentPrice;
+    
         for(let index: number = 0; index < 32; index++) {
             let byte: number = parseInt('0x' + message.data.substr(128 - (index * 2), 2));
             if(byte & 0x80) {
