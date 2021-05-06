@@ -112,7 +112,7 @@ class Wallet extends Component<Props> {
           const networkId = this.props.network.id;
           if (!!networkId && networkId === result.data.networkId) {
             this.props.setBlockHeader(result.data);
-            gameService.readBlockHeader(result.data);
+            // gameService.readBlockHeader(result.data);
           }
         }
       }
