@@ -1,10 +1,11 @@
 import * as signalR from '@microsoft/signalr';
 import window from '@funfair-tech/wallet-sdk/window';
 import { apiRequest } from './api-request.service';
-import { Bet } from '../model/bet';
+import { Bet, SafeBet } from '../model/bet';
 import { MessageId } from '../model/messageId';
 import store from '../store/store';
-import { setCanPlay, setHistory, setPlayersOnline } from '../store/actions/game.actions';
+import { addBet, setCanPlay, setHistory, setPlayersOnline, setRound } from '../store/actions/game.actions';
+import { Round } from '../model/round';
 // import { Round } from '../model/round';
 
 class MessageService {
@@ -39,21 +40,19 @@ class MessageService {
       `GameRoundStarted: ${gameRoundId} ${timeLeftInSeconds} ${startRoundBlockNumber} ${interRoundPause}`,
     );
 
-    // enable websocket rounds
-    // const round: Round = {
-    //   id: gameRoundId,
-    //   block: startRoundBlockNumber,
-    //   time: timeLeftInSeconds,
-    //   timeToNextRound: interRoundPause
-    // }
-    // store.dispatch(setRound(round));
+    const round: Round = {
+      id: gameRoundId,
+      block: startRoundBlockNumber,
+      time: timeLeftInSeconds,
+      timeToNextRound: interRoundPause
+    }
+    store.dispatch(setRound(round));
   };
 
   private handleBettingEnding = (): void => {
     console.log(
       `BettingEnding: `,
     );
-    // enable websocket no more bets
     store.dispatch(setCanPlay(false));
   };
 
@@ -74,10 +73,10 @@ class MessageService {
       const decoded = JSON.parse(message);
       switch (decoded.action) {
         case MessageId.BET:
-          // const decodedBet = decoded as Bet;
-          // const bet: Bet = new SafeBet(decodedBet.roundId, decodedBet.address, decodedBet.amount, decodedBet.data, false);
-          // store.dispatch(addBet(bet));
-          // break;
+          const decodedBet = decoded as Bet;
+          const bet: Bet = new SafeBet(decodedBet.roundId, decodedBet.address, decodedBet.amount, decodedBet.data, false);
+          store.dispatch(addBet(bet));
+          break;
       }
     } catch (error) {
       console.error(`Error parsing broadcast message ${error}`);
@@ -109,12 +108,12 @@ class MessageService {
       .build();
 
     this.connection.on('PlayersOnline', this.handlePlayersOnline);
-    this.connection.on('GameRoundStarting', this.handleGameStarting);
-    this.connection.on('GameRoundStarted', this.handleGameStarted);
-    this.connection.on('BettingEnding', this.handleBettingEnding);
-    this.connection.on('GameRoundEnding', this.handleGameEnding);
-    this.connection.on('GameRoundEnded', this.handleGameEnded);
-    this.connection.on('NewMessage', this.handleBroadcast);
+    // this.connection.on('GameRoundStarting', this.handleGameStarting);
+    // this.connection.on('GameRoundStarted', this.handleGameStarted);
+    // this.connection.on('BettingEnding', this.handleBettingEnding);
+    // this.connection.on('GameRoundEnding', this.handleGameEnding);
+    // this.connection.on('GameRoundEnded', this.handleGameEnded);
+    // this.connection.on('NewMessage', this.handleBroadcast);
     this.connection.on('History', this.handleHistory);
 
 

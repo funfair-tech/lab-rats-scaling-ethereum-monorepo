@@ -383,7 +383,7 @@ class GameService {
     const contract = await ethers.getContract<MultiplayerGamesManager>(MultiplayerGamesManagerABI, this.GAME_MANAGER_ADDRESS);
 
     (contract as any).on( 'StartGameRound' , (...args:any[]) => {
-      console.log('## start round event', args);
+      // console.log('## start round event', args);
       
       const round : Round = {
         id: args[StartGameRound.ROUND_ID],
@@ -411,7 +411,7 @@ class GameService {
     });
 
     (contract as any).on( 'NoMoreBets' , (...args:any[]) => {
-      console.log('## no more bets event', args);
+      // console.log('## no more bets event', args);
       const state = store.getState();
       if( args[NoMoreBets.ROUND_ID] === state.game.round?.id) {
         store.dispatch(setCanPlay(false));
@@ -420,7 +420,7 @@ class GameService {
 
     (contract as any).on( 'EndGameRound' , async (...args:any[]) => {
 
-      console.log('## end game round event ', args);
+      // console.log('## end game round event ', args);
 
       const persistentData: GetPersistentGameDataByIDResponse|null = await contract.getPersistentGameDataByID(args[EndGameRound.PERSISTENT_GAME_DATA_ID]).catch(error => {
         console.error(error);
