@@ -3,3 +3,8 @@ export enum NoMoreBets {
   PERSISTENT_GAME_DATA_ID = 1,  
 }
 
+
+export interface INoMoreBets {
+  roundId: string;
+}
+

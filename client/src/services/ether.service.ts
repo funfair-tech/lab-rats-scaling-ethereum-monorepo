@@ -1,13 +1,18 @@
 import { ParamType } from '@ethersproject/abi';
-import { TransactionReceipt, Web3Provider } from '@ethersproject/providers';
+import { TransactionReceipt, Web3Provider} from '@ethersproject/providers';
 import window from '@funfair-tech/wallet-sdk/window';
-import { BigNumber, Contract, ContractInterface, utils } from 'ethers';
+import { BigNumber, Contract, ContractInterface, utils} from 'ethers';
 
 class EtherService {
   private _provider: Web3Provider;
   constructor() {
     // this._provider = new Web3Provider(window.funwallet.sdk.ethereum as any);
     this._provider = new Web3Provider(window.funwallet.sdk.ethereum as any);
+
+    // setInterval(async ()=>{
+    //   const block = await this._provider.getBlockNumber();
+    //   console.log(`^^ POLL BLOCK NUMBER: [${new Date()}]`, block);
+    // }, 1000);
   }
 
   /**
