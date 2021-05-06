@@ -38,7 +38,7 @@ export class GraphUI extends FFEngine.Component {
         this.betUI = new FFEngine.THREE.Object3D();
         this.container.add(this.betUI);
 
-        this.betHigh = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGH), -1.5, 1.5, 2.9, 2.8);
+        this.betHigh = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGH), -1.5, 1.47, 2.9, 2.8);
 
         this.betHigh.SetOnClicked(() => {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.HIGHER);
@@ -47,7 +47,7 @@ export class GraphUI extends FFEngine.Component {
         let text = FFEngine.instance.CreateChildObjectWithComponent(this.betHigh.GetContainer(), FFEngine.BitmapString, { text: 'High', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.6, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 0, 0]});
         text.SetRenderOrder(1);
 
-        this.betLow = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOW), -1.5, -1.5, 2.9, 2.8);
+        this.betLow = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOW), -1.5, -1.47, 2.9, 2.8);
        
         this.betLow.SetOnClicked(() => {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.LOWER);
@@ -56,7 +56,7 @@ export class GraphUI extends FFEngine.Component {
         text = FFEngine.instance.CreateChildObjectWithComponent(this.betLow.GetContainer(), FFEngine.BitmapString, { text: 'Low', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.6, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 0, 0]});
         text.SetRenderOrder(1);
 
-        this.betSmallHigh = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGHSMALL), 4.5, 1.5/2, 2.9, 1.48);
+        this.betSmallHigh = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGHSMALL), 4.5, 1.6/2, 2.9, 1.48);
 
         this.betSmallHigh.SetOnClicked(() => {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.SMALLHIGHER);
@@ -65,7 +65,7 @@ export class GraphUI extends FFEngine.Component {
         text = FFEngine.instance.CreateChildObjectWithComponent(this.betSmallHigh.GetContainer(), FFEngine.BitmapString, { text: 'Rise', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.4, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[-0.35, 0.35, 0]});
         text.SetRenderOrder(1);
 
-        this.betBigHigh = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGHSMALL), 4.5, 1.5 + (1.5/2), 2.9, 1.48);
+        this.betBigHigh = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGHSMALL), 4.5, 1.5 + (1.6/2), 2.9, 1.48);
         
         this.betBigHigh.SetOnClicked(() => {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.LARGEHIGHER);
@@ -74,7 +74,7 @@ export class GraphUI extends FFEngine.Component {
         text = FFEngine.instance.CreateChildObjectWithComponent(this.betBigHigh.GetContainer(), FFEngine.BitmapString, { text: 'Large Rise', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.4, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[-0.35, 0.35, 0]});
         text.SetRenderOrder(1);
 
-        this.betSmallLow = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOWSMALL), 4.5, -1.5/2, 2.9, 1.48);
+        this.betSmallLow = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOWSMALL), 4.5, -1.63/2, 2.9, 1.48);
 
         this.betSmallLow.SetOnClicked(() => {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.SMALLLOWER);
@@ -83,7 +83,7 @@ export class GraphUI extends FFEngine.Component {
         text = FFEngine.instance.CreateChildObjectWithComponent(this.betSmallLow.GetContainer(), FFEngine.BitmapString, { text: 'Fall', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.4, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[-0.35, 0.35, 0]});
         text.SetRenderOrder(1);
 
-        this.betBigLow = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOWSMALL), 4.5, -1.5 - (1.5/2), 2.9, 1.48);
+        this.betBigLow = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOWSMALL), 4.5, -1.5 - (1.6/2), 2.9, 1.48);
 
         this.betBigLow.SetOnClicked(() => {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.LARGELOWER);
