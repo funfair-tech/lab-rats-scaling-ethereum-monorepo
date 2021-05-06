@@ -63,7 +63,7 @@ export class GraphManager extends FFEngine.Component {
     /**
      * Adds a result to the end of the graph line
      */
-    public AddResult(price: number, instant: boolean = true): void {
+    public AddResult(price: number, instant: boolean = true, lastUpdate: boolean = false): void {
 
         //temporary scaling until the graph sizing is sorted
         price -= 1000;
@@ -80,7 +80,11 @@ export class GraphManager extends FFEngine.Component {
 
         this.graphCoord.y = price;
         ENVIRONMENT_MANAGER.SetCameraToGraphCoordinate(this.graphCoord, instant);
-        this.UpdateCells(this.graphCoord);
+
+        //only update cells on last update for this frame, as it can be expensive
+        if (lastUpdate === true) {
+            this.UpdateCells(this.graphCoord);
+        }
     }
 
     public OffsetLine(numCells: number): void {

@@ -152,14 +152,14 @@ export class MultiTrader extends FFEngine.Component {
                 for (let i=state.historicPrices.length-1;i>=0;i--) {
                     GRAPH_MANAGER.AddResult(state.historicPrices[i]);
                 }
-                GRAPH_MANAGER.AddResult(state.currentPrice);
+                GRAPH_MANAGER.AddResult(state.currentPrice, true, true);
             }
 
             this.lastNonce = state.localNonce;
 
             //add a new graph result
             if (state.roundState === Logic_RoundState.COMPLETE) {
-                GRAPH_MANAGER.AddResult(state.currentPrice, false);
+                GRAPH_MANAGER.AddResult(state.currentPrice, false, true);
                 GRAPH_MANAGER.AddWinningBetTypes(state.betWinFlags);
             }
 
