@@ -54,11 +54,11 @@ export class EnvironmentManager extends FFEngine.Component {
     /**
      * Moves the camera so the provided graph coordinate is centered on the screen
      */
-    public SetCameraToGraphCoordinate(coord: FFEngine.THREE.Vector2): void {
+    public SetCameraToGraphCoordinate(coord: FFEngine.THREE.Vector2, instant: boolean): void {
         let camPos = GRAPH_MANAGER.GridToWorld(coord);
         camPos.x += EnvironmentManager.CAM_X_OFFSET + 2.5;
         camPos.z = EnvironmentManager.CAM_Z;
-        this.MoveCamera(camPos);
+        this.MoveCamera(camPos, instant);
     }
 
     public GetCamera(): FFEngine.THREE.PerspectiveCamera {
@@ -71,17 +71,24 @@ export class EnvironmentManager extends FFEngine.Component {
         FFEngine.instance.CreateChildObjectWithComponent(this.container, PlayerManager);
     }
 
-    private MoveCamera(targetPosition: FFEngine.THREE.Vector3): void {
+    private MoveCamera(targetPosition: FFEngine.THREE.Vector3, instant: boolean): void {
         
-        let startPosition = new FFEngine.THREE.Vector3().copy(this.camera.position);
-
-        let controlPosition = new FFEngine.THREE.Vector3(
-            startPosition.x + ((targetPosition.x - startPosition.x) / 2 ),
-            startPosition.y + ((targetPosition.y - startPosition.y) / 2 ),
-            startPosition.z + ((targetPosition.z - startPosition.z) / 2 ) );
-
         this.cameraInterpolator.CancelAll();
-        this.cameraInterpolator.QueueCurvePositionChange(targetPosition, controlPosition, 2, 0);
+
+        if (instant) {
+            this.camera.position.copy(targetPosition);
+        }
+        else {
+            let startPosition = new FFEngine.THREE.Vector3().copy(this.camera.position);
+
+            let controlPosition = new FFEngine.THREE.Vector3(
+                startPosition.x + ((targetPosition.x - startPosition.x) / 2 ),
+                startPosition.y + ((targetPosition.y - startPosition.y) / 2 ),
+                startPosition.z + ((targetPosition.z - startPosition.z) / 2 ) );
+
+            
+            this.cameraInterpolator.QueueCurvePositionChange(targetPosition, controlPosition, 2, 0);
+        }
     }
 }
 

@@ -79,7 +79,7 @@ export class GraphManager extends FFEngine.Component {
         }
 
         this.graphCoord.y = price;
-        ENVIRONMENT_MANAGER.SetCameraToGraphCoordinate(this.graphCoord);
+        ENVIRONMENT_MANAGER.SetCameraToGraphCoordinate(this.graphCoord, instant);
         this.UpdateCells(this.graphCoord);
     }
 
