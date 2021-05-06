@@ -87,6 +87,14 @@ export class GraphManager extends FFEngine.Component {
         this.graphLine.OffsetLine(numCells);
     }
 
+    public AddWinningBetTypes(betWinFlags: boolean[]): void {
+        this.graphUI.SetBetWinFlags(betWinFlags);
+    }
+
+    public HighlightWinningButtons(active: boolean): void {
+        this.graphUI.HighlightWinningButtons(active);
+    }
+
     public GetCellAtCoordinate(coord: FFEngine.THREE.Vector2): GraphCell | undefined {
         for (let i=0;i<this.cells.length;i++) {
             if (this.cells[i]) {

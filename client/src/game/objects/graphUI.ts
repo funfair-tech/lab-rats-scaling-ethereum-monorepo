@@ -20,7 +20,7 @@ export class GraphUI extends FFEngine.Component {
     private betSmallLow!: UIButtonSprite;
     private betBigLow!: UIButtonSprite;
     private playerBets: FFEngine.Sprite[] = [];
-    private playerBetCounters: number[] = [];
+    private betWinFlags: boolean[] = [];
 
     public Create(params: any): void {
         super.Create(params);
@@ -115,6 +115,28 @@ export class GraphUI extends FFEngine.Component {
         this.betSmallLow.SetHighlightGlow(!locked);
         this.betBigHigh.SetHighlightGlow(!locked);
         this.betBigLow.SetHighlightGlow(!locked);
+    }
+
+    public SetBetWinFlags(winFlags: boolean[]): void {
+        this.betWinFlags = winFlags;
+    }
+
+    public HighlightWinningButtons(active: boolean): void {
+        if (this.betWinFlags.length > 0) {
+            let betButtons = [];
+            betButtons[Logic_BetType.LOWER] = this.betLow;
+            betButtons[Logic_BetType.HIGHER] = this.betHigh;
+            betButtons[Logic_BetType.SMALLHIGHER] = this.betSmallHigh;
+            betButtons[Logic_BetType.SMALLLOWER] = this.betSmallLow;
+            betButtons[Logic_BetType.LARGEHIGHER] = this.betBigHigh;
+            betButtons[Logic_BetType.LARGELOWER] = this.betBigLow;
+
+            for (let i=0;i<this.betWinFlags.length;i++) {
+                if (betButtons[i]) {
+                    betButtons[i].SetHighlight(this.betWinFlags[i]);
+                }
+            }
+        }
     }
 
     public UpdatePlayers(players: Player[]): void {

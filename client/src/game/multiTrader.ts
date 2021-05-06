@@ -118,6 +118,7 @@ export class MultiTrader extends FFEngine.Component {
     public GraphResultFinished(): void {
         GLUI.SetPlayerListMode(UIPlayerDisplayMode.WIN);
         GLUI.ShowWinUI(true);
+        GRAPH_MANAGER.HighlightWinningButtons(true);
     }
 
     private UpdateLoadingPhase(): void {
@@ -159,6 +160,7 @@ export class MultiTrader extends FFEngine.Component {
             //add a new graph result
             if (state.roundState === Logic_RoundState.COMPLETE) {
                 GRAPH_MANAGER.AddResult(state.currentPrice, false);
+                GRAPH_MANAGER.AddWinningBetTypes(state.betWinFlags);
             }
 
             //update prize pool

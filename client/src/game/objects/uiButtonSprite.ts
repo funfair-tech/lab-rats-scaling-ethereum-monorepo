@@ -44,6 +44,16 @@ export class UIButtonSprite extends UIButton {
         }
     }
 
+    public SetHighlight(active: boolean): void {
+        if (this.highlight) {
+            this.highlight.GetContainer().visible = active;
+
+            if (active) {
+                this.highlight.SetAlpha(1);
+            }
+        }
+    }
+
     /**
      * Sets a display config for a particular button state.
      * Only ButtonState.IDLE is required to have a config, and will be used as a fallback for other states.
