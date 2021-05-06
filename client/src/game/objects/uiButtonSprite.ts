@@ -7,6 +7,7 @@ import { UIButton, ButtonState } from './uiButton';
 export class UIButtonSprite extends UIButton {
 
     private sprite!: FFEngine.Sprite;
+    private highlight!: FFEngine.Sprite;
     private stateConfig: ButtonSpriteStateConfig[] = [];
 
     public Create(params: any): void {
@@ -23,6 +24,10 @@ export class UIButtonSprite extends UIButton {
         return this.sprite;
     }
 
+    public GetHighlightSprite(): FFEngine.Sprite {
+        return this.highlight;
+    }
+
     /**
      * Sets a display config for a particular button state.
      * Only ButtonState.IDLE is required to have a config, and will be used as a fallback for other states.
@@ -33,6 +38,10 @@ export class UIButtonSprite extends UIButton {
         if (state === ButtonState.IDLE) {
             this.SetButtonState(ButtonState.IDLE);
         }
+    }
+
+    public SetupHighlight(texture: FFEngine.THREE.Texture): void {
+        this.highlight = FFEngine.instance.CreateChildObjectWithComponent(this.container, FFEngine.Sprite);
     }
 
     /**

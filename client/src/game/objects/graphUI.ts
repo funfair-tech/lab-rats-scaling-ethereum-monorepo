@@ -38,14 +38,9 @@ export class GraphUI extends FFEngine.Component {
         this.betUI = new FFEngine.THREE.Object3D();
         this.container.add(this.betUI);
 
-        this.betHigh = FFEngine.instance.CreateChildObjectWithComponent(this.betUI, UIButtonSprite);
+        this.betHigh = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGH));
         this.betHigh.GetContainer().position.set(-1.5, 1.5, 0.05);
         this.betHigh.GetSprite().SetSize(2.9, 2.8);
-        this.betHigh.GetSprite().SetAlpha(0.5);
-
-        this.betHigh.SetupState(FFEngine.ButtonState.IDLE, new ButtonSpriteStateConfig(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGH), new FFEngine.THREE.Color(0xffffff)));
-        this.betHigh.SetupState(FFEngine.ButtonState.LOCKED, new ButtonSpriteStateConfig(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGH), new FFEngine.THREE.Color(0x888888)));
-        this.betHigh.SetCamera(ENVIRONMENT_MANAGER.GetCamera());
 
         this.betHigh.SetOnClicked(() => {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.HIGHER);
@@ -54,15 +49,10 @@ export class GraphUI extends FFEngine.Component {
         let text = FFEngine.instance.CreateChildObjectWithComponent(this.betHigh.GetContainer(), FFEngine.BitmapString, { text: 'High', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.6, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 0, 0]});
         text.SetRenderOrder(1);
 
-        this.betLow = FFEngine.instance.CreateChildObjectWithComponent(this.betUI, UIButtonSprite);
+        this.betLow = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOW));
         this.betLow.GetContainer().position.set(-1.5, -1.5, 0.05);
         this.betLow.GetSprite().SetSize(2.9, 2.8);
-        this.betLow.GetSprite().SetAlpha(0.5);
-
-        this.betLow.SetupState(FFEngine.ButtonState.IDLE, new ButtonSpriteStateConfig(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOW), new FFEngine.THREE.Color(0xffffff)));
-        this.betLow.SetupState(FFEngine.ButtonState.LOCKED, new ButtonSpriteStateConfig(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOW), new FFEngine.THREE.Color(0x888888)));
-        this.betLow.SetCamera(ENVIRONMENT_MANAGER.GetCamera());
-
+       
         this.betLow.SetOnClicked(() => {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.LOWER);
         });
@@ -70,15 +60,10 @@ export class GraphUI extends FFEngine.Component {
         text = FFEngine.instance.CreateChildObjectWithComponent(this.betLow.GetContainer(), FFEngine.BitmapString, { text: 'Low', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.6, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 0, 0]});
         text.SetRenderOrder(1);
 
-        this.betSmallHigh = FFEngine.instance.CreateChildObjectWithComponent(this.betUI, UIButtonSprite);
+        this.betSmallHigh = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGHSMALL));
         this.betSmallHigh.GetContainer().position.set(4.5, 1.5/2, 0.05);
         this.betSmallHigh.GetSprite().SetSize(2.9, 1.48);
-        this.betSmallHigh.GetSprite().SetAlpha(0.5);
-
-        this.betSmallHigh.SetupState(FFEngine.ButtonState.IDLE, new ButtonSpriteStateConfig(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGHSMALL), new FFEngine.THREE.Color(0xffffff)));
-        this.betSmallHigh.SetupState(FFEngine.ButtonState.LOCKED, new ButtonSpriteStateConfig(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGHSMALL), new FFEngine.THREE.Color(0x888888)));
-        this.betSmallHigh.SetCamera(ENVIRONMENT_MANAGER.GetCamera());
-
+        
         this.betSmallHigh.SetOnClicked(() => {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.SMALLHIGHER);
         });
@@ -86,27 +71,17 @@ export class GraphUI extends FFEngine.Component {
         //text = FFEngine.instance.CreateChildObjectWithComponent(this.betLow.GetContainer(), FFEngine.BitmapString, { text: 'Low', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.5, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 0, 0]});
         //text.SetRenderOrder(1);
 
-        this.betBigHigh = FFEngine.instance.CreateChildObjectWithComponent(this.betUI, UIButtonSprite);
+        this.betBigHigh = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGHSMALL));
         this.betBigHigh.GetContainer().position.set(4.5, 1.5 + (1.5/2), 0.05);
         this.betBigHigh.GetSprite().SetSize(2.9, 1.48);
-        this.betBigHigh.GetSprite().SetAlpha(0.5);
-
-        this.betBigHigh.SetupState(FFEngine.ButtonState.IDLE, new ButtonSpriteStateConfig(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGHSMALL), new FFEngine.THREE.Color(0xffffff)));
-        this.betBigHigh.SetupState(FFEngine.ButtonState.LOCKED, new ButtonSpriteStateConfig(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETHIGHSMALL), new FFEngine.THREE.Color(0x888888)));
-        this.betBigHigh.SetCamera(ENVIRONMENT_MANAGER.GetCamera());
 
         this.betBigHigh.SetOnClicked(() => {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.LARGEHIGHER);
         });
 
-        this.betSmallLow = FFEngine.instance.CreateChildObjectWithComponent(this.betUI, UIButtonSprite);
+        this.betSmallLow = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOWSMALL));
         this.betSmallLow.GetContainer().position.set(4.5, -1.5/2, 0.05);
         this.betSmallLow.GetSprite().SetSize(2.9, 1.48);
-        this.betSmallLow.GetSprite().SetAlpha(0.5);
-
-        this.betSmallLow.SetupState(FFEngine.ButtonState.IDLE, new ButtonSpriteStateConfig(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOWSMALL), new FFEngine.THREE.Color(0xffffff)));
-        this.betSmallLow.SetupState(FFEngine.ButtonState.LOCKED, new ButtonSpriteStateConfig(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOWSMALL), new FFEngine.THREE.Color(0x888888)));
-        this.betSmallLow.SetCamera(ENVIRONMENT_MANAGER.GetCamera());
 
         this.betSmallLow.SetOnClicked(() => {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.SMALLLOWER);
@@ -115,14 +90,9 @@ export class GraphUI extends FFEngine.Component {
         //text = FFEngine.instance.CreateChildObjectWithComponent(this.betLow.GetContainer(), FFEngine.BitmapString, { text: 'Low', font: ASSETPACK.GetFontAsset(FontAssetType.STANDARD), size: 0.5, justification: 'center', noMipMaps: false, colour: 0xFFFFFF, pos:[0, 0, 0]});
         //text.SetRenderOrder(1);
 
-        this.betBigLow = FFEngine.instance.CreateChildObjectWithComponent(this.betUI, UIButtonSprite);
+        this.betBigLow = this.CreateButton(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOWSMALL));
         this.betBigLow.GetContainer().position.set(4.5, -1.5 - (1.5/2), 0.05);
         this.betBigLow.GetSprite().SetSize(2.9, 1.48);
-        this.betBigLow.GetSprite().SetAlpha(0.5);
-
-        this.betBigLow.SetupState(FFEngine.ButtonState.IDLE, new ButtonSpriteStateConfig(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOWSMALL), new FFEngine.THREE.Color(0xffffff)));
-        this.betBigLow.SetupState(FFEngine.ButtonState.LOCKED, new ButtonSpriteStateConfig(ASSETPACK.GetTextureAsset(TextureAssetType.BUTTONBETLOWSMALL), new FFEngine.THREE.Color(0x888888)));
-        this.betBigLow.SetCamera(ENVIRONMENT_MANAGER.GetCamera());
 
         this.betBigLow.SetOnClicked(() => {
             MULTITRADER.InitiatePlayerBet(Logic_BetType.LARGELOWER);
@@ -218,5 +188,14 @@ export class GraphUI extends FFEngine.Component {
         }
         position.x += 1.2;
         return position;
+    }
+
+    private CreateButton(texture: FFEngine.THREE.Texture): UIButtonSprite {
+        let button = FFEngine.instance.CreateChildObjectWithComponent(this.betUI, UIButtonSprite);
+        button.GetSprite().SetAlpha(0.5);
+        button.SetupState(FFEngine.ButtonState.IDLE, new ButtonSpriteStateConfig(texture, new FFEngine.THREE.Color(0xffffff)));
+        button.SetupState(FFEngine.ButtonState.LOCKED, new ButtonSpriteStateConfig(texture, new FFEngine.THREE.Color(0x888888)));
+        button.SetCamera(ENVIRONMENT_MANAGER.GetCamera());
+        return button;
     }
 }
