@@ -47,7 +47,7 @@ There are several contracts
 
 The client is made up of a web app hosting a game component.
 
-The web app is built in React and all view components were created and styled from scratch. We used the FunFair Wallet for authentication and all web3 functionality and React Redux to manage state. Player count and game history are received through web sockets which we connect to via signalR and there is an integrated http faucet which we call using the javascript fetch library. All other state communication is via JSON-RPC logs.  
+The web app is built in React with a blank template and all view components were created and styled from scratch. We use the FunFair Wallet for authentication and web3 provider functionality and React Redux to manage state. Player count and game history are received through WebSockets which we connect to via signalR and there is an integrated HTTP faucet which we call using the javascript Fetch API. All other state is read from JSON-RPC logs via Ethers.js.  
 
 The game display has been built from scratch using the following external components:
 
