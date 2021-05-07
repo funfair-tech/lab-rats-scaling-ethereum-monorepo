@@ -88,3 +88,6 @@ Server only starts games if there are players online and monitors the games in t
 * Serilog for logging
 * FluentValidation.AspNetCorer - for REST API validation
 
+## Video demo
+
+https://www.youtube.com/watch?v=UZClFxw9JSg
