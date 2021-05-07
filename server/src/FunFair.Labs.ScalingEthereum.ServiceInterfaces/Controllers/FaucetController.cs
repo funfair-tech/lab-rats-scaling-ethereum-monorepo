@@ -20,7 +20,6 @@ using FunFair.Labs.ScalingEthereum.Logic.Faucet;
 using FunFair.Labs.ScalingEthereum.Logic.Faucet.Models;
 using FunFair.Labs.ScalingEthereum.ServiceInterfaces.Extensions;
 using FunFair.Labs.ScalingEthereum.ServiceInterfaces.Models.Faucet;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FunFair.Labs.ScalingEthereum.ServiceInterfaces.Controllers
