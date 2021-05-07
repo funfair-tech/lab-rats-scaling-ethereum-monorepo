@@ -49,14 +49,16 @@ The client is made up of a web app hosting a game component.
 
 The web app is built in React with a blank template and all view components were created and styled from scratch. We use the FunFair Wallet for authentication and web3 provider functionality and React Redux to manage state. Player count and game history are received through WebSockets which we connect to via signalR and there is an integrated HTTP faucet which we call using the javascript Fetch API. All other state is read from JSON-RPC logs via Ethers.js.  
 
+#### Dependencies
+* Funfair Wallet
+* ethersjs
+* React
+* signalR
+
 The game display has been built from scratch using the following external components:
 
 * Funfair game engine (FFEngine module) - Our in-house developed game engine which extends the popular THREE.js WebGL 3D renderer
 * A small selection of previously made assets such as fonts and images in the client/public/game folder
-
-#### Dependencies
-* Funfair Wallet
-* ethersjs
 
 ### Server
 
