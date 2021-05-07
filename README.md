@@ -1,8 +1,8 @@
 # Lab Rats: Eth Global Scaling Ethereum Hackathon
 
-This is RatTrace, the lab rats scaling hackathon project
+This is RatTrace, the lab rats scaling hackathon project.
 
-A multiplayer trading simulation game running in real-time on the Optimism chain. Players try to predict where the price will go next by placing tokens on the graph. This proof of concept shows that all token transfers and game logic can be performed on-chain without spending excessive ETH on gas costs.
+A multiplayer trading simulation game running in real-time on the Optimism chain. Players try to predict where the price will go next by placing tokens on the graph. This proof of concept shows that all token transfers and game logic can be performed in on-chain without spending excessive ETH on gas costs without affecting game experience.
 
 [Play](https://6093f7d4b3ec9e009d1913d2--lab-rats-scaling-ethereum.netlify.app/)
 
@@ -32,16 +32,19 @@ RatTrace was built iteratively with all parts being developed in parallel.
 
 ### Contracts
 
-There are several contracts
+There are several contracts that interact to implement the game.
 
 * 'ERC667' token - the LABRATS token that bets on the game are made in
 * 'Faucet' contract - for issuing the funds to players so they can play.
 * 'MultiplayerGamesManager' - controls the game betting cycle
 * 'RatTrace' game contract - the game logic
 
+Contracts were built using hard hat for deployment and used ganache for the initial testing and development of the contracts.
+
 #### Dependencies
 
 * Hardhat
+* Ganache
 
 ### Dapp Client
 
@@ -57,7 +60,7 @@ The real-time WebGL game display has been built from scratch using our in-house 
 * React
 * signalR
 * Funfair game engine (FFEngine module) - Our in-house developed game engine which extends the popular THREE.js WebGL 3D renderer
-* A small selection of previously made assets such as fonts and images in the client/public/game folder
+* A small selection of previously made assets such as fonts and images in the ``client/public/game`` folder
 
 ### Server
 
