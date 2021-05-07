@@ -93,6 +93,7 @@ class GameService {
       // messageService.broadcastBet(bet);
 
       const receipt = await transactionResponse.wait(1);
+      store.dispatch(freezeDisplayBalance());
       console.log('handlePlay receipt: ', receipt);
     } catch (error) {
       console.error(error);

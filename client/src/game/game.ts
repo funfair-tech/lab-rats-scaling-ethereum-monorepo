@@ -15,6 +15,7 @@ export class Game {
 
   constructor(private play: (stake: number, action: number) => void, private freezeBalance: (frozen: boolean) => void) {
     Logic.SetAPIPlaycallback(play);
+    Logic.SetAPIBalanceFreeze(freezeBalance);
   };
 
   public handleNextRound(round: Round): void {

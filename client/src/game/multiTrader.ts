@@ -118,6 +118,7 @@ export class MultiTrader extends FFEngine.Component {
     public GraphResultFinished(): void {
         GLUI.SetPlayerListMode(UIPlayerDisplayMode.WIN);
         GLUI.ShowWinUI(true);
+        LOGIC.UnFreezeBalance();
         GRAPH_MANAGER.HighlightWinningButtons(true);
     }
 

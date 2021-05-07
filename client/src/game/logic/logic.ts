@@ -18,9 +18,14 @@ export class Logic {
     protected isLocalMode: boolean = false;
     protected localPlayerAddress: string = '0x1234567fakeplayer89abcdef';
     protected static APIPlaycallback: (stake: number, action: number) => void;
+    protected static APIFreezeBalance: (frozen: boolean) => void;
 
     public static SetAPIPlaycallback(callbackFunction: any) {
         Logic.APIPlaycallback = callbackFunction;
+    }    
+
+    public static SetAPIBalanceFreeze(callbackFunction: (frozen: boolean) => void) {
+      Logic.APIFreezeBalance = callbackFunction;
     }    
 
     static Create(config: Logic_Configuration, localMode: boolean): void {
@@ -47,6 +52,10 @@ export class Logic {
 
     public GetCurrentState() : Logic_GameState {
         return this.reportedState;
+    }
+
+    public UnFreezeBalance(): void {
+      Logic.APIFreezeBalance(false);
     }
 
     public PlaceBetToServer(betType: number): Logic_BetResponse {
