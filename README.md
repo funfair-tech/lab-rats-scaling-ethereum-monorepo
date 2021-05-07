@@ -22,7 +22,7 @@ Games are started each by the server issuing a ``start game`` transaction, and w
 
 Random numbers for the game are provided by a commit-reveal scheme.  The server generates a large random number 'Reveal Seed' and hashes that to produce the 'Commit seed '.  The commit seed is passed in the ``start game`` transaction, and the reveal seed passed in the ``resolve game`` transaction, and verified against the commit seed before it is used.
 
-![Sequence Diagram](D:\Work\lab-rats-scaling-ethereum-monorepo\images\RatTraceContractFlow.png)
+![Sequence Diagram](images/RatTraceContractFlow.png)
 
 The server includes a faucet to issue test funds so that players can play without needing to go and get any from anywhere else.
 
