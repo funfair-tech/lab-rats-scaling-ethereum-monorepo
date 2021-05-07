@@ -22,17 +22,22 @@ Games are started each by the server issuing a ``start game`` transaction, and w
 
 Random numbers for the game are provided by a commit-reveal scheme.  The server generates a large random number 'Reveal Seed' and hashes that to produce the 'Commit seed '.  The commit seed is passed in the ``start game`` transaction, and the reveal seed passed in the ``resolve game`` transaction, and verified against the commit seed before it is used.
 
-<insert screenshot of sequence diagram here>
+![Sequence Diagram](D:\Work\lab-rats-scaling-ethereum-monorepo\images\RatTraceContractFlow.png)
 
 The server includes a faucet to issue test funds so that players can play without needing to go and get any from anywhere else.
 
 ## How its made
 
-RatTrace was made iteratively with all parts being developed in parallel.
+RatTrace was built iteratively with all parts being developed in parallel.
 
 ### Contracts
 
-Built using hardhat
+There are several contracts
+
+* 'ERC667' token - the LABRATS token that bets on the game are made in
+* 'Faucet' contract - for issuing the funds to players so they can play.
+* 'MultiplayerGamesManager' - controls the game betting cycle
+* 'RatTrace' game contract - the game logic
 
 #### Dependencies
 
