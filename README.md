@@ -18,12 +18,17 @@ A multiplayer trading graph betting game where you bet if the graph will go up o
 
 RatTrace is a simple multi-player graph trading game where players can bet against whether the price is going to go higher or lower.  
 
-Games are started each by the server issuing a ``start game`` transaction, and when the players see the chain event for this they can place their bets by placing ``bet`` transactions. After a period of time the server issues a ``stop betting`` transaction followed by an ``end game`` transaction where the results of the game are reported in an event and displayed in the client.
+Games are started each by the server issuing a ``start game`` transaction, and when the players see the chain event for this they can place their bets by placing ``bet`` transactions. After a period of time the server issues a ``stop betting`` transaction followed by an ``resolve game`` transaction where the results of the game are reported in an event and displayed in the client.
+
+Random numbers for the game are provided by a commit-reveal scheme.  The server generates a large random number 'Reveal Seed' and hashes that to produce the 'Commit seed '.  The commit seed is passed in the ``start game`` transaction, and the reveal seed passed in the ``resolve game`` transaction, and verified against the commit seed before it is used.
 
 <insert screenshot of sequence diagram here>
 
+The server includes a faucet to issue test funds so that players can play without needing to go and get any from anywhere else.
 
 ## How its made
+
+RatTrace was made iteratively with all parts being developed in parallel.
 
 ### Contracts
 
@@ -35,7 +40,7 @@ Built using hardhat
 
 ### Dapp Client
 
-Built using react and ethers....
+Built using react etc...
 
 #### Dependencies
 
@@ -44,12 +49,9 @@ Built using react and ethers....
 
 ### Server
 
-Built using C# using dotnet core 5 with a MS SQL Server Database.
-
-
-
-
+Built using C# using dotnet core 5 with a MS SQL Server Database.  This 
 
 #### Dependencies
 * Funfair Ethereum Services (JSON-RPC/Web3 wrapper)
 * SQL Server
+
