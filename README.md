@@ -4,7 +4,7 @@ This is RatTrace, the lab rats scaling hackathon project
 
 A multiplayer trading simulation game running in real-time on the Optimism chain. Players try to predict where the price will go next by placing tokens on the graph. This proof of concept shows that all token transfers and game logic can be performed on-chain without spending excessive ETH on gas costs.
 
-[Play](https://lab-rats-scaling-ethereum.netlify.app)
+[Play](https://6093f7d4b3ec9e009d1913d2--lab-rats-scaling-ethereum.netlify.app/)
 
 
 | What | Status |
