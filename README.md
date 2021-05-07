@@ -1,6 +1,6 @@
 # Lab Rats: Eth Global Scaling Ethereum Hackathon
 
-This is RatTrace, the labs rats scaling hackathon project
+This is RatTrace, the lab rats scaling hackathon project
 
 A multiplayer trading simulation game running in real-time on the Optimism chain. Players try to predict where the price will go next by placing tokens on the graph. This proof of concept shows that all token transfers and game logic can be performed on-chain without spending excessive ETH on gas costs.
 
@@ -49,7 +49,10 @@ The client is made up of a web app hosting a game component.
 
 The web app is built in React and all view components were created and styled from scratch. We used the FunFair Wallet for authentication and all web3 functionality and React Redux to manage state. Player count and game history are received through web sockets which we connect to via signalR and there is an integrated http faucet which we call using the javascript fetch library. All other state communication is via JSON-RPC logs.  
 
-The game is built on top of a customised version of Three.js which we import via an internal FFEngine module.
+The game display has been built from scratch using the following external components:
+
+* Funfair game engine (FFEngine module) - Our in-house developed game engine which extends the popular THREE.js WebGL 3D renderer
+* A small selection of previously made assets such as fonts and images in the client/public/game folder
 
 #### Dependencies
 * Funfair Wallet
