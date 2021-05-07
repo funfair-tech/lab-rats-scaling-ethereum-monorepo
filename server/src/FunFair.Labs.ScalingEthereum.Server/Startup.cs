@@ -171,7 +171,6 @@ namespace FunFair.Labs.ScalingEthereum.Server
                .UseForwardedHeaders(new ForwardedHeadersOptions {ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost})
                .RegisterSecurityHeaders(cspOptionsBuilder: CspOptions, applicationConfiguration: this._configuration)
                .UseMiddleware<CspWssHostnameMiddleware>()
-               .UseMiddleware<CorsHttpsHostnameMiddleware>()
                .UseRouting()
                .UseAuthentication()
                .UseAuthorization()
