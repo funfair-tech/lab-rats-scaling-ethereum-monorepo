@@ -60,6 +60,11 @@ The game display has been built from scratch using the following external compon
 * Funfair game engine (FFEngine module) - Our in-house developed game engine which extends the popular THREE.js WebGL 3D renderer
 * A small selection of previously made assets such as fonts and images in the client/public/game folder
 
+#### Dependencies
+* Funfair Wallet
+* ethersjs
+* signalr.js
+
 ### Server
 
 Built using C# using dotnet core 5 with a MS SQL Server Database.  This 
