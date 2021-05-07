@@ -66,9 +66,17 @@ The server is a service under systemd that communicates with the client, the blo
 
 This is built using C# using dotnet core 5 to provide a REST api and signalR endpoint to the client as well as some background services to maintain game state on the chain.  The relies on reading transaction event logs from the chain to change the internal server db view of the game and provide it though web socket events to the client.  Although these events are still sent to the client (as is useful for debugging purposes and also during initial development) the client now ignores most of these and reads the transaction event logs off the chain.
 
-Server only starts games if there are players online and monitors the games in the database for when they need an action to occur on them (e.g. stop new bets from being accepted)
+Server only starts games if there are players online and monitors the games in the database for when they need an action to occur on them (e.g. stop new bets from being accepted).
 
 #### Dependencies
+* Dotnet 5
 * Funfair Ethereum Services (JSON-RPC/Web3 wrapper)
+* Funfair Monitoring and Alerting libraries (for reporting low server balances)
+* signalR
+* Redis (as signalR backplane)
+* Dapper (for SQL server integration)
 * SQL Server
+* Swashbuckle - for producing api swagger pages
+* Serilog for logging
+* FluentValidation.AspNetCorer - for REST api validation
 
