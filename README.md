@@ -22,13 +22,19 @@ Games are started each by the server issuing a ``start game`` transaction, and w
 
 Random numbers for the game are provided by a commit-reveal scheme.  The server generates a large random number 'Reveal Seed' and hashes that to produce the 'Commit seed '.  The commit seed is passed in the ``start game`` transaction, and the reveal seed passed in the ``resolve game`` transaction, and verified against the commit seed before it is used.
 
-![Sequence Diagram](images/RatTraceContractFlow.png)
-
 The server includes a faucet to issue test funds so that players can play without needing to go and get any from anywhere else.
+
+
+
+![Sequence Diagram](images/RatTraceContractFlow.png)
 
 ## How its made
 
-RatTrace was built iteratively with all parts being developed in parallel.
+RatTrace was built iteratively with all parts being developed in parallel with the various components being built and deployed centrally using various continuous integration systems:
+
+* Client Netifly
+* Contracts - Github Actions
+* Server - TeamCity and Octopus
 
 ### Contracts
 
@@ -78,7 +84,7 @@ Server only starts games if there are players online and monitors the games in t
 * Redis (as signalR backplane)
 * Dapper (for SQL server integration)
 * SQL Server
-* Swashbuckle - for producing api swagger pages
+* Swashbuckle - for producing API swagger pages
 * Serilog for logging
 * FluentValidation.AspNetCorer - for REST API validation
 
