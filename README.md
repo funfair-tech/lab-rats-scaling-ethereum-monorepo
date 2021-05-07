@@ -80,5 +80,5 @@ Server only starts games if there are players online and monitors the games in t
 * SQL Server
 * Swashbuckle - for producing api swagger pages
 * Serilog for logging
-* FluentValidation.AspNetCorer - for REST api validation
+* FluentValidation.AspNetCorer - for REST API validation
 
