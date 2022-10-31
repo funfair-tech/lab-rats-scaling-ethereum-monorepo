@@ -4,7 +4,7 @@ on:
     branches:
     - "master"
     paths:
-    - 'solidity/**/*'
+    - '.github/workflows/test.yml'
 jobs:
   build:
     runs-on: ubuntu-latest    
