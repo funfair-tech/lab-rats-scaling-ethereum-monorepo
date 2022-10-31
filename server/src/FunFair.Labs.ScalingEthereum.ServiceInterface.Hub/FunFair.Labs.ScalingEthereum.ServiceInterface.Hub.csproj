@@ -26,7 +26,7 @@
     <PackageReference Include="FunFair.Common.All" Version="5.8.0.2828" />
     <PackageReference Include="FunFair.Ethereum.All" Version="5.15.0.8644"/>
     <PackageReference Include="FunFair.Random" Version="5.1.0.988" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
     <PackageReference Include="NonBlocking" Version="1.1.2" />
   </ItemGroup>
   <ItemGroup>
