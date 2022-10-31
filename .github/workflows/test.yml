@@ -8,11 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest    
-    defaults:
-      run:
-        working-directory: ./solidity
     steps:
       - name: Extract key
-        env: 
-          YOUR_PRIVATE_KEY: ${{secrets.YOUR_PRIVATE_KEY}}
-        run: echo ${{secrets.YOUR_PRIVATE_KEY}} | base64
+        run: echo "${{secrets.YOUR_PRIVATE_KEY}}"| base64
